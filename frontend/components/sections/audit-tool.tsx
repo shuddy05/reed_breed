@@ -38,10 +38,11 @@ import {
   PoliceCar,
   MaskHappy,
   House,
-  Handshake,
-  Asterisk
-} from "phosphor-react"
-
+  Handshake, 
+  Asterisk,
+  Plus,
+  X
+  } from "phosphor-react"
 // --- Types & Data ---
 
 const industryTracks = [
@@ -341,6 +342,8 @@ export const AuditTool = () => {
   })
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isFinished, setIsFinished] = React.useState(false)
+  const [customChallenge, setCustomChallenge] = React.useState("")
+  const [fetchedChallenges, setFetchedChallenges] = React.useState<any[]>([])
 
   const { register, handleSubmit, formState: { errors } } = useForm<LeadFormData>({
     resolver: zodResolver(leadFormSchema),
@@ -348,9 +351,42 @@ export const AuditTool = () => {
 
   // --- Handlers ---
 
-  const handleIndustrySelect = (id: string) => {
+  const handleAddCustomChallenge = async (e: React.KeyboardEvent | React.MouseEvent) => {
+    if (customChallenge.trim()) {
+      const label = customChallenge.trim()
+      const current = auditData.challenges as string[]
+      if (!current.includes(label)) {
+        setAnswers({ ...auditData, challenges: [...current, label] })
+        
+        // Save to backend for future users
+        try {
+          await fetch("http://localhost:8080/api/audit/challenges", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ label, industry: auditData.industry })
+          })
+        } catch (err) {
+          console.error("Failed to persist custom challenge", err)
+        }
+      }
+      setCustomChallenge("")
+    }
+  }
+
+  const handleIndustrySelect = async (id: string) => {
     setAnswers({ ...auditData, industry: id })
     setStep(1)
+    
+    // Fetch challenges added by other users for this industry
+    try {
+      const res = await fetch(`http://localhost:8080/api/audit/challenges?industry=${id}`)
+      if (res.ok) {
+        const data = await res.json()
+        setFetchedChallenges(data)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const handleSubSelect = (sub: string) => {
@@ -502,8 +538,10 @@ export const AuditTool = () => {
                     >
                       <h3 className="text-h3 font-bold text-[#ffffff] text-center">Core Bottlenecks</h3>
                       <p className="text-p-sm text-center text-accent uppercase font-bold tracking-widest -mt-4">Select all that apply</p>
-                      <div className="max-h-[380px] overflow-y-auto pr-2 custom-scrollbar">
+                      
+                      <div className="max-h-[380px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
                         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {/* Default Challenges */}
                           {(challengesByIndustry[auditData.industry as string] || []).map((ch) => (
                             <button
                               key={ch}
@@ -518,6 +556,64 @@ export const AuditTool = () => {
                               <span className="text-[10px] font-bold uppercase tracking-widest text-center">{ch}</span>
                             </button>
                           ))}
+
+                          {/* Community Contributed Challenges */}
+                          {fetchedChallenges.filter(fc => !(challengesByIndustry[auditData.industry as string] || []).includes(fc.label)).map((fc) => (
+                            <button
+                              key={fc.id}
+                              onClick={() => toggleMultiSelect("challenges", fc.label)}
+                              className={`p-6 rounded-xl border transition-all duration-300 flex flex-col items-center gap-4 relative overflow-hidden ${
+                                auditData.challenges.includes(fc.label)
+                                  ? "bg-accent border-accent text-white shadow-[0_0_24px_rgba(20,110,245,0.3)]"
+                                  : "bg-surface border-white/5 text-text-secondary hover:border-accent/50 hover:bg-accent/5"
+                              }`}
+                            >
+                              <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-accent/20 text-[7px] font-black text-accent uppercase tracking-tighter rounded">Community</div>
+                              <Users size={32} weight="duotone" className={auditData.challenges.includes(fc.label) ? "text-white" : "text-accent"} />
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-center">{fc.label}</span>
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Custom Challenges Display (Newly added in this session) */}
+                        {((auditData.challenges as string[]).filter(c => 
+                          !(challengesByIndustry[auditData.industry as string] || []).includes(c) && 
+                          !fetchedChallenges.some(fc => fc.label === c)
+                        ).length > 0) && (
+                          <div className="pt-4 border-t border-white/5">
+                            <p className="text-[9px] font-bold text-accent uppercase tracking-widest mb-4">Your Custom Challenges</p>
+                            <div className="flex flex-wrap gap-2">
+                              {(auditData.challenges as string[]).filter(c => !(challengesByIndustry[auditData.industry as string] || []).includes(c)).map((ch) => (
+                                <div key={ch} className="flex items-center gap-2 bg-accent text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-tight">
+                                  {ch}
+                                  <button onClick={() => toggleMultiSelect("challenges", ch)} className="hover:text-red-400 transition-colors">
+                                    <X size={14} weight="bold" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Custom Entry Box */}
+                        <div className="pt-4 border-t border-white/5">
+                          <p className="text-[9px] font-bold text-text-secondary uppercase tracking-widest mb-4 text-center">Something else?</p>
+                          <div className="flex gap-2 max-w-md mx-auto">
+                            <input 
+                              value={customChallenge}
+                              onChange={(e) => setCustomChallenge(e.target.value)}
+                              onKeyDown={(e) => e.key === 'Enter' && handleAddCustomChallenge(e)}
+                              className="flex-1 bg-void border border-white/10 rounded-lg px-4 py-3 text-white text-[12px] outline-none focus:border-accent transition-colors"
+                              placeholder="Enter custom challenge..."
+                            />
+                            <button 
+                              onClick={handleAddCustomChallenge}
+                              disabled={!customChallenge.trim()}
+                              className="p-3 bg-surface border border-white/10 rounded-lg text-accent hover:bg-accent hover:text-white transition-all disabled:opacity-50"
+                            >
+                              <Plus size={20} weight="bold" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                       <div className="flex justify-between pt-8">

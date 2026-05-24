@@ -21,6 +21,15 @@ func SetupRoutes(prisma *db.PrismaClient) *http.ServeMux {
 	mux.HandleFunc("/api/auth/register", authHandler.Register)
 	mux.HandleFunc("/api/auth/login", authHandler.Login)
 	mux.HandleFunc("/api/audit", auditHandler.HandleAudit)
+	mux.HandleFunc("/api/audit/challenges", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "GET" {
+			auditHandler.GetCustomChallenges(w, r)
+		} else if r.Method == "POST" {
+			auditHandler.AddCustomChallenge(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
 	mux.HandleFunc("/api/webhooks/paystack", paymentHandler.Webhook)
 
 	// Protected Routes

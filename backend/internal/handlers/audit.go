@@ -55,3 +55,58 @@ func (h *AuditHandler) HandleAudit(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "success"})
 }
+
+func (h *AuditHandler) GetCustomChallenges(w http.ResponseWriter, r *http.Request) {
+	industry := r.URL.Query().Get("industry")
+	if industry == "" {
+		http.Error(w, "Industry is required", http.StatusBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	challenges, err := h.Prisma.CustomChallenge.FindMany(
+		db.CustomChallenge.Industry.Equals(industry),
+	).OrderBy(
+		db.CustomChallenge.Count.Order(db.SortOrderDesc),
+	).Exec(ctx)
+
+	if err != nil {
+		http.Error(w, "Failed to fetch custom challenges", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(challenges)
+}
+
+func (h *AuditHandler) AddCustomChallenge(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Label    string `json:"label"`
+		Industry string `json:"industry"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	// Upsert: Create if doesn't exist, or increment count if it does
+	challenge, err := h.Prisma.CustomChallenge.UpsertOne(
+		db.CustomChallenge.LabelIndustry(
+			db.CustomChallenge.Label.Equals(req.Label),
+			db.CustomChallenge.Industry.Equals(req.Industry),
+		),
+	).Create(
+		db.CustomChallenge.Label.Set(req.Label),
+		db.CustomChallenge.Industry.Set(req.Industry),
+	).Update(
+		db.CustomChallenge.Count.Increment(1),
+	).Exec(ctx)
+
+	if err != nil {
+		log.Printf("Error adding custom challenge: %v", err)
+		http.Error(w, "Failed to save challenge", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(challenge)
+}

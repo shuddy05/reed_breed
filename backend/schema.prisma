@@ -73,3 +73,13 @@ model Subscription {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
+
+model CustomChallenge {
+  id        String   @id @default(cuid())
+  label     String
+  industry  String   // Which industry this was added for
+  count     Int      @default(1) // How many times it's been suggested
+  createdAt DateTime @default(now())
+
+  @@unique([label, industry])
+}
