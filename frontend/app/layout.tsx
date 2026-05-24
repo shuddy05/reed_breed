@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "We help SMEs automate sales, marketing & customer engagement — so your business grows while you sleep.",
 };
 
+import { AuthProvider } from "@/context/auth-context";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,8 +30,11 @@ export default function RootLayout({
       className={`${wfVisualSans.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-void text-text-secondary">
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
