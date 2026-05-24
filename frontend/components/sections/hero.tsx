@@ -3,7 +3,7 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { CaretRight, Play, MagnifyingGlass } from "phosphor-react"
+import { CaretRight, ChartBar, MagnifyingGlass } from "phosphor-react"
 
 export const Hero = () => {
   return (
@@ -51,18 +51,20 @@ export const Hero = () => {
             transition={{ duration: 0.4, delay: 0.7 }}
             className="flex flex-col gap-6"
           >
-            <div className="flex flex-nowrap gap-4 overflow-x-auto pb-2 -mb-2 no-scrollbar">
-              <Button size="md" className="gap-2 whitespace-nowrap">
+            <div className="flex flex-wrap gap-4">
+              <Button size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
                 Book a Strategy Call <CaretRight weight="bold" />
               </Button>
-              <Button variant="secondary" size="md" className="gap-2 whitespace-nowrap">
+              <Button variant="secondary" size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
                 <MagnifyingGlass weight="bold" /> Request a Growth Audit
               </Button>
             </div>
-            <div>
-              <Button variant="ghost" size="md" className="gap-2 whitespace-nowrap">
-                <Play weight="fill" /> See a Sample Demo
-              </Button>
+            <div className="w-full sm:w-auto">
+              <a href="#diagnostic" className="block sm:inline-block w-full">
+                <Button variant="ghost" size="md" className="gap-2 whitespace-nowrap w-full">
+                  <ChartBar weight="duotone" /> Take a Free Business Audit
+                </Button>
+              </a>
             </div>
           </motion.div>
         </div>

@@ -10,6 +10,7 @@ type AuditData struct {
 	Email       string   `json:"email"`
 	Phone       string   `json:"phone"`
 	Company     string   `json:"company"`
+	UserID      *string  `json:"userId,omitempty"`
 }
 
 type UserRegister struct {

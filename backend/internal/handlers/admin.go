@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/user/reed_breed/backend/db"
@@ -53,4 +54,36 @@ func (h *AdminHandler) UpdateAuditStatus(w http.ResponseWriter, r *http.Request)
 	}
 
 	json.NewEncoder(w).Encode(audit)
+}
+
+func (h *AdminHandler) GenerateInvoice(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		UserID string `json:"userId"`
+		Amount int    `json:"amount"`
+		Plan   string `json:"plan"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	invoice, err := h.Prisma.Invoice.CreateOne(
+		db.Invoice.Amount.Set(req.Amount),
+		db.Invoice.User.Link(db.User.ID.Equals(req.UserID)),
+		db.Invoice.Plan.Set(req.Plan),
+	).Exec(ctx)
+
+	if err != nil {
+		http.Error(w, "Failed to create invoice", http.StatusInternalServerError)
+		return
+	}
+
+	// Link for the client to pay
+	paymentLink := fmt.Sprintf("http://localhost:3000/payment/%s", invoice.ID)
+
+	json.NewEncoder(w).Encode(map[string]string{
+		"invoiceId":   invoice.ID,
+		"paymentLink": paymentLink,
+	})
 }

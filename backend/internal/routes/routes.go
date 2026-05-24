@@ -38,6 +38,7 @@ func SetupRoutes(prisma *db.PrismaClient) *http.ServeMux {
 	// Client Routes
 	mux.Handle("/api/client/overview", middleware.AuthMiddleware(http.HandlerFunc(clientHandler.GetOverview)))
 	mux.Handle("/api/client/subscription", middleware.AuthMiddleware(http.HandlerFunc(clientHandler.GetSubscription)))
+	mux.Handle("/api/client/invoice", middleware.AuthMiddleware(http.HandlerFunc(clientHandler.GetInvoice)))
 	mux.Handle("/api/client/payment/init", middleware.AuthMiddleware(http.HandlerFunc(paymentHandler.InitializeTransaction)))
 
 	// Admin Routes
@@ -46,6 +47,8 @@ func SetupRoutes(prisma *db.PrismaClient) *http.ServeMux {
 			adminHandler.ListAudits(w, r)
 		} else if r.Method == "PUT" {
 			adminHandler.UpdateAuditStatus(w, r)
+		} else if r.Method == "POST" {
+			adminHandler.GenerateInvoice(w, r)
 		} else {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}

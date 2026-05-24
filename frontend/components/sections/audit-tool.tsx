@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { useAuth } from "@/context/auth-context"
 import { Button } from "@/components/ui/button"
 import { 
   CaretRight, 
@@ -333,6 +334,7 @@ type LeadFormData = z.infer<typeof leadFormSchema>
 
 export const AuditTool = () => {
   const [step, setStep] = React.useState(0)
+  const { user } = useAuth()
   const [auditData, setAnswers] = React.useState<Record<string, string | string[]>>({
     industry: "",
     subCategory: "",
@@ -408,7 +410,7 @@ export const AuditTool = () => {
 
   const onFinalSubmit = async (data: LeadFormData) => {
     setIsSubmitting(true)
-    const fullData = { ...auditData, ...data }
+    const fullData = { ...auditData, ...data, userId: user?.id }
     console.log("Saving full audit data:", fullData)
     
     try {

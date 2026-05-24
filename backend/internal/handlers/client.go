@@ -50,3 +50,25 @@ func (h *ClientHandler) GetSubscription(w http.ResponseWriter, r *http.Request) 
 
 	json.NewEncoder(w).Encode(sub)
 }
+
+func (h *ClientHandler) GetInvoice(w http.ResponseWriter, r *http.Request) {
+	invoiceId := r.URL.Query().Get("id")
+	if invoiceId == "" {
+		http.Error(w, "Invoice ID is required", http.StatusBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	invoice, err := h.Prisma.Invoice.FindUnique(
+		db.Invoice.ID.Equals(invoiceId),
+	).With(
+		db.Invoice.User.Fetch(),
+	).Exec(ctx)
+
+	if err != nil {
+		http.Error(w, "Invoice not found", http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(w).Encode(invoice)
+}

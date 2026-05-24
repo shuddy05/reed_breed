@@ -1,7 +1,7 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { createContext, useContext, useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface User {
   id: string
@@ -19,13 +19,13 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthProviderInternal = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Check if user is logged in (e.g., call /api/auth/me)
     const checkUser = async () => {
       try {
         const res = await fetch('http://localhost:8080/api/auth/me')
@@ -39,8 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false)
       }
     }
-    // checkUser() 
-    setLoading(false) // For now, skip check until /me is implemented
+    checkUser()
   }, [])
 
   const login = async (credentials: any) => {
@@ -50,8 +49,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       body: JSON.stringify(credentials),
     })
     if (res.ok) {
-      // Fetch user data after login
-      router.push('/dashboard')
+      const meRes = await fetch('http://localhost:8080/api/auth/me')
+      if (meRes.ok) {
+        const userData = await meRes.json()
+        setUser(userData)
+        const redirectTo = searchParams.get('redirect') || '/dashboard'
+        router.push(redirectTo)
+      }
     } else {
       throw new Error('Login failed')
     }
@@ -69,6 +73,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     </AuthContext.Provider>
   )
 }
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <AuthProviderInternal>
+      {children}
+    </AuthProviderInternal>
+  </Suspense>
+)
 
 export const useAuth = () => {
   const context = useContext(AuthContext)

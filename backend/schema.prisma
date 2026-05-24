@@ -35,6 +35,7 @@ model User {
   audits       AuditRequest[]
   projects     Project[]
   subscription Subscription?
+  invoices     Invoice[]
 }
 
 model Project {
@@ -82,4 +83,16 @@ model CustomChallenge {
   createdAt DateTime @default(now())
 
   @@unique([label, industry])
+}
+
+model Invoice {
+  id          String    @id @default(cuid())
+  amount      Int
+  status      String    @default("PENDING") // PENDING, PAID, CANCELLED
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  plan        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  paidAt      DateTime?
 }

@@ -32,6 +32,11 @@ func (h *AuditHandler) HandleAudit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
+	optionalParams := []db.AuditRequestSetParam{}
+	if data.UserID != nil {
+		optionalParams = append(optionalParams, db.AuditRequest.UserID.Set(*data.UserID))
+	}
+
 	_, err := h.Prisma.AuditRequest.CreateOne(
 		db.AuditRequest.Industry.Set(data.Industry),
 		db.AuditRequest.SubCategory.Set(data.SubCategory),
@@ -42,6 +47,7 @@ func (h *AuditHandler) HandleAudit(w http.ResponseWriter, r *http.Request) {
 		db.AuditRequest.Email.Set(data.Email),
 		db.AuditRequest.Phone.Set(data.Phone),
 		db.AuditRequest.Company.Set(data.Company),
+		optionalParams...,
 	).Exec(ctx)
 
 	if err != nil {

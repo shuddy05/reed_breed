@@ -83,7 +83,31 @@ export default function AdminDashboard() {
                       {new Date(audit.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-6 text-right">
-                      <button className="text-accent hover:text-white transition-colors text-[11px] font-bold uppercase tracking-widest">Review</button>
+                      <div className="flex flex-col gap-2 items-end">
+                        <button className="text-accent hover:text-white transition-colors text-[11px] font-bold uppercase tracking-widest">Review</button>
+                        <button 
+                          onClick={async () => {
+                            const amount = prompt("Enter amount in Kobo (e.g. 500000 for 5000 Naira):", "500000")
+                            if (!amount) return
+                            const res = await fetch("http://localhost:8080/api/admin/audits", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                userId: audit.userId || "cl2...fakeid", // In real case, link to user
+                                amount: parseInt(amount),
+                                plan: "Growth"
+                              })
+                            })
+                            if (res.ok) {
+                              const data = await res.json()
+                              alert(`Invoice Generated! Link: ${data.paymentLink}`)
+                            }
+                          }}
+                          className="text-success hover:text-white transition-colors text-[11px] font-bold uppercase tracking-widest"
+                        >
+                          Invoice
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

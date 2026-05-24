@@ -43,6 +43,13 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Link existing audits by email
+	_, _ = h.Prisma.AuditRequest.FindMany(
+		db.AuditRequest.Email.Equals(req.Email),
+	).Update(
+		db.AuditRequest.UserID.Set(user.ID),
+	).Exec(ctx)
+
 	json.NewEncoder(w).Encode(user)
 }
 
