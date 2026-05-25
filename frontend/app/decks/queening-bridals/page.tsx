@@ -651,9 +651,13 @@ export default function QueeningBridalsPitch() {
           <div className="max-w-4xl w-full text-center z-10">
             <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white mb-10 shadow-lg" style={{ backgroundColor: colors.deepRose }}>FEATURE 09</div>
             <h2 className="text-4xl md:text-7xl font-serif mb-8 text-zinc-900 leading-tight">Recover Lost Sales</h2>
-            <p className="text-2xl text-zinc-500 mb-16 italic font-light">"Identifying brides who disappeared and bringing them back automatically."</p>
+            <p className="text-2xl text-zinc-500 mb-12 font-light">"Identifying brides who disappeared and bringing them back automatically."</p>
 
-            <div className="relative max-w-lg mx-auto">
+            <motion.div 
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative max-w-lg mx-auto mt-12"
+            >
               {/* Overlapping Bell Icon (Reduced) */}
               <motion.div
                 animate={{ rotate: [0, 15, -15, 0] }}
@@ -680,8 +684,7 @@ export default function QueeningBridalsPitch() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>          </div>
         </section>
       )
     },
@@ -751,31 +754,47 @@ export default function QueeningBridalsPitch() {
     {
       id: '17-roadmap',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2]">
-          <div className="max-w-4xl w-full">
-            <h2 className="text-4xl md:text-6xl font-serif mb-12 text-center text-zinc-900 leading-tight">Implementation Roadmap</h2>
-            <div className="space-y-6 relative">
-              <div className="absolute left-[39px] top-10 bottom-10 w-1 bg-pink-100 -z-10" />
+        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden">
+          <div className="max-w-4xl w-full relative z-10">
+            <h2 className="text-3xl md:text-5xl font-serif mb-10 text-center text-zinc-900 leading-tight">Implementation Roadmap</h2>
+            <div className="space-y-3 relative">
+              <div className="absolute left-[31px] top-6 bottom-6 w-0.5 bg-zinc-200 -z-10" />
               {[
-                "Phase 1: Planning & Luxury Design",
-                "Phase 2: Website & Catalog Architecture",
-                "Phase 3: Automation & AI System Integration",
-                "Phase 4: Optimization, Testing & Launch",
-                "Phase 5: Ongoing Growth & Strategy Support"
+                { text: "Phase 1: Planning & Luxury Design", color: colors.hotPink },
+                { text: "Phase 2: Website & Catalog Architecture", color: colors.accentPink },
+                { text: "Phase 3: Automation & AI System Integration", color: colors.rose },
+                { text: "Phase 4: Optimization, Testing & Launch", color: colors.deepRose },
+                { text: "Phase 5: Ongoing Growth & Support", color: colors.blush }
               ].map((phase, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-10 p-8 bg-white rounded-[2.5rem] shadow-sm border-2 border-transparent hover:border-pink-200 transition-all group"
+                  whileHover={{ x: 10, scale: 1.02 }}
+                  transition={{ 
+                    x: { type: "spring", stiffness: 100, damping: 20 },
+                    delay: i * 0.1 
+                  }}
+                  className="flex items-center gap-6 p-4 bg-white rounded-2xl shadow-sm border border-zinc-100 hover:shadow-md transition-all group cursor-default"
                 >
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-serif font-black italic bg-zinc-50 text-zinc-300 group-hover:bg-pink-500 group-hover:text-white transition-colors shadow-inner">0{i + 1}</div>
-                  <div className="text-2xl font-bold text-zinc-800">{phase}</div>
+                  <div 
+                    className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-serif font-black italic bg-zinc-50 transition-colors shadow-inner"
+                    style={{ color: i === 0 ? 'white' : phase.color, backgroundColor: i === 0 ? phase.color : undefined }}
+                  >
+                    0{i + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-lg font-bold text-zinc-800 group-hover:text-zinc-900">{phase.text}</div>
+                    <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-full" style={{ backgroundColor: phase.color }} />
+                  </div>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: phase.color }}>
+                     <Sparkles size={16} />
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-pink-100/50 rounded-full blur-[100px] -mr-32 -mt-32" />
         </section>
       )
     },
