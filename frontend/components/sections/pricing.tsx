@@ -70,7 +70,7 @@ const tiers = [
 
 export const Pricing = () => {
   return (
-    <section className="py-24 md:py-32 lg:py-48 bg-void">
+    <section id="pricing" className="py-24 md:py-32 lg:py-48 bg-void">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <span className="eyebrow block mb-4">THE PRICING LADDER</span>

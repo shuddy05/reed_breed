@@ -2,12 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ChevronRight, ChevronLeft, Calendar, MessageSquare,
-  ShieldCheck, Globe, Star, ShoppingBag, BellRing, PhoneCall,
-  Heart, Camera, TrendingUp, Users, Layout, Award, Rocket, CheckCircle2, Sparkles
+import { 
+  ChevronRight, ChevronLeft, Calendar, MessageSquare, 
+  ShieldCheck, Globe, Star, ShoppingBag, BellRing, PhoneCall, 
+  Heart, Camera, TrendingUp, Users, Layout, Award, Rocket, CheckCircle2, Sparkles,
+  Home, MessageCircle
 } from 'lucide-react';
-
+import { 
+  Phone, 
+  WhatsappLogo, 
+  House, 
+  Handbag 
+} from "phosphor-react";
 // Local Assets
 import photo1 from './assets/photo1.jpg';
 import photo2 from './assets/photo2.jpg';
@@ -152,7 +158,7 @@ export default function QueeningBridalsPitch() {
               Queening Bridals
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-lg md:text-2xl font-light text-zinc-600 mb-10">
-              <p className="text-sm md:text-lg font-bold uppercase tracking-[0.3em] mb-4 text-zinc-500">Digital Transformation Plans</p>
+              <p className="text-sm md:text-lg font-bold uppercase tracking-[0.3em] mb-4 text-zinc-500">Digital Transformation Plan</p>
             </motion.p>
             <div className="h-1.5 w-48 mx-auto rounded-full" style={{ background: `linear-gradient(to right, ${colors.accentPink}, ${colors.hotPink})` }} />
           </div>
@@ -653,7 +659,7 @@ export default function QueeningBridalsPitch() {
             <h2 className="text-4xl md:text-7xl font-serif mb-8 text-zinc-900 leading-tight">Recover Lost Sales</h2>
             <p className="text-2xl text-zinc-500 mb-12 font-light">"Identifying brides who disappeared and bringing them back automatically."</p>
 
-            <motion.div 
+            <motion.div
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="relative max-w-lg mx-auto mt-12"
@@ -771,13 +777,13 @@ export default function QueeningBridalsPitch() {
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   whileHover={{ x: 10, scale: 1.02 }}
-                  transition={{ 
+                  transition={{
                     x: { type: "spring", stiffness: 100, damping: 20 },
-                    delay: i * 0.1 
+                    delay: i * 0.1
                   }}
                   className="flex items-center gap-6 p-4 bg-white rounded-2xl shadow-sm border border-zinc-100 hover:shadow-md transition-all group cursor-default"
                 >
-                  <div 
+                  <div
                     className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-serif font-black italic bg-zinc-50 transition-colors shadow-inner"
                     style={{ color: i === 0 ? 'white' : phase.color, backgroundColor: i === 0 ? phase.color : undefined }}
                   >
@@ -788,7 +794,7 @@ export default function QueeningBridalsPitch() {
                     <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-full" style={{ backgroundColor: phase.color }} />
                   </div>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: phase.color }}>
-                     <Sparkles size={16} />
+                    <Sparkles size={16} />
                   </div>
                 </motion.div>
               ))}
@@ -816,15 +822,39 @@ export default function QueeningBridalsPitch() {
               </div>
             </motion.div>
             <h2 className="text-4xl md:text-8xl font-serif mb-10 leading-[1.1] text-white drop-shadow-2xl">Let's build the future of Queening Bridals.</h2>
-            <p className="text-xl md:text-3xl text-zinc-300 mb-16 italic font-light max-w-3xl mx-auto drop-shadow-lg">"Elevating Owerri's premium digital bridal experience through elegance and innovation."</p>
-            <motion.button
-              whileHover={{ scale: 1.1, boxShadow: `0 30px 60px ${colors.hotPink}60` }}
-              whileTap={{ scale: 0.95 }}
-              className="px-16 py-8 rounded-full text-2xl md:text-3xl font-black shadow-2xl transition-all"
-              style={{ background: `linear-gradient(to right, ${colors.accentPink}, ${colors.hotPink})`, color: '#fff' }}
-            >
-              Let's Begin
-            </motion.button>
+            <p className="text-lg md:text-xl text-zinc-400 mb-20 font-medium uppercase tracking-[0.2em] max-w-3xl mx-auto drop-shadow-lg leading-relaxed">Let's expand your premium bridal experience beyond Owerri, through a world-class digital storefront.</p>
+
+            <div className="flex flex-col items-center gap-12 mt-12">
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: '#fff', color: colors.hotPink }}
+                whileTap={{ scale: 0.98 }}
+                className="px-14 py-4 rounded-xl text-lg font-black uppercase tracking-[0.2em] transition-all border border-white shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                style={{ backgroundColor: colors.hotPink, color: '#fff', borderColor: colors.hotPink }}
+              >
+                Let's Begin
+              </motion.button>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16">
+                {[
+                  { label: "Phone", icon: <Phone size={24} weight="light" />, href: "tel:+" },
+                  { label: "WhatsApp", icon: <WhatsappLogo size={24} weight="light" />, href: "https://wa.me/" },
+                  { label: "About", icon: <House size={24} weight="light" />, href: "/" },
+                  { label: "Pricing", icon: <Handbag size={24} weight="light" />, href: "/#pricing" }
+                ].map((cta, i) => (
+                  <motion.a
+                    key={i}
+                    href={cta.href}
+                    whileHover={{ y: -5 }}
+                    className="flex flex-col items-center gap-3 group"
+                  >
+                    <div className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-xl group-hover:border-white group-hover:bg-white group-hover:text-zinc-950 transition-all duration-500">
+                      {cta.icon}
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-white transition-colors">{cta.label}</span>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
       )
@@ -881,6 +911,14 @@ export default function QueeningBridalsPitch() {
 
       {/* Global Cinematic Bubble Layer */}
       <BubbleLayer color={colors.hotPink} />
+
+      {/* Brand Logo - Positioned just above the progress indicators */}
+      <div className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 opacity-30 hover:opacity-100 transition-opacity">
+        <span className="font-sans text-lg font-bold text-white tracking-[-0.08em]">
+          Reed Breed
+        </span>
+        <div className="w-1.5 h-1.5 rounded-full mt-1" style={{ backgroundColor: '#146ef5' }} />
+      </div>
 
       {/* Navigation Controls */}
       <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
