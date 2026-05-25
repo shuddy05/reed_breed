@@ -437,7 +437,7 @@ export default function QueeningBridalsPitch() {
             <div className="space-y-8">
               <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white shadow-lg" style={{ backgroundColor: colors.rose }}>FEATURE 03</div>
               <h2 className="text-4xl md:text-7xl font-serif text-zinc-900 leading-tight">Smart Online Booking</h2>
-              <p className="text-2xl text-zinc-600 leading-relaxed">Eliminate scheduling friction. Brides book fittings, consultations, and measurements instantly.</p>
+              <p className="text-2xl text-zinc-600 leading-relaxed">Eliminate scheduling friction. Brides book fittings, consultations, measurement, and pick-ups instantly.</p>
               <div className="grid grid-cols-1 gap-4">
                 {["Automated Reminders", "Calendar Sync", "Reduced No-shows", "Professional Workflow"].map((item, i) => (
                   <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }} className="flex items-center gap-4 group">
@@ -624,17 +624,17 @@ export default function QueeningBridalsPitch() {
               <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white shadow-lg" style={{ backgroundColor: colors.rose }}>FEATURE 08</div>
               <h2 className="text-4xl md:text-7xl font-serif text-zinc-900 leading-tight">Digital Catalog</h2>
               <p className="text-2xl text-zinc-600 italic">"Stop sending endless photos in DMs. Present your collection with luxury."</p>
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 {[
                   { title: "Smart Filters", desc: "Browse by style, size, or category." },
                   { title: "HD Visuals", desc: "Zoom into textures and fine details." },
                   { title: "Live Status", desc: "Instantly see what's available for rent." }
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-6 p-6 bg-zinc-50 rounded-3xl border border-zinc-100">
-                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm" style={{ color: colors.hotPink }}><Camera size={24} /></div>
+                  <div key={i} className="flex gap-4 p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0" style={{ color: colors.hotPink }}><Camera size={20} /></div>
                     <div>
-                      <p className="font-bold text-zinc-900 text-lg">{item.title}</p>
-                      <p className="text-zinc-500">{item.desc}</p>
+                      <p className="font-bold text-zinc-900 text-base">{item.title}</p>
+                      <p className="text-zinc-500 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -653,27 +653,31 @@ export default function QueeningBridalsPitch() {
             <h2 className="text-4xl md:text-7xl font-serif mb-8 text-zinc-900 leading-tight">Recover Lost Sales</h2>
             <p className="text-2xl text-zinc-500 mb-16 italic font-light">"Identifying brides who disappeared and bringing them back automatically."</p>
 
-            <div className="relative p-16 rounded-[4rem] bg-white shadow-2xl border border-zinc-100 overflow-hidden">
+            <div className="relative max-w-lg mx-auto">
+              {/* Overlapping Bell Icon (Reduced) */}
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white p-4 rounded-full shadow-2xl"
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-6 -right-6 bg-white p-4 rounded-2xl shadow-2xl z-20 border border-pink-50"
               >
-                <BellRing size={64} style={{ color: colors.hotPink }} />
+                <BellRing size={32} style={{ color: colors.hotPink }} />
               </motion.div>
-              <div className="space-y-8 mt-6">
-                <p className="text-3xl font-serif text-zinc-800">Abandoned Inquiry Recovery</p>
-                <div className="flex flex-wrap justify-center gap-6">
-                  {["Unfinished Bookings", "Unanswered Inquiries", "Disappeared Leads"].map((tag, i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
-                      className="px-8 py-4 bg-zinc-50 rounded-2xl text-lg font-bold text-zinc-400 border border-zinc-100"
-                    >
-                      Recovering {tag}...
-                    </motion.div>
-                  ))}
+
+              <div className="relative p-10 rounded-[2.5rem] bg-white shadow-2xl border border-zinc-100 overflow-hidden">
+                <div className="space-y-6 mt-2">
+                  <p className="text-2xl font-serif text-zinc-800">Abandoned Inquiry Recovery</p>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    {["Unfinished Bookings", "Unanswered Inquiries", "Disappeared Leads"].map((tag, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
+                        className="px-6 py-2 bg-zinc-50 rounded-xl text-sm font-bold text-zinc-400 border border-zinc-100"
+                      >
+                        Recovering {tag}...
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
