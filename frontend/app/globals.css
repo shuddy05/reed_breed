@@ -216,6 +216,10 @@ p {
   }
 }
 
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
 @utility no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
