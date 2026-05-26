@@ -8,6 +8,7 @@ import {
   House, 
   Handbag,
   UserPlus,
+  Users,
   Heart,
   Exam,
   Megaphone,
@@ -58,6 +59,23 @@ import photo11 from './assets/photo11.webp';
 import photo12 from './assets/photo12.webp';
 import photo13 from './assets/photo13.webp';
 import photo14 from './assets/photo14.webp';
+
+// Loral Brand Colors
+const colors = {
+  red: "#D31F26",
+  royalBlue: "#3B449B",
+  gold: "#F0A818",
+  mutedGold: "#C69E33",
+  white: "#FFFFFF",
+};
+
+const images = {
+  campus: [photo1, photo2, photo3],
+  students: [photo4, photo5, photo6],
+  classroom: [photo7, photo8, photo9],
+  tech: [photo10, photo11, photo12],
+  activities: [photo13, photo14]
+};
 
 // --- Sub-Components ---
 
@@ -420,6 +438,147 @@ const VisionaryLeadershipGraphic = () => (
   </div>
 );
 
+const ClassroomCoordinationGraphic = () => (
+  <div className="relative w-full aspect-[4/5] bg-blue-950 rounded-[3rem] shadow-2xl overflow-hidden p-8 flex flex-col items-center justify-center border-4 border-blue-900/30">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,68,155,0.2),transparent_70%)]" />
+    
+    {/* 3D Stack Simulation */}
+    <div className="relative w-full h-full flex flex-col items-center justify-center perspective-1000">
+       {[
+         { label: "TEACHER LAYER", icon: <UserPlus />, color: "border-blue-400", delay: 0 },
+         { label: "CONTENT HUB", icon: <Desktop />, color: "border-red-500", delay: 0.5 },
+         { label: "STUDENT NODES", icon: <Users />, color: "border-gold", delay: 1 }
+       ].map((layer, i) => (
+         <motion.div 
+           key={i}
+           initial={{ opacity: 0, rotateX: 45, y: 50 }}
+           whileInView={{ opacity: 1, rotateX: 45, y: 0 }}
+           transition={{ delay: layer.delay, duration: 1 }}
+           className={`relative w-4/5 h-20 bg-white/5 backdrop-blur-md border-2 ${layer.color} rounded-2xl flex items-center justify-between px-6 mb-[-20px] shadow-2xl`}
+           style={{ zIndex: 10 - i, transformStyle: "preserve-3d" }}
+         >
+            <div className="flex items-center gap-4">
+               <div className="p-2 rounded-lg bg-white/10 text-white">
+                  {layer.icon}
+               </div>
+               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 font-sans">{layer.label}</span>
+            </div>
+            
+            {/* Pulsing Sync Light */}
+            <motion.div 
+              animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }}
+              transition={{ repeat: Infinity, duration: 2, delay: i * 0.5 }}
+              className="w-2 h-2 rounded-full bg-white shadow-[0_0_15px_white]"
+            />
+         </motion.div>
+       ))}
+
+       {/* Animated Connection Lines */}
+       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          {[1,2,3].map(i => (
+            <motion.div 
+              key={i}
+              animate={{ height: ['0%', '80%', '0%'], opacity: [0, 0.5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, delay: i * 1.2 }}
+              className="w-0.5 bg-gradient-to-b from-blue-400 via-white to-red-500 mx-8"
+            />
+          ))}
+       </div>
+    </div>
+
+    {/* Floating Coordination Metrics */}
+    <div className="absolute bottom-8 left-8 right-8 grid grid-cols-2 gap-4 z-20">
+       <div className="bg-black/40 backdrop-blur-xl p-4 rounded-2xl border border-white/10">
+          <p className="text-[8px] font-black uppercase text-white/40 mb-1">Consistency</p>
+          <p className="text-sm font-bold text-white tracking-tight">Synchronized</p>
+       </div>
+       <div className="bg-black/40 backdrop-blur-xl p-4 rounded-2xl border border-white/10">
+          <p className="text-[8px] font-black uppercase text-white/40 mb-1">Status</p>
+          <p className="text-sm font-bold text-green-400 tracking-tight">Active Ops</p>
+       </div>
+    </div>
+  </div>
+);
+
+const PerformanceIntelligenceGraphic = () => (
+  <div className="relative w-full aspect-[4/5] bg-white rounded-[3rem] shadow-2xl overflow-hidden p-6 flex flex-col gap-6 border border-zinc-100">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,rgba(59,68,155,0.05),transparent_70%)]" />
+    
+    {/* Profile Header */}
+    <div className="relative z-10 flex items-center gap-4">
+       <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-900 shadow-sm border border-blue-100">
+          <ChartLineUp weight="duotone" size={28} />
+       </div>
+       <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Intelligence Node</p>
+          <p className="text-sm font-bold text-blue-950">Student Performance Tracker</p>
+       </div>
+    </div>
+
+    {/* Intelligence Insights */}
+    <div className="relative z-10 space-y-3">
+       {[
+         { label: "Pattern Recognition", val: "Consistent Growth", color: "text-green-500", icon: <CheckCircle /> },
+         { label: "Intervention Required", val: "Critical (Mathematics)", color: "text-red-500", icon: <Lightning />, pulse: true }
+       ].map((item, i) => (
+         <motion.div 
+           key={i}
+           initial={{ x: 20, opacity: 0 }}
+           whileInView={{ x: 0, opacity: 1 }}
+           transition={{ delay: i * 0.4 }}
+           className="bg-zinc-50 rounded-2xl p-4 border border-zinc-100 flex items-center gap-4 group"
+         >
+            <div className={`p-2 rounded-xl bg-white shadow-sm ${item.color}`}>
+               {item.icon}
+            </div>
+            <div>
+               <p className="text-[9px] font-black uppercase text-zinc-400 leading-none mb-1">{item.label}</p>
+               <p className="text-xs font-bold text-blue-950 flex items-center gap-2">
+                 {item.val}
+                 {item.pulse && <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />}
+               </p>
+            </div>
+         </motion.div>
+       ))}
+    </div>
+
+    {/* Multi-Series Graph Simulation */}
+    <div className="mt-auto bg-blue-950 rounded-[2rem] p-6 text-white relative overflow-hidden">
+       <div className="flex justify-between items-start mb-6">
+          <p className="text-[9px] font-black uppercase tracking-widest text-white/40">Academic Trend Analysis</p>
+          <div className="flex gap-2">
+             <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-blue-400" /><span className="text-[7px] font-bold opacity-60 uppercase">Math</span></div>
+             <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-400" /><span className="text-[7px] font-bold opacity-60 uppercase">Eng</span></div>
+          </div>
+       </div>
+       
+       <div className="relative h-24 flex items-end gap-2">
+          {/* Simulated Line Chart Points */}
+          {[60, 45, 80, 55, 95, 70, 85].map((h, i) => (
+             <div key={i} className="flex-1 flex flex-col justify-end gap-1 relative h-full">
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: `${h}%` }}
+                  transition={{ delay: 0.5 + (i * 0.1), duration: 1 }}
+                  className="w-full bg-white/10 rounded-t-sm relative group"
+                >
+                   {i === 4 && <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-gold shadow-[0_0_10px_gold] z-10" style={{ backgroundColor: '#F0A818' }} />}
+                </motion.div>
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: `${h * 0.7}%` }}
+                  transition={{ delay: 0.8 + (i * 0.1), duration: 1 }}
+                  className="w-full bg-red-500/30 rounded-t-sm absolute bottom-0 left-0" 
+                />
+             </div>
+          ))}
+       </div>
+       
+       <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+    </div>
+  </div>
+);
+
 const ConfettiPiece = ({ color, x, delay, size, speed, blur, borderRadius, skew }: { color: string, x: string, delay: number, size: number, speed: number, blur: string, borderRadius: string, skew: string }) => (
   <motion.div
     initial={{ y: -20, opacity: 0, rotate: 0 }}
@@ -467,9 +626,11 @@ const ConfettiLayer = () => {
 export default function LoralSchoolsPitch() {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
-  const colors = { red: "#D31F26", royalBlue: "#3B449B", gold: "#F0A818", mutedGold: "#C69E33", white: "#FFFFFF" };
-  const images = { campus: [photo1, photo2, photo3], students: [photo4, photo5, photo6], classroom: [photo7, photo8, photo9], tech: [photo10, photo11, photo12], activities: [photo13, photo14] };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const initiatives = [
     { title: "Digital Admissions Conversion System", desc: "Transform every inquiry into a structured enrollment journey through automated follow-ups.", impact: ["Higher conversion", "Faster response", "Reduced leakage", "Increased capacity"], icon: <UserPlus size={32} weight="duotone" />, photo: photo4 },
@@ -603,9 +764,8 @@ export default function LoralSchoolsPitch() {
               </div>
             </div>
             <div className="relative">
-                {index === 0 ? <AdmissionsConversionGraphic /> : index === 1 ? <ParentCommunicationGraphic /> : index === 2 ? <ExaminationProcessingGraphic /> : index === 3 ? <PremiumBrandingGraphic /> : <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl relative z-10"><img src={item.photo.src} className="w-full h-full object-cover" alt={item.title} /><div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent" /><div className="absolute bottom-8 left-8 text-white"><div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-4">{item.icon}</div><p className="text-lg font-black italic">Transformation Pathway</p></div></div>}
-            </div>
-          </div>
+                {index === 0 ? <AdmissionsConversionGraphic /> : index === 1 ? <ParentCommunicationGraphic /> : index === 2 ? <ExaminationProcessingGraphic /> : index === 3 ? <PremiumBrandingGraphic /> : index === 4 ? <PerformanceIntelligenceGraphic /> : index === 5 ? <ClassroomCoordinationGraphic /> : <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl relative z-10"><img src={item.photo.src} className="w-full h-full object-cover" alt={item.title} /><div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent" /><div className="absolute bottom-8 left-8 text-white"><div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-4">{item.icon}</div><p className="text-lg font-black italic">Transformation Pathway</p></div></div>}
+            </div>          </div>
         </section>
       )
     })),
@@ -638,7 +798,7 @@ export default function LoralSchoolsPitch() {
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div key={currentPage} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 }, rotateY: { duration: 0.4 } }} className="absolute inset-0 w-full h-full">{pages[currentPage].content}</motion.div>
       </AnimatePresence>
-      <ConfettiLayer />
+      {mounted && <ConfettiLayer />}
       <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
         <button onClick={() => paginate(-1)} disabled={currentPage === 0} className={`group flex items-center gap-3 text-[10px] md:text-xs uppercase tracking-[0.3em] font-black transition-all ${currentPage === 0 ? 'opacity-0' : 'text-zinc-400'}`}><div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:border-blue-900"><CaretLeft size={16} /></div><span className="hidden md:inline">Previous</span></button>
         <div className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar max-w-[250px] px-4 py-2 bg-white/80 backdrop-blur-md rounded-full border border-white/50">{pages.map((_, i) => ( <div key={i} onClick={() => { setDirection(i > currentPage ? 1 : -1); setCurrentPage(i); }} className={`h-2 transition-all duration-500 rounded-full cursor-pointer ${i === currentPage ? 'w-10 md:w-16' : 'w-2 bg-zinc-200'}`} style={{ backgroundColor: i === currentPage ? colors.royalBlue : undefined }} /> ))}</div>

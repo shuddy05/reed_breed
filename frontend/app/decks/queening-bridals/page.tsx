@@ -145,6 +145,11 @@ const ConfettiLayer = () => {
 export default function QueeningBridalsPitch() {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // User Provided Bridal Palette (Corrected)
   const colors = {
@@ -943,7 +948,7 @@ export default function QueeningBridalsPitch() {
       </AnimatePresence>
 
       {/* Global Cinematic Confetti Layer */}
-      <ConfettiLayer />
+      {mounted && <ConfettiLayer />}
 
       {/* Navigation Controls */}
       <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
