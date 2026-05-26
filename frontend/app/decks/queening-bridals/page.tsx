@@ -85,7 +85,14 @@ const ConfettiPiece = ({ color, x, delay, size, speed, blur, borderRadius }: { c
       rotate: [0, 360, 720, 1080],
       rotateX: [0, 180, 360],
       rotateY: [0, 360, 0],
-      x: [x, `calc(${x} + ${Math.random() * 100 - 50}px)`, x]
+      x: [x, `calc(${x} + ${Math.random() * 100 - 50}px)`, x],
+      filter: [
+        `blur(${blur}) brightness(1.2)`,
+        `blur(${blur}) brightness(2)`,
+        `blur(${blur}) brightness(1.2)`,
+        `blur(${blur}) brightness(2)`,
+        `blur(${blur}) brightness(1.2)`
+      ]
     }}
     transition={{ 
       duration: speed, 
