@@ -207,24 +207,48 @@ export default function QueeningBridalsPitch() {
     {
       id: '1-cover',
       content: (
-        <section className="min-h-screen w-full flex items-center justify-center p-6 relative overflow-hidden bg-white py-32">
-          <ImageSlideshow images={images.gowns} interval={6000} />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/40 to-white" />
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white py-32 relative overflow-hidden">
+          <div className="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center z-10">
+            {/* Image Frame on the Left */}
+            <div className="relative h-[400px] md:h-[600px] w-full order-2 md:order-1">
+              <motion.div 
+                animate={{ rotate: 5, y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white"
+              >
+                <ImageSlideshow images={images.gowns} interval={6000} />
+              </motion.div>
+              <motion.div 
+                animate={{ rotate: -5, x: [-10, 0, -10] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-4 border-2 border-dashed rounded-[3rem] opacity-30"
+                style={{ borderColor: colors.hotPink }}
+              />
+            </div>
 
-          <div className="max-w-4xl w-full z-10 text-center px-4">
-            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
-              <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-white shadow-xl flex items-center justify-center" style={{ color: colors.hotPink }}>
-                <Heart size={40} fill={colors.hotPink} />
+            {/* Content on the Right */}
+            <div className="space-y-8 text-center md:text-left order-1 md:order-2">
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
+                <div className="w-20 h-20 mx-auto md:mx-0 mb-6 rounded-3xl bg-white shadow-xl flex items-center justify-center" style={{ color: colors.hotPink }}>
+                  <Heart size={40} fill={colors.hotPink} />
+                </div>
+              </motion.div>
+              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-4xl md:text-7xl font-serif text-zinc-900 leading-tight">
+                Queening Bridals
+              </motion.h1>
+              <div className="space-y-4">
+                 <p className="text-sm md:text-lg font-bold uppercase tracking-[0.3em] text-zinc-500">Digital Transformation Plan</p>
+                 <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.6, duration: 1 }} className="h-1.5 w-48 mx-auto md:mx-0 rounded-full" style={{ background: `linear-gradient(to right, ${colors.accentPink}, ${colors.hotPink})` }} />
               </div>
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-4xl md:text-7xl font-serif mb-6 text-zinc-900 leading-tight">
-              Queening Bridals
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-lg md:text-2xl font-light text-zinc-600 mb-10">
-              <p className="text-sm md:text-lg font-bold uppercase tracking-[0.3em] mb-4 text-zinc-500">Digital Transformation Plan</p>
-            </motion.p>
-            <div className="h-1.5 w-48 mx-auto rounded-full" style={{ background: `linear-gradient(to right, ${colors.accentPink}, ${colors.hotPink})` }} />
+            </div>
           </div>
+          
+          {/* Decorative background element */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute -right-40 -top-40 w-[600px] h-[600px] rounded-full border border-pink-50 border-dashed opacity-50"
+          />
         </section>
       )
     },
@@ -1032,8 +1056,8 @@ export default function QueeningBridalsPitch() {
           Q
         </motion.div>
         <div className="hidden md:block">
-          <p className="text-[10px] uppercase tracking-[0.4em] font-black text-zinc-900">Queening Bridals</p>
-          <p className="text-[8px] uppercase tracking-[0.3em] font-bold text-zinc-400">Proposal 2026</p>
+          <p className={`text-[10px] uppercase tracking-[0.4em] font-black transition-colors ${[2, 8, 11, 17].includes(currentPage) ? 'text-white' : 'text-zinc-900'}`}>Queening Bridals</p>
+          <p className={`text-[8px] uppercase tracking-[0.3em] font-bold transition-colors ${[2, 8, 11, 17].includes(currentPage) ? 'text-pink-300' : 'text-zinc-400'}`}>Proposal 2026</p>
         </div>
       </div>
 
