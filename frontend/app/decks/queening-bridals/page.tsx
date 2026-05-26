@@ -76,23 +76,13 @@ const AnimatedFrame = ({ children, color }: { children: React.ReactNode, color: 
   </motion.div>
 );
 
-const ConfettiPiece = ({ color, x, delay, size, speed, blur, borderRadius }: { color: string, x: string, delay: number, size: number, speed: number, blur: string, borderRadius: string }) => (
+const Bubble = ({ color, x, delay, size, speed, blur }: { color: string, x: string, delay: number, size: number, speed: number, blur: string }) => (
   <motion.div
-    initial={{ y: -20, opacity: 0, rotate: 0 }}
+    initial={{ y: '110vh', opacity: 0 }}
     animate={{ 
-      y: ['-10vh', '110vh'],
-      opacity: [0, 1, 1, 0.8, 0],
-      rotate: [0, 360, 720, 1080],
-      rotateX: [0, 180, 360],
-      rotateY: [0, 360, 0],
+      y: ['110vh', '-10vh'],
+      opacity: [0, 0.4, 0.4, 0],
       x: [x, `calc(${x} + ${Math.random() * 100 - 50}px)`, x],
-      filter: [
-        `blur(${blur}) brightness(1.2)`,
-        `blur(${blur}) brightness(2)`,
-        `blur(${blur}) brightness(1.2)`,
-        `blur(${blur}) brightness(2)`,
-        `blur(${blur}) brightness(1.2)`
-      ]
     }}
     transition={{ 
       duration: speed, 
@@ -100,40 +90,37 @@ const ConfettiPiece = ({ color, x, delay, size, speed, blur, borderRadius }: { c
       delay, 
       ease: "linear" 
     }}
-    className="fixed pointer-events-none z-[60]"
+    className="fixed pointer-events-none z-[60] rounded-full"
     style={{ 
       backgroundColor: color, 
       left: x, 
       width: size, 
-      height: size * (0.5 + Math.random()), 
-      filter: `blur(${blur}) brightness(1.2)`,
-      borderRadius,
-      boxShadow: `0 0 10px ${color}40`
+      height: size, 
+      filter: `blur(${blur})`,
+      boxShadow: `inset 0 0 10px rgba(255,255,255,0.5), 0 0 15px ${color}20`
     }}
   />
 );
 
-const ConfettiLayer = () => {
-  const pieces = Array.from({ length: 50 }); 
-  const confettiColors = ["#FF1695", "#FFA6CA", "#F47EAB", "#DA4F8E", "#FFFFFF", "#FFCFD8", "#FFAC6A"];
+const BubbleLayer = () => {
+  const pieces = Array.from({ length: 40 }); 
+  const bubbleColors = ["#FFCFD8", "#FFA6CA", "#FF1695", "#FFFFFF"];
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-[60]">
       {pieces.map((_, i) => {
-        const size = 4 + Math.random() * 8;
-        const speed = 10 + Math.random() * 15;
-        const blur = Math.random() > 0.8 ? '2px' : '0px'; 
-        const borderRadius = Math.random() > 0.5 ? '50%' : '1px';
+        const size = 10 + Math.random() * 40;
+        const speed = 15 + Math.random() * 20;
+        const blur = Math.random() > 0.5 ? '4px' : '1px'; 
         return (
-          <ConfettiPiece 
+          <Bubble 
             key={i} 
-            color={confettiColors[i % confettiColors.length]} 
+            color={bubbleColors[i % bubbleColors.length]} 
             x={`${Math.random() * 100}vw`}
-            delay={Math.random() * -30}
+            delay={Math.random() * -40}
             size={size}
             speed={speed}
             blur={blur}
-            borderRadius={borderRadius}
           />
         );
       })}
@@ -1008,8 +995,8 @@ export default function QueeningBridalsPitch() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Global Cinematic Confetti Layer */}
-      {mounted && <ConfettiLayer />}
+      {/* Global Cinematic Bubble Layer */}
+      {mounted && <BubbleLayer />}
 
       {/* Navigation Controls */}
       <div className="fixed bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
