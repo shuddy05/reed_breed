@@ -76,48 +76,63 @@ const AnimatedFrame = ({ children, color }: { children: React.ReactNode, color: 
   </motion.div>
 );
 
-const FloatingBubble = ({ size, delay = 0, top, left, color }: { size: number, delay?: number, top: string, left: string, color: string }) => (
+const ConfettiPiece = ({ color, x, delay, size, speed, blur, borderRadius }: { color: string, x: string, delay: number, size: number, speed: number, blur: string, borderRadius: string }) => (
   <motion.div
-    animate={{
-      y: [0, -150, 0],
-      x: [0, 60, 0],
-      opacity: [0, 0.7, 0.4, 0],
-      scale: [1, 1.4, 1],
-      rotate: [0, 180, 360]
+    initial={{ y: -20, opacity: 0, rotate: 0 }}
+    animate={{ 
+      y: ['-10vh', '110vh'],
+      opacity: [0, 1, 1, 0.8, 0],
+      rotate: [0, 360, 720, 1080],
+      rotateX: [0, 180, 360],
+      rotateY: [0, 360, 0],
+      x: [x, `calc(${x} + ${Math.random() * 100 - 50}px)`, x]
     }}
-    transition={{ duration: 15 + Math.random() * 5, repeat: Infinity, delay, ease: "easeInOut" }}
-    className="absolute pointer-events-none rounded-full border border-white/80"
-    style={{
-      top, left, width: size, height: size,
-      zIndex: 60,
-      backdropFilter: 'blur(8px)',
-      background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.2) 100%)',
-      boxShadow: `
-        inset 0 0 25px rgba(255,255,255,0.5),
-        inset 10px 10px 20px rgba(255,255,255,0.4),
-        0 15px 35px rgba(0,0,0,0.15)
-      `
+    transition={{ 
+      duration: speed, 
+      repeat: Infinity, 
+      delay, 
+      ease: "linear" 
     }}
-  >
-    <div
-      className="absolute top-[10%] left-[15%] w-[35%] h-[25%] rounded-[100%] rotate-[-30deg]"
-      style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.9), transparent)' }}
-    />
-  </motion.div>
+    className="fixed pointer-events-none z-[60]"
+    style={{ 
+      backgroundColor: color, 
+      left: x, 
+      width: size, 
+      height: size * (0.5 + Math.random()), 
+      filter: `blur(${blur}) brightness(1.2)`,
+      borderRadius,
+      boxShadow: `0 0 10px ${color}40`
+    }}
+  />
 );
 
-const BubbleLayer = ({ color }: { color: string }) => (
-  <div className="fixed inset-0 overflow-hidden pointer-events-none z-[60]">
-    <FloatingBubble size={80} top="10%" left="5%" delay={0} color={color} />
-    <FloatingBubble size={140} top="60%" left="80%" delay={1} color={color} />
-    <FloatingBubble size={50} top="75%" left="15%" delay={2} color={color} />
-    <FloatingBubble size={110} top="20%" left="70%" delay={3} color={color} />
-    <FloatingBubble size={160} top="35%" left="-5%" delay={4} color={color} />
-    <FloatingBubble size={90} top="85%" left="40%" delay={5} color={color} />
-    <FloatingBubble size={120} top="15%" left="45%" delay={6} color={color} />
-  </div>
-);
+const ConfettiLayer = () => {
+  const pieces = Array.from({ length: 50 }); 
+  const confettiColors = ["#FF1695", "#FFA6CA", "#F47EAB", "#DA4F8E", "#FFFFFF", "#FFCFD8", "#FFAC6A"];
 
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-[60]">
+      {pieces.map((_, i) => {
+        const size = 4 + Math.random() * 8;
+        const speed = 10 + Math.random() * 15;
+        const blur = Math.random() > 0.8 ? '2px' : '0px'; 
+        const borderRadius = Math.random() > 0.5 ? '50%' : '1px';
+        return (
+          <ConfettiPiece 
+            key={i} 
+            color={confettiColors[i % confettiColors.length]} 
+            x={`${Math.random() * 100}vw`}
+            delay={Math.random() * -30}
+            size={size}
+            speed={speed}
+            blur={blur}
+            borderRadius={borderRadius}
+          />
+        );
+      })}
+    </div>
+  );
+};
 // --- Main Page Component ---
 
 export default function QueeningBridalsPitch() {
@@ -920,8 +935,8 @@ export default function QueeningBridalsPitch() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Global Cinematic Bubble Layer */}
-      <BubbleLayer color={colors.hotPink} />
+      {/* Global Cinematic Confetti Layer */}
+      <ConfettiLayer />
 
       {/* Navigation Controls */}
       <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
