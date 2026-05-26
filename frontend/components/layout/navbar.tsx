@@ -56,10 +56,10 @@ export const Navbar = () => {
     <>
       <nav
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-300 border-b border-white/5",
+          "fixed top-0 z-50 w-full transition-all duration-500",
           isScrolled
-            ? "bg-void/90 backdrop-blur-xl py-3 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
-            : "bg-void/40 backdrop-blur-sm py-5"
+            ? "bg-void/95 backdrop-blur-xl py-3 shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
+            : "bg-gradient-to-b from-void/90 via-void/40 to-transparent py-6"
         )}
       >
         <div className="container mx-auto flex items-center justify-between px-6">
