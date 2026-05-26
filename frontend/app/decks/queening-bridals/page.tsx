@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronRight, ChevronLeft, Calendar, MessageSquare, 
   ShieldCheck, Globe, Star, ShoppingBag, BellRing, PhoneCall, 
   Heart, Camera, TrendingUp, Users, Layout, Award, Rocket, CheckCircle2, Sparkles,
-  Home, MessageCircle
+  Home, MessageCircle, Monitor
 } from 'lucide-react';
 import { 
   Phone, 
@@ -140,16 +140,52 @@ const ConfettiLayer = () => {
     </div>
   );
 };
+const MobileWarning = () => (
+  <div className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col items-center justify-center p-8 text-center md:hidden">
+    <div className="w-20 h-20 mb-8 rounded-3xl bg-white/10 flex items-center justify-center border border-white/20">
+      <Monitor size={40} className="text-white" />
+    </div>
+    <h2 className="text-2xl font-serif text-white mb-4 italic">Desktop Optimized</h2>
+    <p className="text-zinc-400 leading-relaxed max-w-xs mx-auto text-sm font-light">
+      This high-fidelity interactive pitch is best experienced on a larger screen. Please switch to a desktop device for the full bridal transformation walkthrough.
+    </p>
+    <div className="mt-12 flex items-center gap-2 opacity-30">
+      <span className="font-sans text-sm font-bold text-white tracking-[-0.08em]">Reed Breed</span>
+      <div className="w-1 h-1 rounded-full bg-pink-500" />
+    </div>
+  </div>
+);
+
 // --- Main Page Component ---
 
 export default function QueeningBridalsPitch() {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const activeDot = scrollRef.current.children[currentPage] as HTMLElement;
+      if (activeDot) {
+        scrollRef.current.scrollTo({
+          left: activeDot.offsetLeft - (scrollRef.current.offsetWidth / 2) + (activeDot.offsetWidth / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [currentPage]);
 
   // User Provided Bridal Palette (Corrected)
   const colors = {
@@ -927,7 +963,8 @@ export default function QueeningBridalsPitch() {
   };
 
   return (
-    <div className="h-screen w-screen bg-white text-zinc-900 overflow-hidden perspective-1000 selection:bg-pink-100 selection:text-pink-600">
+    <div ref={mainScrollRef} className="min-h-screen w-screen bg-white text-zinc-900 overflow-y-auto no-scrollbar selection:bg-pink-100 selection:text-pink-600 relative">
+      <MobileWarning />
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={currentPage}
@@ -941,7 +978,7 @@ export default function QueeningBridalsPitch() {
             opacity: { duration: 0.3 },
             rotateY: { duration: 0.4 }
           }}
-          className="absolute inset-0 w-full h-full"
+          className="min-h-screen w-full flex flex-col items-center py-20 md:py-0"
         >
           {pages[currentPage].content}
         </motion.div>
@@ -951,7 +988,7 @@ export default function QueeningBridalsPitch() {
       {mounted && <ConfettiLayer />}
 
       {/* Navigation Controls */}
-      <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
+      <div className="fixed bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
         <button
           onClick={() => paginate(-1)}
           disabled={currentPage === 0}
@@ -961,7 +998,7 @@ export default function QueeningBridalsPitch() {
           <span className="hidden md:inline">Previous</span>
         </button>
 
-        <div className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar max-w-[250px] md:max-w-none px-4 py-2 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-white/50">
+        <div ref={scrollRef} className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar max-w-[250px] md:max-w-none px-4 py-2 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-white/50">
           {pages.map((_, i) => (
             <div
               key={i}
@@ -986,7 +1023,7 @@ export default function QueeningBridalsPitch() {
       </div>
 
       {/* Header Branding */}
-      <div className="absolute top-6 md:top-10 left-6 md:left-12 z-50 flex items-center gap-6">
+      <div className="fixed top-6 md:top-10 left-6 md:left-12 z-50 flex items-center gap-6">
         <motion.div
           whileHover={{ rotate: 180 }}
           className="w-12 h-12 md:w-16 md:h-16 rounded-[1.2rem] flex items-center justify-center text-white font-serif italic text-2xl md:text-3xl shadow-[0_10px_30px_rgba(255,22,149,0.3)] transition-all"
@@ -1001,7 +1038,7 @@ export default function QueeningBridalsPitch() {
       </div>
 
       {/* Slide Number */}
-      <div className="absolute top-6 md:top-10 right-6 md:right-12 z-50">
+      <div className="fixed top-6 md:top-10 right-6 md:right-12 z-50">
         <div className="px-4 py-2 bg-zinc-900 text-white rounded-full text-[10px] font-black tracking-widest shadow-xl">
           {String(currentPage + 1).padStart(2, '0')} <span className="text-zinc-600">/</span> {pages.length}
         </div>
