@@ -60,8 +60,8 @@ export const Hero = () => {
               </Button>
             </div>
             <div className="w-full sm:w-auto">
-              <a href="#diagnostic" className="block sm:inline-block w-full">
-                <Button variant="ghost" size="md" className="gap-2 whitespace-nowrap w-full">
+              <a href="#diagnostic" className="block sm:inline-block w-full sm:w-auto">
+                <Button variant="ghost" size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
                   <ChartBar weight="duotone" /> Take a Free Business Audit
                 </Button>
               </a>

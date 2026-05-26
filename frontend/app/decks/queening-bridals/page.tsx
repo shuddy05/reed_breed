@@ -836,10 +836,10 @@ export default function QueeningBridalsPitch() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16">
                 {[
-                  { label: "Phone", icon: <Phone size={24} weight="light" />, href: "tel:+" },
-                  { label: "WhatsApp", icon: <WhatsappLogo size={24} weight="light" />, href: "https://wa.me/" },
-                  { label: "About", icon: <House size={24} weight="light" />, href: "/" },
-                  { label: "Pricing", icon: <Handbag size={24} weight="light" />, href: "/#pricing" }
+                  { label: "Phone", icon: <Phone size={24} weight="duotone" />, href: "tel:+2348035428870" },
+                  { label: "WhatsApp", icon: <WhatsappLogo size={24} weight="duotone" />, href: "https://wa.me/2348035428870" },
+                  { label: "About", icon: <House size={24} weight="duotone" />, href: "/" },
+                  { label: "Pricing", icon: <Handbag size={24} weight="duotone" />, href: "/#pricing" }
                 ].map((cta, i) => (
                   <motion.a
                     key={i}
@@ -847,7 +847,10 @@ export default function QueeningBridalsPitch() {
                     whileHover={{ y: -5 }}
                     className="flex flex-col items-center gap-3 group"
                   >
-                    <div className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-xl group-hover:border-white group-hover:bg-white group-hover:text-zinc-950 transition-all duration-500">
+                    <div 
+                      className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center backdrop-blur-xl group-hover:border-white group-hover:bg-white transition-all duration-500"
+                      style={{ color: colors.hotPink }}
+                    >
                       {cta.icon}
                     </div>
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-white transition-colors">{cta.label}</span>
@@ -855,6 +858,14 @@ export default function QueeningBridalsPitch() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Site Logo - Last Slide Only (Above Progress Indicators) */}
+          <div className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 opacity-40 hover:opacity-100 transition-opacity">
+            <span className="font-sans text-lg font-bold text-white tracking-[-0.08em]">
+              Reed Breed
+            </span>
+            <div className="w-1.5 h-1.5 rounded-full mt-1" style={{ backgroundColor: '#146ef5' }} />
           </div>
         </section>
       )
@@ -911,14 +922,6 @@ export default function QueeningBridalsPitch() {
 
       {/* Global Cinematic Bubble Layer */}
       <BubbleLayer color={colors.hotPink} />
-
-      {/* Brand Logo - Positioned just above the progress indicators */}
-      <div className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 opacity-30 hover:opacity-100 transition-opacity">
-        <span className="font-sans text-lg font-bold text-white tracking-[-0.08em]">
-          Reed Breed
-        </span>
-        <div className="w-1.5 h-1.5 rounded-full mt-1" style={{ backgroundColor: '#146ef5' }} />
-      </div>
 
       {/* Navigation Controls */}
       <div className="absolute bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
