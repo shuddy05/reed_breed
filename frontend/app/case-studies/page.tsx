@@ -40,12 +40,20 @@ export default async function CaseStudiesPage() {
               <Link
                 key={slug}
                 href={`/decks/${slug}`}
-                className="p-10 rounded-xl border border-white/5 bg-surface flex flex-col items-center gap-6 transition-all duration-300 hover:border-accent/50 hover:bg-accent/5 group"
+                className="p-10 rounded-xl border border-white/5 bg-surface flex flex-col items-center gap-6 transition-all duration-300 hover:border-accent/50 hover:bg-accent/5 group relative overflow-hidden"
               >
                 <Presentation size={56} className="text-accent group-hover:scale-110 transition-transform" />
                 <div className="flex flex-col gap-1 items-center">
                    <span className="text-[10px] font-bold uppercase tracking-widest text-center text-text-secondary group-hover:text-white transition-colors">Interactive Deck</span>
                    <h2 className="text-sm font-bold text-center capitalize">{slug.replace(/-/g, ' ')}</h2>
+                </div>
+                
+                {/* Desktop Indicator Tag */}
+                <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5 border border-white/5 backdrop-blur-sm opacity-60 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[8px] font-black uppercase tracking-wider text-accent">Desktop Only</span>
+                  <div className="w-3.5 h-3.5 rounded bg-accent/10 flex items-center justify-center text-accent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  </div>
                 </div>
               </Link>
             ))}
