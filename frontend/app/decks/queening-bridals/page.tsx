@@ -207,7 +207,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '1-cover',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 relative overflow-hidden bg-white">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 relative overflow-hidden bg-white py-32">
           <ImageSlideshow images={images.gowns} interval={6000} />
           <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/40 to-white" />
 
@@ -231,7 +231,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '2-opportunity',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden py-32">
           <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center z-10">
             <div className="space-y-8">
               <motion.h2 initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="text-4xl md:text-6xl font-serif text-zinc-900">Bridal Shopping Has Changed</motion.h2>
@@ -271,7 +271,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '3-challenges',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative overflow-hidden py-32">
           <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
             <img src={photo4.src} className="w-full h-full object-cover blur-sm" alt="bg" />
           </div>
@@ -299,7 +299,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '4-vision',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white overflow-hidden relative">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white overflow-hidden relative py-32">
           <div className="max-w-5xl w-full z-10 grid md:grid-cols-2 gap-12 items-center">
             <div className="relative h-[500px] w-full">
               <motion.div
@@ -357,7 +357,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '5-overview',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-zinc-50 relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-zinc-50 relative overflow-hidden py-32">
           <div className="max-w-6xl w-full relative z-10">
             <h2 className="text-4xl md:text-6xl font-serif mb-12 text-zinc-900 text-center">10 Integrated Solutions</h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
@@ -393,7 +393,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '6-showroom',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white relative overflow-hidden py-32">
           <div className="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white shadow-xl" style={{ backgroundColor: colors.hotPink }}>FEATURE 01</motion.div>
@@ -435,7 +435,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '7-testimony',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden py-32">
           <div className="max-w-5xl w-full text-center z-10">
             <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white mb-10 shadow-lg" style={{ backgroundColor: colors.accentPink }}>FEATURE 02</div>
             <h2 className="text-4xl md:text-7xl font-serif text-zinc-900 mb-12">Client Testimony Hub</h2>
@@ -468,7 +468,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '8-booking',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white py-32">
           <div className="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
             <div className="relative h-[600px] flex items-center justify-center">
               <motion.div
@@ -523,7 +523,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '9-chatbot',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative overflow-hidden py-32">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,22,149,0.1),transparent_70%)]" />
           <div className="max-w-4xl w-full text-center relative z-10">
             <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 4, repeat: Infinity }} className="mb-10 inline-block p-6 rounded-full bg-white/5 border border-white/10">
@@ -548,7 +548,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '10-leads',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white overflow-hidden py-32">
           <div className="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
             <div className="space-y-10">
               <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white shadow-lg" style={{ backgroundColor: colors.blush }}>FEATURE 05</div>
@@ -589,7 +589,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '11-pricing',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative py-32">
           <div className="max-w-6xl w-full">
             <div className="text-center mb-16">
               <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white mb-6 shadow-lg" style={{ backgroundColor: colors.accentPink }}>FEATURE 06</div>
@@ -626,7 +626,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '12-google',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-zinc-950 text-white relative py-32">
           <div className="max-w-5xl w-full grid md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white shadow-lg" style={{ backgroundColor: colors.hotPink }}>FEATURE 07</div>
@@ -670,7 +670,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '13-catalog',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white overflow-hidden relative">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white overflow-hidden relative py-32">
           <div className="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
             <div className="grid grid-cols-2 gap-6 relative">
               <motion.div
@@ -716,7 +716,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '14-recovery',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden py-32">
           <div className="max-w-4xl w-full text-center z-10">
             <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white mb-10 shadow-lg" style={{ backgroundColor: colors.deepRose }}>FEATURE 09</div>
             <h2 className="text-4xl md:text-7xl font-serif mb-8 text-zinc-900 leading-tight">Recover Lost Sales</h2>
@@ -760,7 +760,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '15-premium',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-white overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-white overflow-hidden py-32">
           <div className="max-w-5xl w-full text-center relative">
             <div className="inline-block px-6 py-2 rounded-full text-sm font-bold text-white mb-10 shadow-lg" style={{ backgroundColor: colors.hotPink }}>FEATURE 10</div>
             <h2 className="text-4xl md:text-7xl font-serif mb-10 text-zinc-900">Premium Brand Positioning</h2>
@@ -793,7 +793,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '16-impact',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-zinc-50">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-zinc-50 py-32">
           <div className="max-w-5xl w-full text-center">
             <h2 className="text-4xl md:text-7xl font-serif mb-16 text-zinc-900 leading-tight">Expected Business Impact</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
@@ -823,7 +823,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '17-roadmap',
       content: (
-        <section className="h-full w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden">
+        <section className="min-h-screen w-full flex items-center justify-center p-6 bg-[#FCF9F2] relative overflow-hidden py-32">
           <div className="max-w-4xl w-full relative z-10">
             <h2 className="text-3xl md:text-5xl font-serif mb-10 text-center text-zinc-900 leading-tight">Implementation Roadmap</h2>
             <div className="space-y-3 relative">
@@ -870,7 +870,7 @@ export default function QueeningBridalsPitch() {
     {
       id: '18-closing',
       content: (
-        <section className="h-full w-full flex flex-col items-center justify-center p-6 text-center bg-zinc-950 text-white relative overflow-hidden">
+        <section className="min-h-screen w-full flex flex-col items-center justify-center p-6 text-center bg-zinc-950 text-white relative overflow-hidden py-32">
           <motion.div
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
