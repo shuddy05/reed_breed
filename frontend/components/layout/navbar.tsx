@@ -74,6 +74,7 @@ export const Navbar = () => {
           <div className="hidden items-center gap-8 lg:flex">
             <NavLink href="/services">Services</NavLink>
             <NavLink href="/industries">Industries</NavLink>
+            <NavLink href="/demo">App Demos</NavLink>
             <NavLink href="/demo-lab">Demo Lab</NavLink>
             <NavLink href="/case-studies">Case Studies</NavLink>
             <NavLink href="/about">About</NavLink>
@@ -114,6 +115,7 @@ export const Navbar = () => {
             <div className="flex flex-col items-start gap-8">
               <Link href="/services" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
               <Link href="/industries" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Industries</Link>
+              <Link href="/demo" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>App Demos</Link>
               <Link href="/demo-lab" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Demo Lab</Link>
               <Link href="/case-studies" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Case Studies</Link>
               <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
