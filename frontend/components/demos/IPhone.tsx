@@ -6,9 +6,11 @@ import * as THREE from "three";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+import iphoneModel from "@/app/demo/classroom-pro/assets/iphone.glb";
+
 export const IPhoneModel = ({ index, screenImg }: { index: number, screenImg: string }) => {
   // Exact path to the copied asset
-  const { nodes, materials } = useGLTF("/demo/assets/iphone.glb") as any;
+  const { nodes, materials } = useGLTF(iphoneModel) as any;
   const group = useRef<THREE.Group>(null);
 
   // Load the screen texture
@@ -56,6 +58,8 @@ export const IPhoneModel = ({ index, screenImg }: { index: number, screenImg: st
         geometry={nodes.xXDHkMplTIDAXLN.geometry}
         material={materials.pIJKfZsazmcpEiU}
         scale={0.01}
+        castShadow
+        receiveShadow
       >
         <meshStandardMaterial roughness={0.1} map={texture} />
       </mesh>
@@ -69,6 +73,8 @@ export const IPhoneModel = ({ index, screenImg }: { index: number, screenImg: st
               geometry={node.geometry}
               material={materials[node.material?.name] || materials.defaultMaterial}
               scale={0.01}
+              castShadow
+              receiveShadow
             />
           );
         }
@@ -78,4 +84,4 @@ export const IPhoneModel = ({ index, screenImg }: { index: number, screenImg: st
   );
 };
 
-useGLTF.preload("/demo/assets/iphone.glb");
+useGLTF.preload(iphoneModel);

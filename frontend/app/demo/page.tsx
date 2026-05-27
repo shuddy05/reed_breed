@@ -12,8 +12,8 @@ export default async function DemosIndex() {
   try {
     const items = await fs.readdir(demosDir);
     for (const item of items) {
-      // Skip the index page itself and any components folder
-      if (item === 'page.tsx' || item === 'components') continue;
+      // Skip the index page itself and any utility folders
+      if (['page.tsx', 'components', 'assets', 'hooks'].includes(item)) continue;
       
       const stats = await fs.stat(path.join(demosDir, item));
       if (stats.isDirectory()) {
