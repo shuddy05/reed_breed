@@ -1,15 +1,18 @@
 "use client"
 
 import React, { useRef } from "react";
-import { useGLTF, Html } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-export const IPhoneModel = ({ children, index }: { children?: React.ReactNode, index: number }) => {
+export const IPhoneModel = ({ index, screenImg }: { index: number, screenImg: string }) => {
   // Exact path to the copied asset
   const { nodes, materials } = useGLTF("/demo/assets/iphone.glb") as any;
   const group = useRef<THREE.Group>(null);
+
+  // Load the screen texture
+  const texture = useTexture(screenImg);
 
   // --- COMBINING GSAP & THREE.JS ---
   useGSAP(() => {
@@ -17,12 +20,12 @@ export const IPhoneModel = ({ children, index }: { children?: React.ReactNode, i
 
     // Reset rotation (starts facing sideways) and position (starts off-screen right)
     gsap.set(group.current.rotation, { y: -Math.PI / 1.5, x: 0 });
-    gsap.set(group.current.position, { x: 5, y: -0.8, opacity: 0 });
+    gsap.set(group.current.position, { x: 5, y: 0.8 });
 
     // Cinematic Entrance for the 3D model
     gsap.to(group.current.position, {
       x: 0,
-      y: 0, // Static levitation height (lowered)
+      y: 0, // Static levitation height 
       duration: 1.5,
       ease: "power4.out"
     });
@@ -35,8 +38,8 @@ export const IPhoneModel = ({ children, index }: { children?: React.ReactNode, i
 
     // Elegant, slow levitation bounce
     gsap.to(group.current.position, {
-      y: 0, // Float up slightly (lowered)
-      duration: 2,
+      y: -0.2, // Float up slightly 
+      duration: 3,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut"
@@ -54,25 +57,7 @@ export const IPhoneModel = ({ children, index }: { children?: React.ReactNode, i
         material={materials.pIJKfZsazmcpEiU}
         scale={0.01}
       >
-        <Html
-          transform
-          occlude
-          distanceFactor={1.2}
-          position={[0, 0, 0]}
-          rotation={[0, 0, 0]}
-          style={{
-            width: "375px",
-            height: "812px",
-            background: "#080808",
-            overflow: "hidden",
-            borderRadius: "40px",
-            pointerEvents: "auto"
-          }}
-        >
-          <div id="iphone-screen-content" className="w-full h-full bg-void overflow-y-auto no-scrollbar pointer-events-auto relative">
-            {children}
-          </div>
-        </Html>
+        <meshStandardMaterial roughness={0.1} map={texture} />
       </mesh>
 
       {/* Render the structural components of the iPhone */}

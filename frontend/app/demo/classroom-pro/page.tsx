@@ -23,6 +23,12 @@ import {
 import { ControlDeck } from "../components/ControlDeck";
 import { useCinematicExport } from "../hooks/useCinematicExport";
 
+// Local Assets
+import shot1 from "../assets/photos/Screenshot-1.png";
+import shot2 from "../assets/photos/Screenshot-2.png";
+import shot3 from "../assets/photos/Screenshot-3.png";
+import shot4 from "../assets/photos/Screenshot-4.png";
+
 gsap.registerPlugin(useGSAP, TextPlugin);
 
 const DATA = [
@@ -35,7 +41,8 @@ const DATA = [
     icon: Lightning,
     color: "#146ef5",
     impact: "85% Efficiency Up",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-woman-working-on-a-laptop-4484-large.mp4"
+    video: "https://assets.mixkit.co/videos/preview/mixkit-woman-working-on-a-laptop-4484-large.mp4",
+    screenImg: shot1.src
   },
   {
     id: "students",
@@ -46,7 +53,8 @@ const DATA = [
     icon: Users,
     color: "#00d722",
     impact: "12x Growth Speed",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-group-of-students-working-in-a-library-4220-large.mp4"
+    video: "https://assets.mixkit.co/videos/preview/mixkit-group-of-students-working-in-a-library-4220-large.mp4",
+    screenImg: shot2.src
   },
   {
     id: "live",
@@ -57,7 +65,8 @@ const DATA = [
     icon: VideoCamera,
     color: "#ffae13",
     impact: "98.4% Engagement",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-man-teaching-in-front-of-a-class-4330-large.mp4"
+    video: "https://assets.mixkit.co/videos/preview/mixkit-man-teaching-in-front-of-a-class-4330-large.mp4",
+    screenImg: shot3.src
   },
   {
     id: "security",
@@ -68,7 +77,8 @@ const DATA = [
     icon: ShieldCheck,
     color: "#ee1d36",
     impact: "0% Data Leakage",
-    video: "https://assets.mixkit.co/videos/preview/mixkit-man-working-in-a-server-room-4198-large.mp4"
+    video: "https://assets.mixkit.co/videos/preview/mixkit-man-working-in-a-server-room-4198-large.mp4",
+    screenImg: shot4.src
   }
 ];
 
@@ -261,44 +271,9 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
                 <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 35 }}>
                   <ambientLight intensity={2} />
                   <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} shadow-mapSize={2048} castShadow />
-                  <IPhoneModel index={index}>
-                    {/* This is the APP INTERFACE projected on the screen */}
-                    <div className="p-8 space-y-12">
-                        <div className="flex justify-between items-center">
-                          <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-white">
-                              <step.icon size={24} weight="fill" />
-                          </div>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Status: Active</span>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <h3 className="text-3xl font-black text-white leading-tight">
-                              {step.subtitle}
-                          </h3>
-                          <div className="h-1 w-12 bg-accent rounded-full" />
-                        </div>
-
-                        <div className="glass-card p-6 rounded-3xl border-white/10 bg-white/5 space-y-4">
-                          <p className="text-xs text-text-secondary leading-relaxed">
-                              {step.description}
-                          </p>
-                          <button className="w-full py-4 rounded-2xl bg-white text-void font-black uppercase text-[10px] tracking-widest">
-                              Authorize Access
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
-                              <p className="text-2xl font-black text-white">{step.impact.split(' ')[0]}</p>
-                              <p className="text-[8px] font-bold text-white/40 uppercase">Efficiency</p>
-                          </div>
-                          <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
-                              <p className="text-2xl font-black text-accent">Node</p>
-                              <p className="text-[8px] font-bold text-white/40 uppercase">Ready</p>
-                          </div>
-                        </div>
-                    </div>
-                  </IPhoneModel>
+                  <React.Suspense fallback={null}>
+                    <IPhoneModel index={index} screenImg={step.screenImg} />
+                  </React.Suspense>
                   <Environment preset="city" />
                   <ContactShadows position={[0, -4.5, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
                 </Canvas>
