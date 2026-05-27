@@ -15,26 +15,36 @@ export const IPhoneModel = ({ children, index }: { children?: React.ReactNode, i
   useGSAP(() => {
     if (!group.current) return;
 
-    // Reset rotation for each step
-    gsap.set(group.current.rotation, { y: -Math.PI / 2, x: 0 });
-    gsap.set(group.current.position, { x: 5, opacity: 0 });
+    // Reset rotation (starts facing sideways) and position (starts off-screen right)
+    gsap.set(group.current.rotation, { y: -Math.PI / 1.5, x: 0 });
+    gsap.set(group.current.position, { x: 5, y: -0.8, opacity: 0 });
 
     // Cinematic Entrance for the 3D model
     gsap.to(group.current.position, {
       x: 0,
+      y: 0, // Static levitation height (lowered)
       duration: 1.5,
       ease: "power4.out"
     });
 
     gsap.to(group.current.rotation, {
-      y: Math.PI * 2 - Math.PI / 2, // Full spin
+      y: 3, // Face exactly front
       duration: 2,
       ease: "expo.out"
+    });
+
+    // Elegant, slow levitation bounce
+    gsap.to(group.current.position, {
+      y: 0, // Float up slightly (lowered)
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
     });
   }, [index]);
 
   return (
-    <group ref={group} dispose={null} scale={40}>
+    <group ref={group} dispose={null} scale={35}>
       {/* 
         Mapped from the auto-generated code of the original repo 
         xXDHkMplTIDAXLN is the Screen mesh node

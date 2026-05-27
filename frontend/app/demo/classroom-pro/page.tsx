@@ -258,77 +258,44 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
 
              {/* RIGHT: 3D IPHONE */}
              <div className="h-[500px] md:h-[700px] w-full relative z-[1]">
-                <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], fov: 35 }}>
+                <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 35 }}>
                   <ambientLight intensity={2} />
                   <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} shadow-mapSize={2048} castShadow />
                   <IPhoneModel index={index}>
-                    {/* MOBILE WEBSITE MOCKUP */}
-                    <div id="iphone-scroll-container" className="w-full bg-void text-white pb-20">
-                        {/* Mobile Navbar */}
-                        <div className="flex justify-between items-center p-6 border-b border-white/10 sticky top-0 bg-void/80 backdrop-blur-md z-50">
-                           <span className="font-satoshi text-xl font-bold tracking-tighter">Reed Breed</span>
-                           <div className="space-y-1.5">
-                              <div className="w-6 h-0.5 bg-white"></div>
-                              <div className="w-4 h-0.5 bg-white"></div>
-                           </div>
+                    {/* This is the APP INTERFACE projected on the screen */}
+                    <div className="p-8 space-y-12">
+                        <div className="flex justify-between items-center">
+                          <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-white">
+                              <step.icon size={24} weight="fill" />
+                          </div>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Status: Active</span>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <h3 className="text-3xl font-black text-white leading-tight">
+                              {step.subtitle}
+                          </h3>
+                          <div className="h-1 w-12 bg-accent rounded-full" />
                         </div>
 
-                        {/* Mobile Hero */}
-                        <div className="p-6 pt-12 space-y-6 text-center">
-                           <div className="inline-block px-4 py-1.5 rounded-full border border-accent/20 bg-accent/10 text-accent text-[8px] font-black uppercase tracking-widest">
-                              System Architecture
-                           </div>
-                           <h2 className="text-4xl font-black leading-tight tracking-tighter">
-                              Accelerate <br/> Your Growth.
-                           </h2>
-                           <p className="text-text-secondary text-xs leading-relaxed">
-                              We build intelligent software systems that remove operational bottlenecks.
-                           </p>
-                           <button className="w-full py-4 rounded-full bg-accent text-white font-black uppercase text-[10px] tracking-widest">
-                              Start Project
-                           </button>
+                        <div className="glass-card p-6 rounded-3xl border-white/10 bg-white/5 space-y-4">
+                          <p className="text-xs text-text-secondary leading-relaxed">
+                              {step.description}
+                          </p>
+                          <button className="w-full py-4 rounded-2xl bg-white text-void font-black uppercase text-[10px] tracking-widest">
+                              Authorize Access
+                          </button>
                         </div>
 
-                        {/* Feature Cards */}
-                        <div className="p-6 space-y-4">
-                           <h3 className="text-xl font-black mb-4">Core Systems</h3>
-                           {[
-                              { title: "Data Engines", icon: <Brain size={24} weight="duotone" className="text-purple-500" /> },
-                              { title: "Live Monitoring", icon: <Broadcast size={24} weight="duotone" className="text-accent" /> },
-                              { title: "Security Core", icon: <ShieldCheck size={24} weight="duotone" className="text-success" /> }
-                           ].map((item, i) => (
-                              <div key={i} className="p-6 rounded-3xl bg-white/5 border border-white/5 flex items-center gap-4">
-                                 <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
-                                    {item.icon}
-                                 </div>
-                                 <div>
-                                    <p className="font-bold">{item.title}</p>
-                                    <p className="text-[10px] text-text-muted mt-1">High-fidelity integration.</p>
-                                 </div>
-                              </div>
-                           ))}
-                        </div>
-
-                        {/* Stats Section */}
-                        <div className="p-6 mt-4">
-                           <div className="p-8 rounded-[2rem] bg-accent text-white text-center space-y-6 shadow-2xl shadow-accent/20">
-                              <div>
-                                 <p className="text-5xl font-black mb-1">99.9%</p>
-                                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Uptime SLA</p>
-                              </div>
-                              <div className="h-px w-full bg-white/20" />
-                              <div>
-                                 <p className="text-5xl font-black mb-1">2ms</p>
-                                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Latency Target</p>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div className="p-6 mt-8 text-center space-y-4">
-                           <h3 className="text-2xl font-black">Ready to scale?</h3>
-                           <button className="w-full py-4 rounded-full bg-white text-void font-black uppercase text-[10px] tracking-widest">
-                              Deploy System
-                           </button>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                              <p className="text-2xl font-black text-white">{step.impact.split(' ')[0]}</p>
+                              <p className="text-[8px] font-bold text-white/40 uppercase">Efficiency</p>
+                          </div>
+                          <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                              <p className="text-2xl font-black text-accent">Node</p>
+                              <p className="text-[8px] font-bold text-white/40 uppercase">Ready</p>
+                          </div>
                         </div>
                     </div>
                   </IPhoneModel>
@@ -454,13 +421,10 @@ export default function ClassroomPROUnified() {
         gsap.set(".immersive-ui", { opacity: 0, x: -30 });
         gsap.set(".immersive-stats", { opacity: 0, x: 30 });
         gsap.set(".typewriter-text", { text: "" });
-        gsap.set("#iphone-scroll-container", { y: 0 }); // Reset scroll
-
         tl.to(".immersive-video", { opacity: 0.4, scale: 1, duration: 2, ease: "power2.inOut" })
           .to(".immersive-ui", { opacity: 1, x: 0, duration: 1 }, "-=1")
           .to(".immersive-stats", { opacity: 1, x: 0, duration: 1 }, "-=0.8")
-          .to(".typewriter-text", { text: activeText, duration: 1.5, ease: "none", onStart: () => !isRendering && startTypingSound(), onComplete: () => stopTypingSound() }, "-=0.5")
-          .to("#iphone-scroll-container", { y: -350, duration: 3.5, ease: "sine.inOut" }, "-=1");
+          .to(".typewriter-text", { text: activeText, duration: 1.5, ease: "none", onStart: () => !isRendering && startTypingSound(), onComplete: () => stopTypingSound() }, "-=0.5");
       }
     }, container);
     return () => ctx.revert();
