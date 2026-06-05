@@ -1,16 +1,15 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
+import { ScrollIndicator } from "@/components/ui/scroll-indicator";
+import { MarqueeStrip } from "@/components/sections/marquee-strip";
+import { WhoWeAre } from "@/components/sections/who-we-are";
 import { TrustedBy } from "@/components/sections/trusted-by";
-import { Problems } from "@/components/sections/problems";
-import { Deliverables } from "@/components/sections/deliverables";
-import { Process } from "@/components/sections/process";
-import { Cise } from "@/components/sections/cise";
-import { DemoLabPreview } from "@/components/sections/demo-lab-preview";
-import { Results } from "@/components/sections/results";
-import { AuditTool } from "@/components/sections/audit-tool";
-import { Pricing } from "@/components/sections/pricing";
-import { FinalCTA } from "@/components/sections/final-cta";
+import { OurWork } from "@/components/sections/our-work";
+import { WhatWeDo } from "@/components/sections/what-we-do";
+import { Testimonials } from "@/components/sections/testimonials";
+import { FunFacts } from "@/components/sections/fun-facts";
+import { BlogSection } from "@/components/sections/blog-section";
 
 export default function Home() {
   return (
@@ -18,16 +17,15 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <ScrollIndicator />
+        <MarqueeStrip />
+        <WhoWeAre />
         <TrustedBy />
-        <Problems />
-        <Deliverables />
-        <Process />
-        <Cise />
-        <DemoLabPreview />
-        <Results />
-        <AuditTool />
-        <Pricing />
-        <FinalCTA />
+        <OurWork />
+        <WhatWeDo />
+        <Testimonials />
+        <FunFacts />
+        <BlogSection />
       </main>
       <Footer />
     </>

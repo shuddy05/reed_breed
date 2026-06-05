@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
       '*.gltf': {
         type: 'asset',
       },
+      '*.mp4': {
+        type: 'asset',
+      },
     },
   },
 

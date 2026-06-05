@@ -440,7 +440,7 @@ export const AuditTool = () => {
   const currentIndustry = industryTracks.find(t => t.id === auditData.industry)
 
   return (
-    <section className="py-24 md:py-32 lg:py-48 bg-void relative overflow-hidden" id="diagnostic">
+    <section className="py-24 md:py-32 lg:py-48 relative overflow-hidden" id="diagnostic">
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-accent/5 blur-[140px] rounded-full" />
       
       <div className="container mx-auto px-6 relative z-10">
@@ -453,7 +453,7 @@ export const AuditTool = () => {
             </p>
           </div>
 
-          <div className="glass-card rounded-[1rem] p-8 lg:p-12 border-white/5 relative overflow-hidden">
+          <div className="rounded-[1rem] p-8 lg:p-12 border border-white/5 relative overflow-hidden bg-transparent">
             {!isFinished && !isSubmitting && (
               <>
                 <div className="absolute top-0 left-0 w-full h-1 bg-white/5">

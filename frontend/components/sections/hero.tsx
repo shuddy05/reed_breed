@@ -1,72 +1,97 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { CaretRight, ChartBar, MagnifyingGlass } from "phosphor-react"
+import { motion, useSpring, useMotionValue, useTransform } from "framer-motion"
 
 export const Hero = () => {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const textRef = React.useRef<HTMLHeadingElement>(null)
+  
+  const [containerWidth, setContainerWidth] = React.useState(0)
+  const [textWidth, setTextWidth] = React.useState(0)
+
+  const mouseX = useMotionValue(0)
+  
+  // Smooth spring for the scrolling movement
+  const springX = useSpring(mouseX, { damping: 40, stiffness: 120, mass: 1 })
+
+  // Logic: 
+  // Mouse at 0 (left) -> x = 10% of viewport (padding at start)
+  // Mouse at containerWidth (right) -> x = -(textWidth - containerWidth + 10% of viewport)
+  const startPadding = containerWidth * 0.1
+  const x = useTransform(
+    springX, 
+    [0, containerWidth || 1], 
+    [startPadding, -(textWidth - containerWidth + startPadding)]
+  )
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setContainerWidth(window.innerWidth)
+      if (textRef.current) setTextWidth(textRef.current.scrollWidth)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    // Small delay to ensure textWidth is captured after fonts load
+    const timer = setTimeout(handleResize, 500)
+    
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      clearTimeout(timer)
+    }
+  }, [])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    mouseX.set(e.clientX)
+  }
+
   return (
-    <section className="relative min-h-screen flex items-center pt-32 md:pt-40 lg:pt-48 pb-24 md:pb-32 lg:pb-48 overflow-hidden bg-gradient-hero">
-      {/* Background Elements */}
-      <div className="absolute inset-0 z-0">
+    <section 
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen flex items-center overflow-hidden bg-void"
+    >
+      {/* Fixed Background Elements */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-accent/20 blur-[120px] rounded-full" />
         <div className="absolute top-[20%] right-[-5%] w-[60%] h-[60%] bg-accent-dim/15 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[20%] w-[80%] h-[60%] bg-accent/20 blur-[120px] rounded-full" />
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] bg-repeat" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl">
+      <div className="w-full relative z-10 flex flex-col items-start overflow-visible py-32">
+        <div className="w-full flex justify-center mt-48 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="eyebrow mb-6"
+            className="text-text-secondary font-sans font-medium text-lg md:text-xl lg:text-2xl tracking-tight"
           >
-            GROWTH INTELLIGENCE FOR AFRICAN SMES
+            Hello there, we&apos;re a
           </motion.div>
-          
+        </div>
+        
+        <div 
+          ref={containerRef}
+          className="w-full flex justify-start items-center overflow-visible"
+        >
           <motion.h1
+            ref={textRef}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-satoshi font-black text-h0 text-[#ffffff] leading-[1.04] tracking-tight mb-8"
+            className="font-black text-[#ffffff] whitespace-nowrap flex items-center gap-[0.2em] w-max"
+            style={{ 
+              fontSize: '10vw',
+              fontFamily: 'var(--font-dm-sans)',
+              letterSpacing: '0.01em',
+              x
+            }}
           >
-            We help SMEs grow with <span className="text-accent">smarter marketing</span>, tailored demos, and AI-powered systems.
+            <span>Creative</span>
+            <span className="text-outline">Digital</span>
+            <span>Agency</span>
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="p-lg text-text-primary mb-12 max-w-2xl leading-relaxed"
-          >
-            From brand strategy to automation and sales management, we build the systems that help businesses attract leads, convert faster, and operate smarter.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.7 }}
-            className="flex flex-col gap-6"
-          >
-            <div className="flex flex-wrap gap-4">
-              <Button size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
-                Book a Strategy Call <CaretRight weight="bold" />
-              </Button>
-              <Button variant="secondary" size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
-                <MagnifyingGlass weight="bold" /> Request a Growth Audit
-              </Button>
-            </div>
-            <div className="w-full sm:w-auto">
-              <a href="#diagnostic" className="block sm:inline-block w-full sm:w-auto">
-                <Button variant="ghost" size="md" className="gap-2 whitespace-nowrap w-full sm:w-auto">
-                  <ChartBar weight="duotone" /> Take a Free Business Audit
-                </Button>
-              </a>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>

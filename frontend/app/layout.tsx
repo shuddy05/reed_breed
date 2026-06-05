@@ -1,23 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const wfVisualSans = Geist({
-  variable: "--font-wf-visual-sans",
+const dmSans = DM_Sans({
   subsets: ["latin"],
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Reed Breed Technologies | AI-Powered Growth Systems",
+  title: "Reed Breed AI Agency | AI-Powered Growth Systems",
   description: "We help SMEs automate sales, marketing & customer engagement — so your business grows while you sleep.",
 };
 
 import { AuthProvider } from "@/context/auth-context";
+import { Chatbot } from "@/components/ui/chatbot";
+import { Cursor } from "@/components/ui/cursor";
 
 export default function RootLayout({
   children,
@@ -27,14 +24,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${wfVisualSans.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-void text-text-secondary">
         <AuthProvider>
+          <Cursor />
           {children}
+          <Chatbot />
         </AuthProvider>
       </body>
     </html>
   );
 }
-

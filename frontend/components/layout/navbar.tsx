@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -20,14 +21,11 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
     <Link
       href={href}
       className={cn(
-        "relative text-[15px] font-medium transition-colors hover:text-[#ffffff]",
+        "relative text-lg font-sans font-bold transition-colors hover:text-[#ffffff] tracking-tight",
         isActive ? "text-[#ffffff]" : "text-text-secondary"
       )}
     >
       {children}
-      {isActive && (
-        <span className="absolute -bottom-1 left-0 h-0.5 w-full bg-accent" />
-      )}
     </Link>
   )
 }
@@ -57,30 +55,34 @@ export const Navbar = () => {
       <nav
         className={cn(
           "fixed top-0 z-50 w-full transition-all duration-500",
-          isScrolled
-            ? "bg-void/95 backdrop-blur-xl py-3 shadow-[0_4px_30px_rgba(0,0,0,0.15)]"
-            : "bg-gradient-to-b from-void/90 via-void/40 to-transparent py-6"
+          isScrolled ? "py-4" : "py-8"
         )}
       >
-        <div className="container mx-auto flex items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-1">
-            <span className="font-satoshi text-2xl font-semibold text-[#ffffff] tracking-[-0.08em]">
-              Reed Breed
-            </span>
-            <span className="h-2 w-2 rounded-full bg-accent mt-1.5" />
-          </Link>
+        <div className="max-w-[1920px] mx-auto flex items-center justify-between px-6 md:px-12">
+          <div className="flex-1">
+            <Link href="/" className="flex items-center w-fit">
+              <Image
+                src="/logo.png"
+                alt="Reed Breed Logo"
+                width={50}
+                height={50}
+                className="object-contain"
+              />
+            </Link>
+          </div>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav - Centered */}
           <div className="hidden items-center gap-8 lg:flex">
             <NavLink href="/services">Services</NavLink>
-            <NavLink href="/industries">Industries</NavLink>
-            <NavLink href="/demo">App Demos</NavLink>
+            <NavLink href="/industries">Testimonials</NavLink>
             <NavLink href="/demo-lab">Demo Lab</NavLink>
-            <NavLink href="/case-studies">Case Studies</NavLink>
             <NavLink href="/about">About</NavLink>
-            <div className="ml-4 h-6 w-px bg-border" />
-            <Button size="md" className="gap-2 whitespace-nowrap">
-              Book Call <CaretRight weight="bold" />
+          </div>
+
+          {/* Right Side CTA */}
+          <div className="flex-1 hidden lg:flex justify-end">
+            <Button size="md" className="px-6 py-2.5 h-fit text-lg font-sans font-bold tracking-tight whitespace-nowrap rounded-full">
+              Get in Touch
             </Button>
           </div>
 
@@ -96,11 +98,11 @@ export const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[60] bg-void/80 backdrop-blur-md lg:hidden animate-in fade-in duration-700"
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          <div 
+          <div
             className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-void border-l border-white/5 p-8 pt-24 animate-in slide-in-from-right duration-700"
             onClick={(e) => e.stopPropagation()}
           >
@@ -114,10 +116,8 @@ export const Navbar = () => {
 
             <div className="flex flex-col items-start gap-8">
               <Link href="/services" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-              <Link href="/industries" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Industries</Link>
-              <Link href="/demo" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>App Demos</Link>
+              <Link href="/industries" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Testimonials</Link>
               <Link href="/demo-lab" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Demo Lab</Link>
-              <Link href="/case-studies" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Case Studies</Link>
               <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
               <div className="w-full pt-8 border-t border-white/5">
                 <Button className="w-full gap-2 whitespace-nowrap" size="lg" onClick={() => setIsMobileMenuOpen(false)}>

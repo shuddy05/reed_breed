@@ -12,12 +12,10 @@ import {
   VideoCamera,
   TrendUp,
   Broadcast,
-  Brain,
   ShieldCheck,
   Lightning,
   Selection,
-  SpeakerHigh,
-  SpeakerSlash
+  SpeakerHigh
 } from "phosphor-react";
 
 import { IPhoneModel } from "@/components/demos/IPhone";
@@ -27,7 +25,7 @@ import { Watermark } from "@/components/demos/Watermark";
 import { ExportOverlay } from "@/components/demos/ExportOverlay";
 import { useRemotionExport } from "@/components/demos/useRemotionExport";
 
-// Local Assets - Photos
+// Local Assets - Photos (Co-located in classroom-pro/assets)
 import shot1 from "./assets/photos/Screenshot-1.png";
 import shot2 from "./assets/photos/Screenshot-2.png";
 import shot3 from "./assets/photos/Screenshot-3.png";
@@ -35,16 +33,10 @@ import shot4 from "./assets/photos/Screenshot-4.png";
 
 // Local Assets - Videos
 let vid1: string | null = null, vid2: string | null = null, vid3: string | null = null, vid4: string | null = null;
-try { vid1 = require("./assets/videos/screenrecording-1.mp4").default; } catch (e) { }
-try { vid2 = require("./assets/videos/screenrecording-2.mp4").default; } catch (e) { }
-try { vid3 = require("./assets/videos/screenrecording-3.mp4").default; } catch (e) { }
-try { vid4 = require("./assets/videos/screenrecording-4.mp4").default; } catch (e) { }
 
 gsap.registerPlugin(useGSAP, TextPlugin);
 
-gsap.registerPlugin(useGSAP, TextPlugin);
-
-const DATA = [
+export const DATA = [
   {
     id: "engine",
     title: "OPERATIONAL ENGINE",
@@ -95,8 +87,8 @@ const DATA = [
   }
 ];
 
-// --- CINEMATIC STAGE COMPONENT ---
-const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false }: {
+// --- CINEMATIC STAGE COMPONENT (Visual Layer) ---
+export const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false }: {
   index: number, mode: string, isWatermarkVisible: boolean, isCaptureMode?: boolean
 }) => {
   const step = DATA[index];
@@ -118,7 +110,6 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
           <div className={`container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 items-center relative z-20 ${isCaptureMode ? 'scale-[2] transform-gpu' : ''}`}>
 
             <div className="space-y-3 md:space-y-4 lg:pl-10 relative">
-              {/* Background Accent Text - Raised 20% higher */}
               <div className="absolute -left-10 md:left-0 top-[-15%] -translate-y-1/2 z-[-1] pointer-events-none select-none">
                 <h2 className="accent-text text-[12vw] font-black leading-none tracking-tighter italic opacity-0" style={{ color: step.color }}>
                   {step.accent}
@@ -140,9 +131,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
 
             <div className="relative flex justify-center">
               <div className="feature-card relative w-full max-w-[320px] md:max-w-md aspect-[4/5] bg-depth border border-white/10 rounded-[2rem] md:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden hidden md:block text-white">
-                {/* Scanning Light Effect */}
                 <div className="ui-scan-line absolute top-0 left-0 w-full h-[20%] bg-gradient-to-b from-transparent via-white/5 to-transparent z-10 opacity-0 pointer-events-none" />
-
                 <div className="absolute inset-0 p-10 flex flex-col z-20">
                   <div className="flex justify-between items-center mb-12">
                     <div className="ui-icon-box w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center" style={{ color: step.color }}><step.icon size={32} weight="duotone" /></div>
@@ -154,7 +143,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
                     <div className="ui-bar h-10 w-4/5 bg-white/5 rounded-2xl border border-white/5" />
                   </div>
                   <div className="ui-insight-panel mt-auto bg-void/80 backdrop-blur-2xl p-8 rounded-[2.5rem] border border-white/10">
-                    <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 text-white">Module Insight</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 text-white text-white">Module Insight</p>
                     <div className="flex items-end justify-between">
                       <div className="text-4xl font-black">{step.impact.split(' ')[0]}</div>
                       <div className="text-[10px] font-black text-white/40 uppercase mb-1">{step.impact.split(' ').slice(1).join(' ')}</div>
@@ -162,8 +151,6 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
                   </div>
                 </div>
               </div>
-
-              {/* Floating Satellite Elements */}
               <div className="absolute -right-8 top-1/4 ui-satellite hidden lg:block opacity-0">
                 <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl" style={{ color: step.color }}>
                   <step.icon size={32} weight="fill" />
@@ -192,7 +179,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
           {index === 1 && (
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 items-center">
               <div className="space-y-8">
-                <div className="narrative-ui flex items-center gap-4 text-white text-white">
+                <div className="narrative-ui flex items-center gap-4 text-white">
                   <div className="w-12 h-0.5 bg-accent" />
                   <span className="text-sm font-black tracking-[0.4em] uppercase text-accent">01 // ARCHITECTURE</span>
                 </div>
@@ -201,7 +188,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
               </div>
               <div className="narrative-ui grid grid-cols-2 gap-4">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="glass-card p-8 rounded-3xl border-white/5 bg-white/5 flex flex-col items-center justify-center aspect-square">
+                  <div key={i} className="glass-card p-8 rounded-3xl border-white/5 bg-white/5 flex flex-col items-center justify-center aspect-square text-white">
                     <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center mb-4 text-white">
                       <Selection size={24} className="text-accent" />
                     </div>
@@ -216,7 +203,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
               <div className="narrative-ui bg-depth rounded-[4rem] border border-white/10 overflow-hidden shadow-2xl w-full h-full flex flex-col relative z-10 text-white">
                 <div className="h-16 bg-white/5 border-b border-white/10 flex items-center px-8 gap-4">
                   <div className="w-3 h-3 rounded-full bg-error" />
-                  <span className="text-xs font-black uppercase tracking-widest opacity-40 text-white text-white">Live Pulse // Monitoring_Active</span>
+                  <span className="text-xs font-black uppercase tracking-widest opacity-40 text-white text-white text-white">Live Pulse // Monitoring_Active</span>
                 </div>
                 <div className="flex-1 flex items-center justify-center relative">
                   <div className="relative">
@@ -226,7 +213,7 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
                 </div>
               </div>
               <div className="narrative-ui mt-12 text-center max-w-2xl">
-                <h2 className="text-4xl font-black mb-6 uppercase tracking-tighter text-white text-white">Intelligent Monitoring</h2>
+                <h2 className="text-4xl font-black mb-6 uppercase tracking-tighter text-white">Intelligent Monitoring</h2>
                 <p className="typewriter-text text-p-xl text-text-secondary leading-relaxed font-medium min-h-[80px]"></p>
               </div>
             </div>
@@ -283,7 +270,6 @@ const CinematicStage = ({ index, mode, isWatermarkVisible, isCaptureMode = false
         </div>
       )}
 
-      {/* Watermark */}
       <Watermark isVisible={isWatermarkVisible} />
     </div>
   );
@@ -308,9 +294,8 @@ export default function ClassroomPROUnified() {
 
   const { isRendering, renderProgress, renderStatus, handleExport } = useRemotionExport();
 
-
   useEffect(() => {
-    console.log("%c REED BREED CINEMATIC ENGINE %c Initialized v2.5.0 ", "background: #146ef5; color: white; font-weight: bold; padding: 4px 8px; border-radius: 4px 0 0 4px;", "background: #222; color: #146ef5; padding: 4px 8px; border-radius: 0 4px 4px 0;");
+    console.log("%c REED BREED CINEMATIC ENGINE %c Initialized v2.6.0 ", "background: #146ef5; color: white; font-weight: bold; padding: 4px 8px; border-radius: 4px 0 0 4px;", "background: #222; color: #146ef5; padding: 4px 8px; border-radius: 0 4px 4px 0;");
     audioWhoosh.current = new Audio("https://actions.google.com/sounds/v1/foley/swoosh.ogg");
     if (audioWhoosh.current) audioWhoosh.current.volume = 0.1;
     audioTypeStream.current = new Audio("https://actions.google.com/sounds/v1/office/keyboard_typing_fast.ogg");
@@ -337,7 +322,6 @@ export default function ClassroomPROUnified() {
           if (!isRendering) {
             playWhoosh();
             console.log(`%c 🎬 SCENE START: ${step.id.toUpperCase()} `, "background: #146ef5; color: white; font-weight: bold;");
-            console.dir(renderTimeline.current);
           }
         }
       });
@@ -408,13 +392,14 @@ export default function ClassroomPROUnified() {
       <MobileWarning />
 
       {/* CAPTURE STAGE (Hidden, 2K) */}
-      <div className="absolute top-0 left-0 pointer-events-none opacity-0 overflow-hidden" style={{ width: '2560px', height: '1440px', transform: 'scale(0.01)', transformOrigin: 'top left' }}>
-        <div id="capture-stage">
-          <CinematicStage index={index} mode={mode} isWatermarkVisible={true} isCaptureMode={true} />
+      {isRendering && (
+        <div className="absolute top-0 left-0 pointer-events-none opacity-0 overflow-hidden" style={{ width: '2560px', height: '1440px', transform: 'scale(0.01)', transformOrigin: 'top left' }}>
+          <div id="capture-stage">
+            <CinematicStage index={index} mode={mode} isWatermarkVisible={true} isCaptureMode={true} />
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* SHARED RENDER SCREEN COMPONENT */}
       <ExportOverlay
         isRendering={isRendering}
         progress={renderProgress}
@@ -428,8 +413,8 @@ export default function ClassroomPROUnified() {
 
       {!hasInteracted && (
         <div className="absolute inset-0 z-[200] bg-void/90 backdrop-blur-3xl flex flex-col items-center justify-center p-12 text-center px-6 text-white">
-          <div className="w-24 h-24 bg-accent rounded-3xl mb-8 flex items-center justify-center shadow-2xl animate-pulse text-white"><SpeakerHigh size={48} weight="fill" /></div>
-          <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-white">Cinematic Audio Detected</h2>
+          <div className="w-24 h-24 bg-accent rounded-3xl mb-8 flex items-center justify-center shadow-2xl animate-pulse text-white text-white text-white"><SpeakerHigh size={48} weight="fill" /></div>
+          <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-white text-white">Cinematic Audio Detected</h2>
           <button onClick={() => { setHasInteracted(true); playWhoosh(); }} className="bg-white text-void px-12 py-5 rounded-2xl font-black text-lg uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl">Enter Experience</button>
         </div>
       )}
@@ -440,7 +425,7 @@ export default function ClassroomPROUnified() {
           <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg text-white">
             <BookOpen size={24} weight="fill" />
           </div>
-          <span className="font-black tracking-tighter text-xl uppercase text-white">Classroom<span className="text-accent text-xs align-top ml-0.5 font-bold">PRO</span></span>
+          <span className="font-black tracking-tighter text-xl uppercase text-white text-white">Classroom<span className="text-accent text-xs align-top ml-0.5 font-bold">PRO</span></span>
         </div>
       </nav>
 

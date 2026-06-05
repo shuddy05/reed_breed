@@ -63,6 +63,8 @@ import photo12 from './assets/photo12.webp';
 import photo13 from './assets/photo13.webp';
 import photo14 from './assets/photo14.webp';
 
+import { DeckController } from "@/components/decks/DeckController";
+
 // Loral Brand Colors
 const colors = {
   red: "#D31F26",
@@ -1845,21 +1847,15 @@ export default function LoralSchoolsPitch() {
         </motion.div>
       </AnimatePresence>
       {mounted && <ConfettiLayer />}
-      <div className="fixed bottom-6 md:bottom-12 left-0 right-0 flex justify-center items-center gap-4 md:gap-16 z-50">
-        <button onClick={() => paginate(-1)} disabled={currentPage === 0} className={`group flex items-center gap-3 text-[10px] md:text-xs uppercase tracking-[0.3em] font-black transition-all ${currentPage === 0 ? 'opacity-0' : 'text-zinc-400'}`}><div className="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center group-hover:border-blue-900"><CaretLeft size={16} /></div><span className="hidden md:inline">Previous</span></button>
-        <div ref={scrollRef} className="flex gap-2 md:gap-3 overflow-x-auto no-scrollbar max-w-[180px] sm:max-w-[300px] md:max-w-none px-5 py-2 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-white/50 scroll-smooth">
-          {pages.map((_, i) => (
-            <div
-              key={i}
-              id={`step-${i}`}
-              onClick={() => { setDirection(i > currentPage ? 1 : -1); setCurrentPage(i); }}
-              className={`h-2 transition-all duration-500 rounded-full cursor-pointer shrink-0 ${i === currentPage ? 'w-10 md:w-16' : 'w-2 bg-zinc-200 hover:bg-zinc-300'}`}
-              style={{ backgroundColor: i === currentPage ? colors.royalBlue : undefined }}
-            />
-          ))}
-        </div>
-        <button onClick={() => paginate(1)} disabled={currentPage === totalPages - 1} className={`group flex items-center gap-3 text-[10px] md:text-xs uppercase tracking-[0.3em] font-black transition-all ${currentPage === totalPages - 1 ? 'opacity-0' : 'text-zinc-900'}`}><span className="hidden md:inline" style={{ color: currentPage < totalPages - 1 ? colors.royalBlue : undefined }}>Next Slide</span><div className="w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-all" style={{ borderColor: colors.royalBlue, backgroundColor: colors.royalBlue, color: 'white' }}><CaretRight size={16} /></div></button>
-      </div>
+      <DeckController
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+        setCurrentPage={setCurrentPage}
+        setDirection={setDirection}
+        accentColor={colors.royalBlue}
+        autoplayDelay={6000}
+      />
       <div className="fixed top-6 md:top-10 left-6 md:left-12 z-50 flex items-center gap-6">
         <motion.div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center"><img src={logo.src} className="w-full h-full object-contain" alt="Loral" /></motion.div>
         <div className="hidden md:block">

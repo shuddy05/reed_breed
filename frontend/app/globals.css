@@ -28,30 +28,9 @@
   --color-warning: #ffae13;
   --color-error: #ee1d36;
 
-  /* Typography - WF Visual Sans Variable */
-  --font-satoshi: var(--font-wf-visual-sans);
-  --font-jakarta: var(--font-wf-visual-sans);
-  --font-mono: var(--font-jetbrains);
-
-  /* Fluid Range Configuration */
-  --fluid-min: 20;
-  --fluid-max: 90;
-
-  /* Fluid Type Scale - Reduced one step globally from baseline */
-  --text-h0: clamp(2.75rem, 2.75rem + (5 - 2.75) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 5rem);
-  --text-h1: clamp(2rem, 2rem + (3.5 - 2) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 3.5rem);
-  --text-h2: clamp(1.75rem, 1.75rem + (2.5 - 1.75) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 2.5rem);
-  --text-h3: clamp(1.375rem, 1.375rem + (2 - 1.375) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 2rem);
-  --text-h4: clamp(1.25rem, 1.25rem + (1.5 - 1.25) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 1.5rem);
-  --text-h5: clamp(1.125rem, 1.125rem + (1.25 - 1.125) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 1.25rem);
-  --text-h6: clamp(1.1rem, 1.1rem + (1.25 - 1.1) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 1.25rem);
-
-  --text-p-xxl: var(--text-h3);
-  --text-p-xl: clamp(1.1rem, 1.1rem + (1.25 - 1.1) * ((100vw - 20rem) / (var(--fluid-max) - var(--fluid-min))), 1.25rem);
-  --text-p-lg: 1rem;
-  --text-p-md: 0.875rem;
-  --text-p-sm: 0.8rem;
-  --text-p-xs: 0.7rem;
+  /* Typography - Unified DM Sans */
+  --font-dm-sans: var(--font-dm-sans), sans-serif;
+  --font-sans: var(--font-dm-sans);
 
   /* Weights & Spacing */
   --font-weight-h: 600;
@@ -88,7 +67,7 @@
 body {
   background-color: var(--background);
   color: var(--color-text-secondary);
-  font-family: var(--font-satoshi), sans-serif;
+  font-family: var(--font-dm-sans);
   font-size: var(--text-p-lg);
   line-height: 1.6;
   font-weight: var(--font-weight-p);
@@ -159,7 +138,7 @@ p {
 }
 
 .eyebrow {
-  font-family: var(--font-satoshi);
+  font-family: var(--font-dm-sans);
   font-size: var(--text-h6);
   line-height: 1.4;
   font-weight: 500;
@@ -227,4 +206,9 @@ p {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+@utility text-outline {
+  -webkit-text-stroke: 0.5px #ffffff;
+  color: transparent;
 }

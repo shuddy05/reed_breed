@@ -2,60 +2,147 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { LinkedinLogo, TwitterLogo, InstagramLogo, WhatsappLogo } from "phosphor-react"
+import Image from "next/image"
+import { motion, useSpring, useMotionValue } from "framer-motion"
+import { 
+  LinkedinLogo, 
+  TwitterLogo, 
+  InstagramLogo, 
+  FacebookLogo, 
+  DribbbleLogo,
+  Envelope
+} from "phosphor-react"
 
 export const Footer = () => {
+  const [isHovering, setIsHovering] = React.useState(false)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const springX = useSpring(mouseX, { damping: 40, stiffness: 400 })
+  const springY = useSpring(mouseY, { damping: 40, stiffness: 400 })
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    setIsHovering(true)
+    const rect = e.currentTarget.getBoundingClientRect()
+    mouseX.set(e.clientX - rect.left)
+    mouseY.set(e.clientY - rect.top)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    mouseX.set(e.clientX - rect.left)
+    mouseY.set(e.clientY - rect.top)
+  }
+
   return (
-    <footer className="bg-void border-t border-accent/20 py-20">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
-          <div className="lg:col-span-3">
-            <Link href="/" className="flex items-center gap-1 mb-6">
-              <span className="font-satoshi text-2xl font-semibold text-[#ffffff] tracking-[-0.08em]">
-                Reed Breed
-              </span>
-              <span className="h-2 w-2 rounded-full bg-accent mt-1.5" />
+    <footer className="w-full flex flex-col">
+      {/* Top Section - Let's Talk */}
+      <div 
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={() => setIsHovering(false)}
+        onMouseMove={handleMouseMove}
+        className="relative h-[40vh] md:h-[50vh] flex items-center justify-center bg-accent overflow-hidden cursor-none"
+      >
+        <Link 
+          href="/contact"
+          className="relative z-10 w-full h-full flex items-center justify-center cursor-none"
+        >
+          <motion.div 
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="font-black text-white leading-[0.8] tracking-tighter"
+            style={{ fontSize: 'clamp(3rem, 8vw, 7rem)' }}
+          >
+            Let&apos;s Talk
+          </motion.div>
+        </Link>
+
+        {/* Custom Cursor Badge */}
+        <motion.div
+          className="pointer-events-none absolute top-0 left-0 z-50 flex items-center justify-center"
+          style={{ 
+            x: springX,
+            y: springY,
+            translateX: "-50%",
+            translateY: "-50%"
+          }}
+          animate={{
+            scale: isHovering ? 1 : 0,
+            opacity: isHovering ? 1 : 0,
+          }}
+          transition={{ type: "spring", damping: 30, stiffness: 250 }}
+        >
+          <div className="w-24 h-24 md:w-32 md:h-32 bg-void rounded-full flex items-center justify-center shadow-2xl border border-white/10">
+            <Envelope size={32} weight="fill" className="text-white" />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom Section - Brand & Info */}
+      <div className="bg-void text-text-secondary pt-16 md:pt-24 pb-0 px-6 md:px-12 lg:px-24">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 mb-16">
+          {/* Left Side */}
+          <div className="flex flex-col items-start">
+            <Link href="/" className="mb-6">
+              <Image
+                src="/logo.png"
+                alt="Reed Breed Logo"
+                width={70}
+                height={70}
+                className="object-contain"
+              />
             </Link>
-            <p className="text-text-secondary max-w-sm mb-8">
-              &quot;Growth Systems for the Modern SME&quot;
+            <p className="text-base md:text-lg font-medium text-text-secondary max-w-xs mb-8 leading-[1.1] tracking-tighter">
+              Reed Breed is an AI-powered growth systems agency helping SMEs automate sales, marketing & engagement.
             </p>
-            <div className="flex gap-4">
-              <Link href="https://linkedin.com/company/reedbreed" target="_blank" className="text-text-muted hover:text-accent transition-colors"><LinkedinLogo size={24} /></Link>
-              <Link href="https://twitter.com/reedbreed" target="_blank" className="text-text-muted hover:text-accent transition-colors"><TwitterLogo size={24} /></Link>
-              <Link href="https://instagram.com/reedbreed" target="_blank" className="text-text-muted hover:text-accent transition-colors"><InstagramLogo size={24} /></Link>
-              <Link href="https://wa.me/2348035428870" target="_blank" className="text-text-muted hover:text-accent transition-colors"><WhatsappLogo size={24} /></Link>
+            
+            <div className="flex items-center gap-6 mt-4">
+              <Link href="#" className="text-text-muted hover:text-white transition-colors">
+                <LinkedinLogo size={28} />
+              </Link>
+              <Link href="#" className="text-text-muted hover:text-white transition-colors">
+                <InstagramLogo size={28} />
+              </Link>
+              <Link href="#" className="text-text-muted hover:text-white transition-colors">
+                <FacebookLogo size={28} />
+              </Link>
+              <Link href="#" className="text-text-muted hover:text-white transition-colors">
+                <TwitterLogo size={28} />
+              </Link>
+              <Link href="#" className="text-text-muted hover:text-white transition-colors">
+                <DribbbleLogo size={28} />
+              </Link>
             </div>
           </div>
 
-          <div>
-            <h4 className="font-satoshi font-bold text-[#ffffff] mb-6">Company</h4>
-            <ul className="space-y-4">
-              <li><Link href="/about" className="text-text-secondary hover:text-[#ffffff] transition-colors">About</Link></li>
-              <li><Link href="/case-studies" className="text-text-secondary hover:text-[#ffffff] transition-colors">Case Studies</Link></li>
-              <li><Link href="/blog" className="text-text-secondary hover:text-[#ffffff] transition-colors">Blog</Link></li>
-              <li><Link href="/careers" className="text-text-secondary hover:text-[#ffffff] transition-colors">Careers</Link></li>
-            </ul>
-          </div>
+          {/* Right Side */}
+          <div className="flex flex-col items-start md:ml-auto text-left w-max">
+            <p className="text-base md:text-lg font-medium text-white mb-32 tracking-tighter leading-normal max-w-[200px]">
+              22 Road, E Close, Opposite FHA, Festac, Lagos Nigeria 102102
+            </p>
 
-          <div>
-            <h4 className="font-satoshi font-bold text-[#ffffff] mb-6">Services</h4>
-            <ul className="space-y-4">
-              <li><Link href="#" className="text-text-secondary hover:text-[#ffffff] transition-colors">Lead Generation</Link></li>
-              <li><Link href="#" className="text-text-secondary hover:text-[#ffffff] transition-colors">AI Automation</Link></li>
-              <li><Link href="#" className="text-text-secondary hover:text-[#ffffff] transition-colors">CRM Workflows</Link></li>
-              <li><Link href="#" className="text-text-secondary hover:text-[#ffffff] transition-colors">Campaigns</Link></li>
-            </ul>
+            <div className="flex flex-col gap-6 items-start">
+              <Link 
+                href="mailto:hello@reedbreed.cc" 
+                className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
+              >
+                hello@reedbreed.cc
+              </Link>
+              <Link 
+                href="tel:+2348067028859" 
+                className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
+              >
+                +234 806 702 8859
+              </Link>
+            </div>
           </div>
-
         </div>
 
-        <div className="mt-20 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6 text-body-sm text-text-muted">
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-            <span>Lagos, Nigeria</span>
-            <a href="mailto:hello@reedbreed.com" className="hover:text-text-secondary transition-colors">hello@reedbreed.com</a>
-            <a href="tel:+2348035428870" className="hover:text-text-secondary transition-colors">+234 803 542 8870</a>
-          </div>
-          <p>© 2025 Reed Breed Technologies. All rights reserved.</p>
+        <div className="py-6 border-t border-white/5 flex justify-center items-center">
+          <p className="text-text-muted font-medium tracking-tighter">
+            © 2026 Reed Breed Ai. All Rights Reserved.
+          </p>
         </div>
       </div>
     </footer>
