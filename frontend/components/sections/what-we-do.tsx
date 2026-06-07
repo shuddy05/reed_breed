@@ -19,6 +19,8 @@ const services = [
   },
 ]
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const WhatWeDo = () => {
   return (
     <section className="relative py-24 md:py-32 lg:py-48 overflow-hidden">
@@ -37,25 +39,25 @@ export const WhatWeDo = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="text-[12vw] md:text-[8vw] leading-[0.8] font-black tracking-tighter font-sans mt-2"
-              style={{ 
-                WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                color: "transparent"
-              }}
+              className="flex items-center mt-2"
             >
-              Strategy,
+              <StrokedText 
+                text="Strategy," 
+                viewBox="0 0 500 120"
+                height="clamp(4rem, 8vw, 6rem)"
+              />
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-[12vw] md:text-[8vw] leading-[0.8] font-black tracking-tighter font-sans mt-2"
-              style={{ 
-                WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                color: "transparent"
-              }}
+              className="flex items-center mt-2"
             >
-              Development
+              <StrokedText 
+                text="Development" 
+                viewBox="0 0 700 120"
+                height="clamp(4rem, 8vw, 6rem)"
+              />
             </motion.div>
             <div className="flex items-center gap-4 mt-2">
               <motion.div 
@@ -70,13 +72,13 @@ export const WhatWeDo = () => {
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                className="text-[12vw] md:text-[8vw] leading-[0.8] font-black tracking-tighter font-sans"
-                style={{ 
-                  WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                  color: "transparent"
-                }}
+                className="flex items-center"
               >
-                Design
+                <StrokedText 
+                  text="Design" 
+                  viewBox="0 0 350 120"
+                  height="clamp(4rem, 8vw, 6rem)"
+                />
               </motion.div>
             </div>
           </div>

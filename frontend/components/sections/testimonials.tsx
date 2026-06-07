@@ -25,6 +25,8 @@ const testimonials = [
   }
 ]
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const Testimonials = () => {
   return (
     <section className="relative py-24 md:py-32 lg:py-48 overflow-hidden">
@@ -34,13 +36,13 @@ export const Testimonials = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-[12vw] md:text-[8vw] leading-[0.8] font-black tracking-tighter font-sans"
-            style={{ 
-              WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-              color: "transparent"
-            }}
+            className="flex items-center"
           >
-            Testimonials
+            <StrokedText 
+              text="Testimonials" 
+              viewBox="0 0 700 120"
+              height="clamp(4rem, 8vw, 6rem)"
+            />
           </motion.div>
         </div>
 

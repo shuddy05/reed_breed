@@ -12,6 +12,8 @@ const workItems = [
   { id: 4, src: "/work4.jpg", alt: "Brand Identity Design" },
 ]
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const OurWork = () => {
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
@@ -28,7 +30,7 @@ export const OurWork = () => {
     <section className="relative py-24 md:py-32 lg:py-48 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center text-center mb-20">
-          <div className="relative mb-12 select-none">
+          <div className="relative mb-12 select-none flex items-center justify-center">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -41,13 +43,13 @@ export const OurWork = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-[12vw] md:text-[8vw] leading-[0.8] font-black tracking-tighter font-sans inline-block"
-              style={{ 
-                WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                color: "transparent"
-              }}
+              className="flex items-center"
             >
-              Work
+              <StrokedText 
+                text="Work" 
+                viewBox="0 0 320 120"
+                height="clamp(4rem, 8vw, 6rem)"
+              />
             </motion.div>
           </div>
         </div>

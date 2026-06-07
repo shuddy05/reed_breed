@@ -11,6 +11,8 @@ const facts = [
   { value: "4", label: "Global Offices." },
 ]
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const FunFacts = () => {
   return (
     <section className="relative min-h-[600px] flex flex-col md:flex-row overflow-hidden pr-6 md:pr-12 lg:pr-24">
@@ -32,20 +34,19 @@ export const FunFacts = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1, duration: 0.8 }}
               viewport={{ once: true }}
-              className="flex items-baseline gap-4"
+              className="flex items-center gap-4"
             >
               <span className="text-[9vw] md:text-[5vw] font-black text-white leading-none tracking-tighter">
                 {fact.value}
               </span>
-              <span 
-                className="text-[9vw] md:text-[5vw] font-black leading-none tracking-tighter"
-                style={{ 
-                  WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                  color: "transparent"
-                }}
-              >
-                {fact.label}
-              </span>
+              <div className="flex items-center">
+                <StrokedText 
+                  text={fact.label} 
+                  viewBox={`0 0 ${fact.label.length * 55} 120`}
+                  height="clamp(3rem, 5vw, 4.5rem)"
+                  strokeWidth={2}
+                />
+              </div>
             </motion.div>
           ))}
         </div>

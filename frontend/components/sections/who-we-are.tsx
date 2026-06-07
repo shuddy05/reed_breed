@@ -5,6 +5,8 @@ import { motion } from "framer-motion"
 
 import Image from "next/image"
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const WhoWeAre = () => {
   return (
     <section className="relative py-24 md:py-48 overflow-hidden">
@@ -54,13 +56,13 @@ export const WhoWeAre = () => {
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                  className="text-[15vw] md:text-[10vw] leading-[0.8] font-black tracking-tighter font-sans"
-                  style={{ 
-                    WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                    color: "transparent"
-                  }}
+                  className="flex items-center"
                 >
-                  are
+                  <StrokedText 
+                    text="are" 
+                    viewBox="0 0 200 120"
+                    height="clamp(4.5rem, 10vw, 8rem)"
+                  />
                 </motion.div>
               </div>
             </div>

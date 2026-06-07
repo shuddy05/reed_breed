@@ -3,6 +3,8 @@
 import * as React from "react"
 import { motion, useSpring, useMotionValue, useTransform } from "framer-motion"
 
+import { StrokedText } from "@/components/ui/stroked-text"
+
 export const Hero = () => {
   const containerRef = React.useRef<HTMLDivElement>(null)
   const textRef = React.useRef<HTMLHeadingElement>(null)
@@ -89,7 +91,11 @@ export const Hero = () => {
             }}
           >
             <span>Creative</span>
-            <span className="text-outline">Digital</span>
+            <StrokedText 
+              text="Digital" 
+              viewBox="0 0 350 120"
+              height="10vw"
+            />
             <span>Agency</span>
           </motion.h1>
         </div>
