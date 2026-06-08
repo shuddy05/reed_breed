@@ -40,6 +40,7 @@ export const WhoWeAre = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="text-[15vw] md:text-[10vw] leading-[0.8] font-black text-white tracking-tighter font-sans"
+                style={{ WebkitTextStroke: '0.5px #ffffff' }}
               >
                 Who
               </motion.div>
@@ -49,19 +50,22 @@ export const WhoWeAre = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                   className="text-[15vw] md:text-[10vw] leading-[0.8] font-black text-white tracking-tighter font-sans"
+                  style={{ WebkitTextStroke: '0.5px #ffffff' }}
                 >
-                  we
+                  We
                 </motion.div>
                 <motion.div 
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                  className="flex items-center"
+                  className="flex items-center -mt-[1.5vw]"
                 >
                   <StrokedText 
-                    text="are" 
+                    text="Are" 
                     viewBox="0 0 200 120"
-                    height="clamp(4.5rem, 10vw, 8rem)"
+                    height="clamp(5rem, 11vw, 9rem)"
+                    strokeWidth={2}
+                    letterSpacing="0.01em"
                   />
                 </motion.div>
               </div>

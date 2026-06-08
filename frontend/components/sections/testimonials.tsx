@@ -41,7 +41,10 @@ export const Testimonials = () => {
             <StrokedText 
               text="Testimonials" 
               viewBox="0 0 700 120"
-              height="clamp(4rem, 8vw, 6rem)"
+              height="clamp(5rem, 10vw, 8rem)"
+              strokeWidth={2}
+              letterSpacing="-0.05em"
+              className="-mt-[1.5vw]"
             />
           </motion.div>
         </div>

@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import { StrokedText } from "@/components/ui/stroked-text"
 
 const posts = [
   {
@@ -50,20 +51,23 @@ export const BlogSection = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex justify-center items-baseline gap-4 mb-10"
+            className="flex justify-center items-center gap-4 mb-10"
           >
-            <span className="text-[12vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter">
+            <span 
+              className="text-[12vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter"
+              style={{ WebkitTextStroke: '0.5px #ffffff' }}
+            >
               From
             </span>
-            <span 
-              className="text-[12vw] md:text-[8vw] font-black leading-[0.8] tracking-tighter"
-              style={{ 
-                WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                color: "transparent"
-              }}
-            >
-              Blog
-            </span>
+            <div className="flex items-center -mt-[1.5vw]">
+              <StrokedText 
+                text="Blog" 
+                viewBox="0 0 350 120"
+                height="clamp(5rem, 10vw, 8rem)"
+                strokeWidth={2}
+                letterSpacing="-0.05em"
+              />
+            </div>
           </motion.div>
 
           <motion.div

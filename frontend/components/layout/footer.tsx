@@ -4,11 +4,11 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useSpring, useMotionValue } from "framer-motion"
-import { 
-  LinkedinLogo, 
-  TwitterLogo, 
-  InstagramLogo, 
-  FacebookLogo, 
+import {
+  LinkedinLogo,
+  TwitterLogo,
+  InstagramLogo,
+  FacebookLogo,
   DribbbleLogo,
   Envelope
 } from "phosphor-react"
@@ -37,17 +37,17 @@ export const Footer = () => {
   return (
     <footer className="w-full flex flex-col">
       {/* Top Section - Let's Talk */}
-      <div 
+      <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
         className="relative h-[40vh] md:h-[50vh] flex items-center justify-center bg-accent overflow-hidden cursor-none"
       >
-        <Link 
+        <Link
           href="/contact"
           className="relative z-10 w-full h-full flex items-center justify-center cursor-none"
         >
-          <motion.div 
+          <motion.div
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -61,7 +61,7 @@ export const Footer = () => {
         {/* Custom Cursor Badge */}
         <motion.div
           className="pointer-events-none absolute top-0 left-0 z-50 flex items-center justify-center"
-          style={{ 
+          style={{
             x: springX,
             y: springY,
             translateX: "-50%",
@@ -96,7 +96,7 @@ export const Footer = () => {
             <p className="text-base md:text-lg font-medium text-text-secondary max-w-xs mb-8 leading-[1.1] tracking-tighter">
               Reed Breed is an AI-powered growth systems agency helping SMEs automate sales, marketing & engagement.
             </p>
-            
+
             <div className="flex items-center gap-6 mt-4">
               <Link href="#" className="text-text-muted hover:text-white transition-colors">
                 <LinkedinLogo size={28} />
@@ -118,19 +118,22 @@ export const Footer = () => {
 
           {/* Right Side */}
           <div className="flex flex-col items-start md:ml-auto text-left w-max">
-            <p className="text-base md:text-lg font-medium text-white mb-32 tracking-tighter leading-normal max-w-[200px]">
-              22 Road, E Close, Opposite FHA, Festac, Lagos Nigeria 102102
+            <p
+              className="text-base md:text-lg font-medium text-white tracking-tighter leading-[1.1] max-w-[200px]"
+              style={{ marginBottom: '50px' }}
+            >
+              22 Road, E Close, Opposite FHA, Festac, Amuwo-Odofin, Lagos Nigeria.
             </p>
 
             <div className="flex flex-col gap-6 items-start">
-              <Link 
-                href="mailto:hello@reedbreed.cc" 
+              <Link
+                href="mailto:hello@reedbreed.cc"
                 className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
               >
                 hello@reedbreed.cc
               </Link>
-              <Link 
-                href="tel:+2348067028859" 
+              <Link
+                href="tel:+2348067028859"
                 className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
               >
                 +234 806 702 8859

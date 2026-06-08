@@ -22,8 +22,9 @@ export const FunFacts = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="text-white/60 text-lg md:text-xl font-bold mb-8"
+          style={{ WebkitTextStroke: '0.2px rgba(255,255,255,0.4)' }}
         >
-          Some fun facts...
+          Some Fun Facts...
         </motion.p>
         
         <div className="space-y-4">
@@ -36,15 +37,19 @@ export const FunFacts = () => {
               viewport={{ once: true }}
               className="flex items-center gap-4"
             >
-              <span className="text-[9vw] md:text-[5vw] font-black text-white leading-none tracking-tighter">
+              <span 
+                className="text-[9vw] md:text-[5vw] font-black text-white leading-none tracking-tighter"
+                style={{ WebkitTextStroke: '0.5px #ffffff' }}
+              >
                 {fact.value}
               </span>
-              <div className="flex items-center">
+              <div className="flex items-center -mt-[0.5vw]">
                 <StrokedText 
                   text={fact.label} 
                   viewBox={`0 0 ${fact.label.length * 55} 120`}
-                  height="clamp(3rem, 5vw, 4.5rem)"
+                  height="clamp(3.5rem, 6vw, 5rem)"
                   strokeWidth={2}
+                  letterSpacing="-0.05em"
                 />
               </div>
             </motion.div>

@@ -36,6 +36,7 @@ export const OurWork = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-[12vw] md:text-[8vw] leading-[0.8] font-black text-white tracking-tighter font-sans inline-block mr-4"
+              style={{ WebkitTextStroke: '0.5px #ffffff' }}
             >
               Our
             </motion.div>
@@ -43,12 +44,14 @@ export const OurWork = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="flex items-center"
+              className="flex items-center -mt-[1.5vw]"
             >
               <StrokedText 
                 text="Work" 
                 viewBox="0 0 320 120"
-                height="clamp(4rem, 8vw, 6rem)"
+                height="clamp(5rem, 10vw, 8rem)"
+                strokeWidth={2}
+                letterSpacing="-0.05em"
               />
             </motion.div>
           </div>
