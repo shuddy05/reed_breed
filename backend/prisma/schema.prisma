@@ -1,0 +1,112 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------
+// MODELS
+// Mapped to Laravel Eloquent naming conventions (snake_case)
+// ----------------------------------------------------
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Lead {
+  id        Int      @id @default(autoincrement())
+  company   String?
+  contact   String
+  email     String
+  phone     String?
+  website   String?
+  details   String?
+  status    String   @default("New") // New, In Progress, Qualified, Lost, Won
+  industry  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("leads")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String
+  slug      String     @unique
+  posts     BlogPost[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model BlogPost {
+  id         Int       @id @default(autoincrement())
+  categoryId Int       @map("category_id")
+  title      String
+  slug       String    @unique
+  content    String?
+  image      String?
+  status     String    @default("Draft") // Draft, Published
+  category   Category  @relation(fields: [categoryId], references: [id])
+  comments   Comment[]
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@map("blog_posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  author    String
+  email     String
+  text      String
+  status    String   @default("Pending") // Pending, Approved, Spam
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("comments")
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  date      String   // Using YYYY-MM-DD format for simple querying
+  time      String   // Time slot
+  type      String   // Discovery Call, Strategy Session, Consultation
+  notes     String?
+  status    String   @default("Upcoming") // Upcoming, Completed, Cancelled
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("appointments")
+}
+
+model PersonalAccessToken {
+  id             Int       @id @default(autoincrement())
+  tokenableType  String    @map("tokenable_type")
+  tokenableId    Int       @map("tokenable_id")
+  name           String
+  token          String    @unique
+  abilities      String?
+  lastUsedAt     DateTime? @map("last_used_at")
+  expiresAt      DateTime? @map("expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([tokenableType, tokenableId])
+  @@map("personal_access_tokens")
+}
