@@ -9,11 +9,16 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ChatController;
 
 // Public Routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/contact', [LeadController::class, 'store']);
 Route::post('/appointments/book', [AppointmentController::class, 'book']);
+
+// Chatbot Routes
+Route::post('/chat', [ChatController::class, 'chat']);
+Route::post('/chat/handoff', [ChatController::class, 'handoff']);
 
 // Public Blog Routes
 Route::get('/blog/categories', [CategoryController::class, 'index']);
