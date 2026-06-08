@@ -15,7 +15,7 @@ const companies = [
 
 export const TrustedBy = () => {
   return (
-    <div className="bg-void py-24 md:py-32 lg:py-48 border-y border-border/10">
+    <div className="bg-transparent py-24 md:py-32 lg:py-48 border-y border-border/10">
       <div className="container mx-auto px-6">
         <div className="max-w-xl mx-auto flex flex-col items-center">
           <p className="text-center text-white/40 text-lg md:text-xl font-medium mb-20 tracking-tight">

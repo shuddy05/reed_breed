@@ -10,21 +10,35 @@ export const ScrollIndicator = () => {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl"
+        className="relative w-20 h-20"
       >
-        <div className="w-6 h-10 border-2 border-black/20 rounded-full flex justify-center p-1.5">
-          <motion.div 
-            animate={{ 
-              y: [0, 16, 0],
-              opacity: [1, 0, 1]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            className="w-1.5 h-1.5 bg-black rounded-full"
-          />
+        <svg viewBox="0 0 80 80" className="w-full h-full drop-shadow-2xl">
+          <defs>
+            <mask id="scroll-mouse-mask">
+              <rect width="80" height="80" fill="white" />
+              {/* The mouse shape as a cutout */}
+              <rect x="28" y="20" width="24" height="40" rx="12" fill="black" />
+            </mask>
+          </defs>
+          <rect width="80" height="80" rx="40" fill="white" mask="url(#scroll-mouse-mask)" />
+        </svg>
+
+        {/* Scrolling Dot */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-6 h-10 flex justify-center p-1.5 -mt-0">
+            <motion.div 
+              animate={{ 
+                y: [0, 15, 0],
+                opacity: [1, 0.4, 1]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="w-[2px] h-1 bg-white rounded-full"
+            />
+          </div>
         </div>
       </motion.div>
     </div>
