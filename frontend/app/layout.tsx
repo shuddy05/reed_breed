@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 import { AuthProvider } from "@/context/auth-context";
 import { Chatbot } from "@/components/ui/chatbot";
 import { Cursor } from "@/components/ui/cursor";
+import { Preloader } from "@/components/ui/preloader";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -28,6 +30,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-void text-text-secondary">
         <AuthProvider>
+          <Suspense fallback={null}>
+            <Preloader />
+          </Suspense>
           <Cursor />
           {children}
           <Chatbot />
