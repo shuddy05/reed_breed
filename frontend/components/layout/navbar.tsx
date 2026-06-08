@@ -76,6 +76,7 @@ export const Navbar = () => {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/work">Work</NavLink>
+            <NavLink href="/blog">Blog</NavLink>
           </div>
 
           {/* Right Side CTA */}
@@ -117,6 +118,7 @@ export const Navbar = () => {
               <Link href="/" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
               <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
               <Link href="/work" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Work</Link>
+              <Link href="/blog" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
               <div className="w-full pt-8 border-t border-white/5">
                 <Button className="w-full gap-2 whitespace-nowrap" size="lg" onClick={() => setIsMobileMenuOpen(false)}>
                   Book Call <CaretRight weight="bold" />
