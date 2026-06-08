@@ -39,27 +39,29 @@ export const WhatWeDo = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="flex items-center mt-2"
+              className="flex items-center mt-[-0.1px]"
             >
               <StrokedText 
                 text="Strategy," 
                 viewBox="0 0 500 120"
-                height="clamp(4rem, 8vw, 6rem)"
+                height="clamp(4.5rem, 9vw, 7.5rem)"
+                strokeWidth={2}
               />
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="flex items-center mt-2"
+              className="flex items-center mt-[-0.1px]"
             >
               <StrokedText 
                 text="Development" 
                 viewBox="0 0 700 120"
-                height="clamp(4rem, 8vw, 6rem)"
+                height="clamp(4.5rem, 9vw, 7.5rem)"
+                strokeWidth={2}
               />
             </motion.div>
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-end gap-4 mt-[-0.1px]">
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -77,7 +79,8 @@ export const WhatWeDo = () => {
                 <StrokedText 
                   text="Design" 
                   viewBox="0 0 350 120"
-                  height="clamp(4rem, 8vw, 6rem)"
+                  height="clamp(4.5rem, 9vw, 7.5rem)"
+                  strokeWidth={2}
                 />
               </motion.div>
             </div>

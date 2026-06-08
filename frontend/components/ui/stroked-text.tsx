@@ -6,6 +6,7 @@ interface StrokedTextProps {
   text: string
   className?: string
   fontSize?: string
+  letterSpacing?: string
   viewBox?: string
   height?: string
   strokeWidth?: number
@@ -17,6 +18,7 @@ export const StrokedText: React.FC<StrokedTextProps> = ({
   text, 
   className = "", 
   fontSize = "110px",
+  letterSpacing = "normal",
   viewBox = "0 0 450 120",
   height = "clamp(4.5rem, 10vw, 8rem)",
   strokeWidth = 3,
@@ -43,8 +45,8 @@ export const StrokedText: React.FC<StrokedTextProps> = ({
             stroke="white" 
             strokeWidth={strokeWidth} 
             strokeLinejoin="round" 
-            className="font-black tracking-tighter" 
-            style={{ fontSize: fontSize }}
+            className="font-black" 
+            style={{ fontSize: fontSize, letterSpacing: letterSpacing }}
           >
             {text}
           </text>
@@ -53,8 +55,8 @@ export const StrokedText: React.FC<StrokedTextProps> = ({
             y="107" 
             fill="black" 
             stroke="none" 
-            className="font-black tracking-tighter" 
-            style={{ fontSize: fontSize }}
+            className="font-black" 
+            style={{ fontSize: fontSize, letterSpacing: letterSpacing }}
           >
             {text}
           </text>

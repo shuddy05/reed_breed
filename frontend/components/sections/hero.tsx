@@ -90,13 +90,16 @@ export const Hero = () => {
               x
             }}
           >
-            <span>Creative</span>
+            <span style={{ WebkitTextStroke: '0.5px #ffffff' }}>Creative</span>
             <StrokedText 
               text="Digital" 
-              viewBox="0 0 350 120"
-              height="10vw"
+              viewBox="0 0 350 120" 
+              height="11vw"
+              strokeWidth={1.5}
+              letterSpacing="0.01em"
+              className="-mt-[1.5vw]"
             />
-            <span>Agency</span>
+            <span style={{ WebkitTextStroke: '0.5px #ffffff' }}>Agency</span>
           </motion.h1>
         </div>
       </div>
