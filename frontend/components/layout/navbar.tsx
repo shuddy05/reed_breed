@@ -73,10 +73,9 @@ export const Navbar = () => {
 
           {/* Desktop Nav - Centered */}
           <div className="hidden items-center gap-8 lg:flex">
-            <NavLink href="/services">Services</NavLink>
-            <NavLink href="/industries">Testimonials</NavLink>
-            <NavLink href="/demo-lab">Demo Lab</NavLink>
+            <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
+            <NavLink href="/work">Work</NavLink>
           </div>
 
           {/* Right Side CTA */}
@@ -115,10 +114,9 @@ export const Navbar = () => {
             </button>
 
             <div className="flex flex-col items-start gap-8">
-              <Link href="/services" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-              <Link href="/industries" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Testimonials</Link>
-              <Link href="/demo-lab" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Demo Lab</Link>
+              <Link href="/" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
               <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+              <Link href="/work" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Work</Link>
               <div className="w-full pt-8 border-t border-white/5">
                 <Button className="w-full gap-2 whitespace-nowrap" size="lg" onClick={() => setIsMobileMenuOpen(false)}>
                   Book Call <CaretRight weight="bold" />
