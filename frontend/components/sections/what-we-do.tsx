@@ -94,10 +94,13 @@ export const WhatWeDo = () => {
               viewport={{ once: true }}
               className="bg-accent p-8 md:p-12 flex flex-col items-start rounded-sm shadow-xl"
             >
-              <h3 className="text-[12vw] md:text-[7vw] font-black text-white mb-8 leading-none tracking-tighter">
+              <h3 
+                className="font-black text-white mb-6 tracking-tighter leading-none"
+                style={{ fontSize: 'clamp(1.25rem, 3.3vw, 2.5rem)', textTransform: 'none' }}
+              >
                 {service.title}
               </h3>
-              <p className="text-white/80 text-lg md:text-xl font-medium leading-relaxed mb-12 max-w-sm">
+              <p className="text-white/80 text-lg md:text-xl font-medium leading-tight mb-10 max-w-sm">
                 {service.desc}
               </p>
               <Button 
