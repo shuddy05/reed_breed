@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Agency Showreel 2026",
+    "type": "video",
+    "thumbnail": "/work4.jpg",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    "title": "Live E-commerce Project",
+    "type": "live",
+    "thumbnail": "/office.jpeg",
+    "url": "https://example.com"
+  }
+]

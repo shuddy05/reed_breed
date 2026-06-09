@@ -10,8 +10,12 @@ import { WhatWeDo } from "@/components/sections/what-we-do";
 import { Testimonials } from "@/components/sections/testimonials";
 import { FunFacts } from "@/components/sections/fun-facts";
 import { BlogSection } from "@/components/sections/blog-section";
+import { getWorks } from "@/lib/get-works";
 
-export default function Home() {
+export default async function Home() {
+  const allWorks = await getWorks();
+  const works = allWorks.slice(0, 4);
+  
   return (
     <>
       <Navbar />
@@ -21,7 +25,7 @@ export default function Home() {
         <MarqueeStrip />
         <WhoWeAre />
         <TrustedBy />
-        <OurWork />
+        <OurWork works={works} isHomePage={true} />
         <WhatWeDo />
         <Testimonials />
         <FunFacts />
@@ -31,3 +35,4 @@ export default function Home() {
     </>
   );
 }
+

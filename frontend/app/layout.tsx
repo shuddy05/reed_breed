@@ -8,7 +8,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Reed Breed AI Agency | AI-Powered Growth Systems",
+  title: "Reed Breed Creative Consulting",
   description: "We help SMEs automate sales, marketing & customer engagement — so your business grows while you sleep.",
 };
 
