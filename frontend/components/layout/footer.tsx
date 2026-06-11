@@ -116,6 +116,18 @@ export const Footer = () => {
             </div>
           </div>
 
+          {/* Center Side - Links */}
+          <div className="flex flex-col items-start md:mx-auto">
+             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-10">Exploration</p>
+             <div className="flex flex-col gap-4">
+                <Link href="/about" className="text-xl font-bold text-white hover:text-accent transition-colors tracking-tighter">About</Link>
+                <Link href="/services" className="text-xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Services</Link>
+                <Link href="/industries" className="text-xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Industries</Link>
+                <Link href="/work" className="text-xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Our Work</Link>
+                <Link href="/blog" className="text-xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Latest News</Link>
+             </div>
+          </div>
+
           {/* Right Side */}
           <div className="flex flex-col items-start md:ml-auto text-left w-max">
             <p

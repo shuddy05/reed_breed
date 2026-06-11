@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChatCircleDots, X, PaperPlaneRight, CircleNotch, Brain, WhatsappLogo } from "phosphor-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { apiRequest } from "@/lib/api";
+
 type Message = {
   role: 'user' | 'assistant';
   content: string;
@@ -42,9 +44,8 @@ export const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/chat', {
+      const response = await apiRequest('/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })) 
         }),
@@ -74,9 +75,8 @@ export const Chatbot = () => {
     
     setIsLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/chat/handoff', {
+      const response = await apiRequest('/chat/handoff', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           messages: messages,
           userInfo: handoffData
@@ -88,7 +88,7 @@ export const Chatbot = () => {
       const data = await response.json();
       
       // Construct the wa.me link
-      const myWhatsAppNumber = "2348035428870"; // The Director's number
+      const myWhatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "2348035428870"; // The Director's number
       const textMessage = `Hi Ifeanyi, my name is ${handoffData.name} (Phone: ${handoffData.phone}).\n\nI was just chatting with your AI assistant, and here is a summary of what I need:\n\n*${data.summary}*\n\nLet's talk!`;
       
       const waUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(textMessage)}`;

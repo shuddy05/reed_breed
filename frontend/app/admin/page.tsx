@@ -35,7 +35,8 @@ export default function LeadsFunnel() {
   const fetchLeads = React.useCallback(async () => {
     try {
       const token = getToken()
-      const res = await fetch("http://127.0.0.1:8000/api/leads", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api'
+      const res = await fetch(`${apiUrl}/leads`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
@@ -59,7 +60,8 @@ export default function LeadsFunnel() {
   const updateLeadStatus = async (id: number, newStatus: string) => {
     try {
       const token = getToken()
-      const res = await fetch(`http://127.0.0.1:8000/api/leads/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api'
+      const res = await fetch(`${apiUrl}/leads/${id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

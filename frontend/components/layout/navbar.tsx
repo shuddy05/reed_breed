@@ -75,6 +75,8 @@ export const Navbar = () => {
           <div className="hidden items-center gap-8 lg:flex">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
+            <NavLink href="/services">Services</NavLink>
+            <NavLink href="/industries">Industries</NavLink>
             <NavLink href="/work">Work</NavLink>
             <NavLink href="/blog">Blog</NavLink>
             <NavLink href="/contact">Contact</NavLink>
@@ -82,49 +84,55 @@ export const Navbar = () => {
 
           {/* Right Side CTA */}
           <div className="flex-1 hidden lg:flex justify-end">
-            <Button size="md" className="px-6 py-2.5 h-fit text-lg font-sans font-bold tracking-tight whitespace-nowrap rounded-full">
-              Get in Touch
-            </Button>
+            <Link href="/contact" className="cursor-pointer">
+              <Button size="md" className="px-6 py-2.5 h-fit text-lg font-sans font-bold tracking-tight whitespace-nowrap rounded-full">
+                Get in Touch
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
           <button
-            className="text-[#ffffff] lg:hidden relative z-[70]"
+            className="text-[#ffffff] lg:hidden relative z-[70] cursor-pointer"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={32} /> : <List size={32} />}
           </button>
-        </div>
-      </nav>
+          </div>
+          </nav>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-[60] bg-void/80 backdrop-blur-md lg:hidden animate-in fade-in duration-700"
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
+          {/* Mobile Menu Overlay */}
+          {isMobileMenuOpen && (
           <div
-            className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-void border-l border-white/5 p-8 pt-24 animate-in slide-in-from-right duration-700"
+          className="fixed inset-0 z-[60] bg-void/80 backdrop-blur-md lg:hidden animate-in fade-in duration-700 cursor-pointer"
+          onClick={() => setIsMobileMenuOpen(false)}
+          >
+          <div
+            className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-void border-l border-white/5 p-8 pt-24 animate-in slide-in-from-right duration-700 cursor-default"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button Inside Menu */}
             <button
-              className="absolute top-6 right-6 text-[#ffffff] hover:text-accent transition-colors"
+              className="absolute top-6 right-6 text-[#ffffff] hover:text-accent transition-colors cursor-pointer"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <X size={32} />
             </button>
 
             <div className="flex flex-col items-start gap-8">
-              <Link href="/" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-              <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-              <Link href="/work" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Work</Link>
-              <Link href="/blog" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
-              <Link href="/contact" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+              <Link href="/" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+              <Link href="/about" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+              <Link href="/services" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+              <Link href="/industries" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Industries</Link>
+              <Link href="/work" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Work</Link>
+              <Link href="/blog" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+              <Link href="/contact" className="text-[15px] font-medium text-text-secondary hover:text-[#ffffff] transition-colors cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
               <div className="w-full pt-8 border-t border-white/5">
-                <Button className="w-full gap-2 whitespace-nowrap" size="lg" onClick={() => setIsMobileMenuOpen(false)}>
-                  Book Call <CaretRight weight="bold" />
-                </Button>
+                <Link href="/contact" className="w-full cursor-pointer" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full gap-2 whitespace-nowrap" size="lg">
+                    Book Call <CaretRight weight="bold" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
