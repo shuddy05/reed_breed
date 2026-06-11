@@ -6,15 +6,23 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { CheckCircle, Clock, Calendar, RocketLaunch } from "phosphor-react"
 
+import { ProtectedRoute } from "@/components/auth/protected-route"
+
 export default function ClientDashboard() {
-  const { user } = useAuth()
+  const { user, getToken } = useAuth()
   const [projects, setProjects] = React.useState([])
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
     const fetchOverview = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/client/overview")
+        const token = getToken()
+        const res = await fetch("http://127.0.0.1:8000/api/client/overview", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        })
         if (res.ok) {
           const data = await res.json()
           setProjects(data)
@@ -26,10 +34,10 @@ export default function ClientDashboard() {
       }
     }
     fetchOverview()
-  }, [])
+  }, [getToken])
 
   return (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <main className="min-h-screen pt-32 pb-20 bg-void">
         <div className="container mx-auto px-6">
@@ -95,6 +103,6 @@ export default function ClientDashboard() {
         </div>
       </main>
       <Footer />
-    </>
+    </ProtectedRoute>
   )
 }

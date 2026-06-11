@@ -23,8 +23,8 @@ export default function LoginPage() {
   const onSubmit = async (data: any) => {
     try {
       await login(data)
-    } catch (err) {
-      alert("Login failed. Please check your credentials.")
+    } catch (err: any) {
+      alert(err.message || "Login failed. Please check your credentials.")
     }
   }
 

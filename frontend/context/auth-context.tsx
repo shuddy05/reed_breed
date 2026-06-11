@@ -4,10 +4,10 @@ import React, { createContext, useContext, useState, useEffect, Suspense } from 
 import { useRouter, useSearchParams } from 'next/navigation'
 
 interface User {
-  id: string
+  id: number
   email: string
   name: string
-  role: 'ADMIN' | 'CLIENT'
+  role: string
 }
 
 interface AuthContextType {
@@ -15,9 +15,12 @@ interface AuthContextType {
   loading: boolean
   login: (credentials: any) => Promise<void>
   logout: () => Promise<void>
+  getToken: () => string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+const API_URL = 'http://127.0.0.1:8000/api'
 
 const AuthProviderInternal = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
@@ -25,13 +28,33 @@ const AuthProviderInternal = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  const getToken = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('rb_token')
+    }
+    return null
+  }
+
   useEffect(() => {
     const checkUser = async () => {
+      const token = getToken()
+      if (!token) {
+        setLoading(false)
+        return
+      }
+
       try {
-        const res = await fetch('http://localhost:8080/api/auth/me')
+        const res = await fetch(`${API_URL}/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        })
         if (res.ok) {
           const data = await res.json()
           setUser(data)
+        } else {
+          localStorage.removeItem('rb_token')
         }
       } catch (err) {
         console.error('Auth check failed', err)
@@ -43,32 +66,45 @@ const AuthProviderInternal = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const login = async (credentials: any) => {
-    const res = await fetch('http://localhost:8080/api/auth/login', {
+    const res = await fetch(`${API_URL}/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(credentials),
     })
+
+    const data = await res.json()
+
     if (res.ok) {
-      const meRes = await fetch('http://localhost:8080/api/auth/me')
-      if (meRes.ok) {
-        const userData = await meRes.json()
-        setUser(userData)
-        const redirectTo = searchParams.get('redirect') || '/dashboard'
-        router.push(redirectTo)
-      }
+      localStorage.setItem('rb_token', data.token)
+      setUser(data.user)
+      const redirectTo = searchParams.get('redirect') || '/admin'
+      router.push(redirectTo)
     } else {
-      throw new Error('Login failed')
+      throw new Error(data.message || 'Login failed')
     }
   }
 
   const logout = async () => {
-    await fetch('http://localhost:8080/api/auth/logout', { method: 'POST' })
+    const token = getToken()
+    if (token) {
+      await fetch(`${API_URL}/logout`, { 
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      })
+    }
+    localStorage.removeItem('rb_token')
     setUser(null)
     router.push('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, getToken }}>
       {children}
     </AuthContext.Provider>
   )

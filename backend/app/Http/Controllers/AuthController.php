@@ -11,6 +11,8 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        \Illuminate\Support\Facades\Log::info('Login attempt', $request->all());
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -18,10 +20,14 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Invalid login credentials'
-            ], 401);
+        if (!$user) {
+            \Illuminate\Support\Facades\Log::warning('User not found: ' . $request->email);
+            return response()->json(['message' => 'Invalid login credentials'], 401);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            \Illuminate\Support\Facades\Log::warning('Password mismatch for: ' . $request->email);
+            return response()->json(['message' => 'Invalid login credentials'], 401);
         }
 
         $token = $user->createToken('admin-token')->plainTextToken;
