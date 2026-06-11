@@ -5,35 +5,16 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { StrokedText } from "@/components/ui/stroked-text"
-
+import { apiRequest } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 
-const posts = [
-  {
-    id: "blog-1",
-    slug: "curating-a-workplace",
-    category: "Marketing",
-    title: "Curating a workplace that inspires all of us",
-    image: "/blog1.jpg",
-    link: "/blog/curating-a-workplace"
-  },
-  {
-    id: "blog-2",
-    slug: "designers-who-changed-the-web",
-    category: "Design",
-    title: "Designers who changed the web with Webflow",
-    image: "/blog2.jpg",
-    link: "/blog/designers-who-changed-the-web"
-  },
-  {
-    id: "blog-3",
-    slug: "communication-between-departments",
-    category: "Code",
-    title: "Communication between departments",
-    image: "/blog3.jpg",
-    link: "/blog/communication-between-departments"
-  }
-]
+interface Post {
+  id: number
+  slug: string
+  category: { id: number, name: string }
+  title: string
+  image: string
+}
 
 export const BlogSection = ({ 
   isFullPage = false, 
@@ -44,10 +25,30 @@ export const BlogSection = ({
   excludeSlug?: string,
   title?: string
 }) => {
-  const [hoveredId, setHoveredId] = React.useState<string | null>(null)
+  const [hoveredId, setHoveredId] = React.useState<number | null>(null)
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 })
+  const [posts, setPosts] = React.useState<Post[]>([])
+  const [loading, setLoading] = React.useState(true)
 
-  const handleMouseMove = (e: React.MouseEvent, id: string) => {
+  const fetchPosts = React.useCallback(async () => {
+    try {
+      const res = await apiRequest('/blog/posts')
+      if (res.ok) {
+        const data = await res.json()
+        setPosts(data)
+      }
+    } catch (err) {
+      console.error("Failed to fetch posts", err)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    fetchPosts()
+  }, [fetchPosts])
+
+  const handleMouseMove = (e: React.MouseEvent, id: number) => {
     const rect = e.currentTarget.getBoundingClientRect()
     setMousePos({
       x: e.clientX - rect.left,
@@ -92,7 +93,20 @@ export const BlogSection = ({
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 max-w-7xl mx-auto mb-20">
-          {filteredPosts.map((post, index) => (
+          {loading ? (
+            [...Array(3)].map((_, i) => (
+              <div key={i} className="flex flex-col gap-8 animate-pulse">
+                <div className="aspect-[4/3] bg-white/5 rounded-sm" />
+                <div className="space-y-4">
+                  <div className="h-4 bg-white/5 w-1/4 rounded" />
+                  <div className="h-12 bg-white/5 w-full rounded" />
+                  <div className="h-10 bg-white/5 w-1/3 rounded-full" />
+                </div>
+              </div>
+            ))
+          ) : filteredPosts.length === 0 ? (
+            <div className="md:col-span-3 text-center py-20 text-text-muted font-bold uppercase tracking-widest">No articles found.</div>
+          ) : filteredPosts.slice(0, 3).map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
@@ -105,12 +119,16 @@ export const BlogSection = ({
               className="flex flex-col group cursor-none"
             >
               <div className="relative aspect-[4/3] mb-8 overflow-hidden rounded-sm bg-surface shadow-xl">
-                <Image 
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0"
-                />
+                {post.image ? (
+                  <Image 
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-white/5 flex items-center justify-center text-text-muted">No Image</div>
+                )}
                 
                 {/* Custom Cursor Badge */}
                 <motion.div
@@ -140,7 +158,7 @@ export const BlogSection = ({
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-white font-black text-xs uppercase tracking-widest flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white rounded-full" />
-                  {post.category}
+                  {post.category?.name}
                 </span>
               </div>
 
@@ -148,7 +166,7 @@ export const BlogSection = ({
                 {post.title}
               </div>
               
-              <Link href={post.link}>
+              <Link href={`/blog/${post.slug}`}>
                 <Button 
                   className="px-8 py-4 h-auto rounded-full font-bold text-base transition-all duration-300"
                 >

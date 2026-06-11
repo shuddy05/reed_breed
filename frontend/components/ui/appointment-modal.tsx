@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Calendar as CalendarIcon, Clock, VideoCamera } from "phosphor-react"
 import { Button } from "@/components/ui/button"
+import { apiRequest } from "@/lib/api"
 
 interface AppointmentModalProps {
   isOpen: boolean
@@ -14,8 +15,23 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
   const [step, setStep] = React.useState(1)
   const [selectedDate, setSelectedDate] = React.useState<number | null>(null)
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null)
+  
+  // Step 2 state
+  const [name, setName] = React.useState("")
+  const [email, setEmail] = React.useState("")
+  const [note, setNote] = React.useState("")
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const today = new Date()
+  const currentMonth = today.getMonth()
+  const currentYear = today.getFullYear()
+  const monthName = today.toLocaleString('default', { month: 'long' })
 
   const timeSlots = ["09:00 AM", "10:30 AM", "01:00 PM", "02:30 PM", "04:00 PM"]
+
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay()
 
   // Reset state when closed
   React.useEffect(() => {
@@ -24,14 +40,56 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
         setStep(1)
         setSelectedDate(null)
         setSelectedTime(null)
+        setName("")
+        setEmail("")
+        setNote("")
+        setError(null)
       }, 300)
     }
   }, [isOpen])
 
+  const handleBooking = async () => {
+    if (!name || !email) {
+      setError("Please fill in your name and email.")
+      return
+    }
+
+    setIsSubmitting(true)
+    setError(null)
+
+    const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}`
+
+    try {
+      const res = await apiRequest('/appointments/book', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          date: formattedDate,
+          time: selectedTime,
+          type: 'Discovery Call',
+          notes: note
+        })
+      })
+
+      if (res.ok) {
+        setStep(3)
+      } else {
+        const data = await res.json()
+        setError(data.message || "Failed to book appointment.")
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.")
+      console.error(err)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 text-white">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -78,7 +136,7 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
                       </h4>
                       <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
                         <div className="flex items-center justify-between mb-4 px-2 text-white font-bold">
-                          <span>June 2026</span>
+                          <span>{monthName} {currentYear}</span>
                         </div>
                         <div className="grid grid-cols-7 gap-1 text-center mb-2">
                           {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
@@ -86,9 +144,12 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
                           ))}
                         </div>
                         <div className="grid grid-cols-7 gap-1">
-                          {Array.from({ length: 30 }).map((_, i) => {
+                          {Array.from({ length: firstDay }).map((_, i) => (
+                            <div key={`empty-${i}`} className="aspect-square" />
+                          ))}
+                          {Array.from({ length: daysInMonth }).map((_, i) => {
                             const day = i + 1
-                            const isPast = day < 8
+                            const isPast = day < today.getDate()
                             const isSelected = selectedDate === day
                             return (
                               <button
@@ -168,22 +229,41 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
                     <VideoCamera size={24} weight="duotone" className="shrink-0 mt-1 sm:mt-0" />
                     <div>
                       <p className="font-bold text-sm">30 Minute Video Call</p>
-                      <p className="text-xs opacity-80">June {selectedDate}, 2026 at {selectedTime}</p>
+                      <p className="text-xs opacity-80">{monthName} {selectedDate}, {currentYear} at {selectedTime}</p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
+                    {error && <p className="text-error text-xs font-bold">{error}</p>}
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Name</label>
-                      <input type="text" placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent" />
+                      <input 
+                        type="text" 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Your Name" 
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" 
+                      />
                     </div>
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Email</label>
-                      <input type="email" placeholder="you@company.com" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent" />
+                      <input 
+                        type="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@company.com" 
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" 
+                      />
                     </div>
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Anything we should know? (Optional)</label>
-                      <textarea rows={3} placeholder="Briefly describe what you'd like to discuss..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent resize-none"></textarea>
+                      <textarea 
+                        rows={3} 
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        placeholder="Briefly describe what you'd like to discuss..." 
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent resize-none placeholder:text-text-muted/50"
+                      ></textarea>
                     </div>
                   </div>
 
@@ -195,10 +275,11 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
                       Back
                     </button>
                     <Button 
-                      onClick={() => setStep(3)}
-                      className="px-8 py-3 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all shadow-lg shadow-accent/20"
+                      onClick={handleBooking}
+                      disabled={isSubmitting}
+                      className="px-8 py-3 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all shadow-lg shadow-accent/20 disabled:opacity-50"
                     >
-                      Confirm Booking
+                      {isSubmitting ? "Confirming..." : "Confirm Booking"}
                     </Button>
                   </div>
                 </motion.div>
@@ -218,7 +299,7 @@ export const AppointmentModal = ({ isOpen, onClose }: AppointmentModalProps) => 
                     <p className="text-text-muted">A calendar invitation has been sent to your email.</p>
                   </div>
                   <div className="bg-white/5 border border-white/10 p-6 rounded-2xl w-full max-w-sm">
-                    <p className="text-accent font-bold text-lg mb-1">June {selectedDate}, 2026</p>
+                    <p className="text-accent font-bold text-lg mb-1">{monthName} {selectedDate}, {currentYear}</p>
                     <p className="text-white font-bold">{selectedTime}</p>
                   </div>
                   <Button 

@@ -8,54 +8,101 @@ import { Footer } from "@/components/layout/footer"
 import { BlogSection } from "@/components/sections/blog-section"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import Image from "next/image"
+import { apiRequest } from "@/lib/api"
+import { Button } from "@/components/ui/button"
 
-// Mock data - In a real app, this would come from a CMS or API
-const posts = [
-  {
-    slug: "curating-a-workplace",
-    category: "Marketing",
-    title: "Curating a workplace that inspires all of us",
-    date: "March 9, 2021",
-    image: "/blog1.jpg",
-    content: `
-      <p>Building a workspace that fosters creativity and well-being is no longer a luxury—it's a necessity. In today's fast-paced digital world, the environment in which we work significantly impacts our output and mental health.</p>
-      <p>From ergonomic furniture to natural lighting, every detail matters. But beyond the physical aspects, the culture and community within the workplace are what truly inspire.</p>
-      <h2>The Power of Environment</h2>
-      <p>Studies have shown that natural elements like plants and sunlight can boost productivity by up to 15%. Incorporating these into your office design can create a more inviting and energizing atmosphere.</p>
-      <p>However, inspiration also comes from collaboration. Open spaces that encourage spontaneous discussions and brainstorming sessions are vital for innovation.</p>
-    `
-  },
-  {
-    slug: "designers-who-changed-the-web",
-    category: "Design",
-    title: "Designers who changed the web with Webflow",
-    date: "June 12, 2021",
-    image: "/blog2.jpg",
-    content: `
-      <p>Webflow has revolutionized how we think about web design. By bridging the gap between visual design and production-ready code, it has empowered a new generation of designers to bring their visions to life without being held back by technical limitations.</p>
-      <p>In this article, we look at some of the most influential designers who have leveraged Webflow to push the boundaries of what's possible on the web.</p>
-    `
-  },
-  {
-    slug: "communication-between-departments",
-    category: "Code",
-    title: "Communication between departments",
-    date: "September 24, 2021",
-    image: "/blog3.jpg",
-    content: `
-      <p>Effective communication is the backbone of any successful organization. When departments work in silos, information is lost, and efficiency drops. Breaking down these barriers is essential for growth and innovation.</p>
-      <p>Whether it's between design and engineering or sales and marketing, clear and transparent communication channels ensure that everyone is aligned with the company's goals.</p>
-    `
-  }
-]
+interface Post {
+  id: number
+  slug: string
+  category: { id: number, name: string }
+  title: string
+  date: string
+  created_at: string
+  image: string
+  content: string
+}
 
 export default function BlogPostPage() {
   const params = useParams()
-  const post = posts.find(p => p.slug === params.slug)
+  const slug = params.slug as string
+  const [post, setPost] = React.useState<Post | null>(null)
+  const [loading, setLoading] = React.useState(true)
+  
+  // Comment Form State
+  const [name, setName] = React.useState("")
+  const [email, setEmail] = React.useState("")
+  const [commentBody, setCommentBody] = React.useState("")
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [commentSuccess, setCommentSuccess] = React.useState(false)
+  const [commentError, setCommentError] = React.useState<string | null>(null)
 
-  if (!post) {
-    notFound()
+  const fetchPost = React.useCallback(async () => {
+    try {
+      const res = await apiRequest(`/blog/posts/${slug}`)
+      if (res.ok) {
+        const data = await res.json()
+        setPost(data)
+      } else {
+        notFound()
+      }
+    } catch (err) {
+      console.error(err)
+      notFound()
+    } finally {
+      setLoading(false)
+    }
+  }, [slug])
+
+  React.useEffect(() => {
+    fetchPost()
+  }, [fetchPost])
+
+  const handleCommentSubmit = async (e: React.MouseEvent) => {
+    if (!name || !email || !commentBody) {
+      setCommentError("Please fill in all fields.")
+      return
+    }
+
+    setIsSubmitting(true)
+    setCommentError(null)
+
+    try {
+      const res = await apiRequest('/blog/comments', {
+        method: 'POST',
+        body: JSON.stringify({
+          post_slug: slug,
+          name,
+          email,
+          body: commentBody
+        })
+      })
+
+      if (res.ok) {
+        setCommentSuccess(true)
+        setName("")
+        setEmail("")
+        setCommentBody("")
+      } else {
+        const data = await res.json()
+        setCommentError(data.message || "Failed to submit comment.")
+      }
+    } catch (err) {
+      setCommentError("An error occurred.")
+      console.error(err)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-void flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+      </div>
+    )
+  }
+
+  if (!post) return null
 
   return (
     <>
@@ -69,7 +116,7 @@ export default function BlogPostPage() {
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] bg-repeat" />
         </div>
 
-        {/* Hero Section - Matching single-posts1.png */}
+        {/* Hero Section */}
         <div className="container mx-auto px-6 relative z-10 pt-48 pb-24 md:pt-64 flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +132,7 @@ export default function BlogPostPage() {
             </div>
             
             <p className="text-white font-bold text-lg md:text-xl uppercase tracking-widest mb-16">
-              {post.date}
+              {new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
 
             <ScrollIndicator />
@@ -96,19 +143,21 @@ export default function BlogPostPage() {
         <div className="container mx-auto px-6 relative z-10 pb-32">
           <div className="max-w-4xl mx-auto">
              {/* Feature Image */}
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               transition={{ duration: 1 }}
-               className="relative aspect-[16/9] rounded-3xl overflow-hidden mb-24 shadow-2xl"
-             >
-               <Image 
-                 src={post.image}
-                 alt={post.title}
-                 fill
-                 className="object-cover"
-               />
-             </motion.div>
+             {post.image && (
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.95 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
+                 transition={{ duration: 1 }}
+                 className="relative aspect-[16/9] rounded-3xl overflow-hidden mb-24 shadow-2xl"
+               >
+                 <Image 
+                   src={post.image}
+                   alt={post.title}
+                   fill
+                   className="object-cover"
+                 />
+               </motion.div>
+             )}
 
              <div className="prose prose-invert prose-lg max-w-none mb-24">
                 <div 
@@ -118,7 +167,7 @@ export default function BlogPostPage() {
              </div>
 
              {/* Author & Share Section */}
-             <div className="flex flex-col md:flex-row items-center justify-between py-12 border-t border-b border-white/5 mb-32 gap-8">
+             <div className="flex flex-col md:flex-row items-center justify-between py-12 border-t border-b border-white/5 mb-24 gap-8">
                 <div className="flex items-center gap-6">
                    <div className="w-16 h-16 rounded-full overflow-hidden bg-surface relative">
                       <Image 
@@ -141,6 +190,57 @@ export default function BlogPostPage() {
                         {platform}
                       </button>
                    ))}
+                </div>
+             </div>
+
+             {/* Comment Section */}
+             <div className="max-w-2xl mx-auto pt-16">
+                <h3 className="text-h3 font-black text-white mb-12 tracking-tighter">Leave a Comment</h3>
+                
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Name</label>
+                      <input 
+                        type="text" 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Your Name"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Email</label>
+                      <input 
+                        type="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Your Email"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Comment</label>
+                    <textarea 
+                      rows={6}
+                      value={commentBody}
+                      onChange={(e) => setCommentBody(e.target.value)}
+                      placeholder="What's on your mind?"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors resize-none"
+                    ></textarea>
+                  </div>
+                  
+                  {commentError && <p className="text-error text-xs font-bold">{commentError}</p>}
+                  {commentSuccess && <p className="text-success text-xs font-bold">Comment submitted for approval!</p>}
+
+                  <Button 
+                    onClick={handleCommentSubmit}
+                    disabled={isSubmitting}
+                    className="w-full py-6 h-auto text-lg font-bold rounded-2xl"
+                  >
+                    {isSubmitting ? "Submitting..." : "Post Comment"}
+                  </Button>
                 </div>
              </div>
           </div>

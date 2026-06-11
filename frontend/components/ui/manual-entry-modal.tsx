@@ -4,17 +4,82 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from "phosphor-react"
 import { Button } from "@/components/ui/button"
+import { apiRequest } from "@/lib/api"
+import { useAuth } from "@/context/auth-context"
 
 interface ManualEntryModalProps {
   isOpen: boolean
   onClose: () => void
+  onSaved?: () => void
 }
 
-export const ManualEntryModal = ({ isOpen, onClose }: ManualEntryModalProps) => {
+export const ManualEntryModal = ({ isOpen, onClose, onSaved }: ManualEntryModalProps) => {
+  const [name, setName] = React.useState("")
+  const [email, setEmail] = React.useState("")
+  const [date, setDate] = React.useState("")
+  const [time, setTime] = React.useState("")
+  const [type, setType] = React.useState("discovery")
+  const [notes, setNotes] = React.useState("")
+  const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const { getToken } = useAuth()
+
+  const handleSave = async () => {
+    if (!name || !email || !date || !time) {
+      setError("Please fill in all required fields.")
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    const typeMap: Record<string, string> = {
+      "discovery": "Discovery Call",
+      "strategy": "Strategy Session",
+      "consultation": "Consultation"
+    }
+
+    try {
+      const res = await apiRequest('/appointments/manual', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          date,
+          time,
+          type: typeMap[type] || type,
+          notes,
+          status: 'Upcoming'
+        })
+      }, getToken())
+
+      if (res.ok) {
+        // Reset and close
+        setName("")
+        setEmail("")
+        setDate("")
+        setTime("")
+        setType("discovery")
+        setNotes("")
+        onSaved?.()
+        onClose()
+      } else {
+        const data = await res.json()
+        setError(data.message || "Failed to save booking.")
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.")
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 text-white">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -46,32 +111,59 @@ export const ManualEntryModal = ({ isOpen, onClose }: ManualEntryModalProps) => 
 
             {/* Content Body */}
             <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar">
-              <form className="space-y-6">
+              <div className="space-y-6">
+                 {error && <p className="text-error text-xs font-bold">{error}</p>}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Client Name</label>
-                      <input type="text" placeholder="John Doe" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" />
+                      <input 
+                        type="text" 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="John Doe" 
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" 
+                      />
                     </div>
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Email</label>
-                      <input type="email" placeholder="john@example.com" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" />
+                      <input 
+                        type="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="john@example.com" 
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent placeholder:text-text-muted/50" 
+                      />
                     </div>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Date</label>
-                      <input type="date" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]" />
+                      <input 
+                        type="date" 
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]" 
+                      />
                     </div>
                     <div>
                       <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Time</label>
-                      <input type="time" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]" />
+                      <input 
+                        type="time" 
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]" 
+                      />
                     </div>
                  </div>
 
                  <div>
                     <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Call Type</label>
-                    <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]">
+                    <select 
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                      className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent [color-scheme:dark]"
+                    >
                        <option value="discovery">Discovery Call</option>
                        <option value="strategy">Strategy Session</option>
                        <option value="consultation">Consultation</option>
@@ -80,9 +172,15 @@ export const ManualEntryModal = ({ isOpen, onClose }: ManualEntryModalProps) => 
                  
                  <div>
                     <label className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 block">Notes (Optional)</label>
-                    <textarea rows={3} placeholder="Any specific topics to discuss..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent resize-none placeholder:text-text-muted/50"></textarea>
+                    <textarea 
+                      rows={3} 
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="Any specific topics to discuss..." 
+                      className="w-full bg-void border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent resize-none placeholder:text-text-muted/50"
+                    ></textarea>
                  </div>
-              </form>
+              </div>
             </div>
             
             {/* Footer */}
@@ -94,10 +192,11 @@ export const ManualEntryModal = ({ isOpen, onClose }: ManualEntryModalProps) => 
                  Cancel
                </button>
                <Button 
-                 onClick={onClose}
-                 className="px-8 py-3 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all shadow-lg shadow-accent/20"
+                 onClick={handleSave}
+                 disabled={loading}
+                 className="px-8 py-3 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all shadow-lg shadow-accent/20 disabled:opacity-50"
                >
-                 Save Booking
+                 {loading ? "Saving..." : "Save Booking"}
                </Button>
             </div>
           </motion.div>

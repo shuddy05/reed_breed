@@ -11,7 +11,7 @@ import {
   FileText
 } from "phosphor-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { apiRequest } from "@/lib/api"
 import { useAuth } from "@/context/auth-context"
@@ -55,13 +55,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
   )
 }
 
-export default function NewBlogPost() {
+export default function EditBlogPost() {
+  const params = useParams()
+  const id = params.id as string
   const [title, setTitle] = React.useState("")
   const [categoryId, setCategoryId] = React.useState("")
   const [excerpt, setExcerpt] = React.useState("")
   const [image, setImage] = React.useState<string | null>(null)
   const [categories, setCategories] = React.useState<{id: number, name: string}[]>([])
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(true)
+  const [saving, setSaving] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
   const router = useRouter()
@@ -76,7 +79,7 @@ export default function NewBlogPost() {
         openOnClick: false,
       }),
     ],
-    content: '<p>Start writing your masterpiece...</p>',
+    content: '<p>Loading content...</p>',
     editorProps: {
       attributes: {
         class: 'prose prose-invert prose-lg max-w-none focus:outline-none min-h-[400px] p-8',
@@ -85,20 +88,41 @@ export default function NewBlogPost() {
   })
 
   React.useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const res = await apiRequest('/blog/categories')
-        if (res.ok) {
-          const data = await res.json()
-          setCategories(data)
-          if (data.length > 0) setCategoryId(data[0].id.toString())
+        const token = getToken()
+        const [postsRes, catsRes] = await Promise.all([
+          apiRequest('/admin/blog/posts', {}, token),
+          apiRequest('/blog/categories')
+        ])
+
+        if (catsRes.ok) {
+          const catsData = await catsRes.json()
+          setCategories(catsData)
+        }
+
+        if (postsRes.ok) {
+          const postsData = await postsRes.json()
+          const post = postsData.find((p: any) => p.id.toString() === id)
+          if (post) {
+            setTitle(post.title)
+            setCategoryId(post.category_id?.toString() || post.category?.id?.toString() || "")
+            setExcerpt(post.excerpt || "")
+            setImage(post.image || null)
+            editor?.commands.setContent(post.content || "")
+          } else {
+            setError("Post not found.")
+          }
         }
       } catch (err) {
         console.error(err)
+        setError("Failed to fetch data.")
+      } finally {
+        setLoading(false)
       }
     }
-    fetchCategories()
-  }, [])
+    fetchData()
+  }, [id, getToken, editor])
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -117,12 +141,12 @@ export default function NewBlogPost() {
       return
     }
 
-    setLoading(true)
+    setSaving(true)
     setError(null)
 
     try {
-      const res = await apiRequest('/admin/blog/posts', {
-        method: 'POST',
+      const res = await apiRequest(`/admin/blog/posts/${id}`, {
+        method: 'PATCH',
         body: JSON.stringify({
           title,
           category_id: categoryId,
@@ -137,20 +161,28 @@ export default function NewBlogPost() {
         router.push('/admin/blog')
       } else {
         const data = await res.json()
-        setError(data.message || "Failed to save post.")
+        setError(data.message || "Failed to update post.")
       }
     } catch (err) {
       setError("An unexpected error occurred.")
       console.error(err)
     } finally {
-      setLoading(false)
+      setSaving(false)
     }
   }
 
   const handleDiscard = () => {
-    if (window.confirm('Discard this draft?')) {
+    if (window.confirm('Discard changes?')) {
       router.push('/admin/blog')
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-accent"></div>
+      </div>
+    )
   }
 
   return (
@@ -165,19 +197,19 @@ export default function NewBlogPost() {
         <div className="flex gap-4">
           <button 
             onClick={() => handleSubmit('Draft')}
-            disabled={loading}
+            disabled={saving}
             className="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-2xl font-bold hover:bg-white/10 transition-all text-white disabled:opacity-50"
           >
             <FileText size={20} />
-            <span className="text-sm uppercase tracking-widest">{loading ? 'Saving...' : 'Save Draft'}</span>
+            <span className="text-sm uppercase tracking-widest">{saving ? 'Saving...' : 'Save Draft'}</span>
           </button>
           <button 
             onClick={() => handleSubmit('Published')}
-            disabled={loading}
+            disabled={saving}
             className="flex items-center gap-3 px-8 py-3 bg-accent text-white rounded-2xl font-bold hover:bg-accent-dim transition-all shadow-lg shadow-accent/20 disabled:opacity-50"
           >
             <CloudArrowUp size={20} weight="bold" />
-            <span className="text-sm uppercase tracking-widest">{loading ? 'Publishing...' : 'Publish Post'}</span>
+            <span className="text-sm uppercase tracking-widest">{saving ? 'Updating...' : 'Update Post'}</span>
           </button>
         </div>
       </div>
@@ -264,7 +296,7 @@ export default function NewBlogPost() {
                   className="w-full py-4 rounded-2xl bg-error/10 text-error font-bold uppercase tracking-widest text-xs hover:bg-error hover:text-white transition-all flex items-center justify-center gap-3"
                  >
                     <Trash size={18} />
-                    Discard Draft
+                    Discard Changes
                  </button>
               </div>
            </div>

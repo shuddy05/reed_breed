@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@reedbreed.com',
-            'password' => 'admin123',
+            'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
             'role' => 'admin',
         ]);
 
         User::create([
             'name' => 'Client User',
             'email' => 'client@example.com',
-            'password' => 'client123',
+            'password' => \Illuminate\Support\Facades\Hash::make('client123'),
             'role' => 'client',
         ]);
     }

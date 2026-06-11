@@ -15,8 +15,8 @@ class LeadController extends Controller
             'company' => 'nullable|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:50',
-            'website' => 'required|url|max:255',
-            'details' => 'required|string', // Project Details
+            'website' => 'nullable|url|max:255',
+            'details' => 'nullable|string', // Project Details
         ]);
 
         $lead = Lead::create([
@@ -24,8 +24,8 @@ class LeadController extends Controller
             'company' => $validated['company'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'website' => $validated['website'],
-            'details' => $validated['details'],
+            'website' => $validated['website'] ?? null,
+            'details' => $validated['details'] ?? null,
             'status' => 'New',
         ]);
 
@@ -52,5 +52,12 @@ class LeadController extends Controller
         $lead->update($validated);
 
         return response()->json(['message' => 'Lead updated successfully', 'lead' => $lead]);
+    }
+
+    public function destroy($id)
+    {
+        $lead = Lead::findOrFail($id);
+        $lead->delete();
+        return response()->json(null, 204);
     }
 }

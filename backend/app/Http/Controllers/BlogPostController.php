@@ -38,6 +38,7 @@ class BlogPostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'excerpt' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'status' => 'required|in:Draft,Published',
             'image' => 'nullable|string'

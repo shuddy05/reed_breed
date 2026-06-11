@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Leads Funnel
     Route::get('/leads', [LeadController::class, 'index']);
     Route::patch('/leads/{id}', [LeadController::class, 'update']);
+    Route::delete('/leads/{id}', [LeadController::class, 'destroy']);
 
     // Blog CMS - Categories
     Route::post('/blog/categories', [CategoryController::class, 'store']);

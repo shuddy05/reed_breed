@@ -56,6 +56,7 @@ model BlogPost {
   title      String
   slug       String    @unique
   content    String?
+  excerpt    String?
   image      String?
   status     String    @default("Draft") // Draft, Published
   category   Category  @relation(fields: [categoryId], references: [id])

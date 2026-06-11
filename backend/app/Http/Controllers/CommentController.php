@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\BlogPost;
 
 class CommentController extends Controller
 {
@@ -11,15 +12,32 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'post_id' => 'required|exists:blog_posts,id',
-            'author' => 'required|string|max:255',
+            'post_id' => 'nullable|exists:blog_posts,id',
+            'post_slug' => 'nullable|string|exists:blog_posts,slug',
+            'author' => 'nullable|string|max:255',
+            'name' => 'nullable|string|max:255',
             'email' => 'required|email|max:255',
-            'text' => 'required|string|max:1000',
+            'text' => 'nullable|string|max:1000',
+            'body' => 'nullable|string|max:1000',
         ]);
 
-        $validated['status'] = 'Pending';
+        if (!$request->post_id && !$request->post_slug) {
+            return response()->json(['message' => 'Post ID or Slug is required'], 422);
+        }
 
-        $comment = Comment::create($validated);
+        $postId = $request->post_id;
+        if (!$postId && $request->post_slug) {
+            $post = BlogPost::where('slug', $request->post_slug)->firstOrFail();
+            $postId = $post->id;
+        }
+
+        $comment = Comment::create([
+            'post_id' => $postId,
+            'author' => $request->name ?? $request->author ?? 'Anonymous',
+            'email' => $request->email,
+            'text' => $request->body ?? $request->text ?? '',
+            'status' => 'Pending'
+        ]);
 
         return response()->json(['message' => 'Comment submitted and awaiting approval', 'comment' => $comment], 201);
     }

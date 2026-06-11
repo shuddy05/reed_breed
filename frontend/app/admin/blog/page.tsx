@@ -18,29 +18,142 @@ import {
 import { StrokedText } from "@/components/ui/stroked-text"
 import Image from "next/image"
 import Link from "next/link"
+import { apiRequest } from "@/lib/api"
+import { useAuth } from "@/context/auth-context"
 
-// --- Mock Data ---
-const blogPosts = [
-  { id: 1, title: "Curating a workplace that inspires all of us", category: "Marketing", date: "Mar 9, 2021", status: "Published", image: "/blog1.jpg" },
-  { id: 2, title: "Designers who changed the web with Webflow", category: "Design", date: "Jun 12, 2021", status: "Published", image: "/blog2.jpg" },
-  { id: 3, title: "Communication between departments", category: "Code", date: "Sep 24, 2021", status: "Draft", image: "/blog3.jpg" },
-]
+interface BlogPost {
+  id: number
+  title: string
+  slug: string
+  category: { id: number, name: string }
+  status: string
+  image: string
+  created_at: string
+}
 
-const categories = [
-  { id: 1, name: "Marketing", slug: "marketing", count: 12 },
-  { id: 2, name: "Design", slug: "design", count: 8 },
-  { id: 3, name: "Code", slug: "code", count: 5 },
-  { id: 4, name: "Strategy", slug: "strategy", count: 3 },
-]
+interface Category {
+  id: number
+  name: string
+  slug: string
+  posts_count?: number
+}
 
-const comments = [
-  { id: 1, author: "Jane Doe", email: "jane@example.com", text: "This completely changed how I look at workspace design. Thank you!", postTitle: "Curating a workplace that inspires all of us", status: "Pending", date: "2h ago" },
-  { id: 2, author: "Mark Smith", email: "mark@tech.io", text: "Webflow is definitely the future. Great insights!", postTitle: "Designers who changed the web with Webflow", status: "Approved", date: "1 day ago" },
-  { id: 3, author: "SpamBot", email: "buy@crypto.net", text: "Buy cheap crypto now click here!!", postTitle: "Communication between departments", status: "Spam", date: "2 days ago" },
-]
+interface Comment {
+  id: number
+  author: string
+  email: string
+  text: string
+  status: string
+  post: { id: number, title: string }
+  created_at: string
+}
 
 export default function BlogCMS() {
   const [activeTab, setActiveTab] = React.useState('articles')
+  const [posts, setPosts] = React.useState<BlogPost[]>([])
+  const [categories, setCategories] = React.useState<Category[]>([])
+  const [comments, setComments] = React.useState<Comment[]>([])
+  const [loading, setLoading] = React.useState(true)
+  
+  // New Category State
+  const [newCatName, setNewCatName] = React.useState('')
+  const [newCatSlug, setNewCatSlug] = React.useState('')
+
+  const { getToken } = useAuth()
+
+  const fetchData = React.useCallback(async () => {
+    setLoading(true)
+    const token = getToken()
+    try {
+      const [postsRes, catsRes, commentsRes] = await Promise.all([
+        apiRequest('/admin/blog/posts', {}, token),
+        apiRequest('/blog/categories'),
+        apiRequest('/admin/blog/comments', {}, token)
+      ])
+
+      if (postsRes.ok) setPosts(await postsRes.json())
+      if (catsRes.ok) setCategories(await catsRes.json())
+      if (commentsRes.ok) setComments(await commentsRes.json())
+    } catch (err) {
+      console.error("Failed to fetch CMS data", err)
+    } finally {
+      setLoading(false)
+    }
+  }, [getToken])
+
+  React.useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  const deletePost = async (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) return
+    try {
+      const res = await apiRequest(`/admin/blog/posts/${id}`, { method: 'DELETE' }, getToken())
+      if (res.ok) setPosts(prev => prev.filter(p => p.id !== id))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const deleteCategory = async (id: number) => {
+    if (!window.confirm("Are you sure? This may affect posts in this category.")) return
+    try {
+      const res = await apiRequest(`/blog/categories/${id}`, { method: 'DELETE' }, getToken())
+      if (res.ok) setCategories(prev => prev.filter(c => c.id !== id))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const addCategory = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const res = await apiRequest('/blog/categories', {
+        method: 'POST',
+        body: JSON.stringify({ name: newCatName, slug: newCatSlug })
+      }, getToken())
+      if (res.ok) {
+        const newCat = await res.json()
+        setCategories(prev => [...prev, newCat])
+        setNewCatName('')
+        setNewCatSlug('')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const updateCommentStatus = async (id: number, status: string) => {
+    try {
+      const res = await apiRequest(`/admin/blog/comments/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status })
+      }, getToken())
+      if (res.ok) {
+        setComments(prev => prev.map(c => c.id === id ? { ...c, status } : c))
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const deleteComment = async (id: number) => {
+    if (!window.confirm("Delete this comment?")) return
+    try {
+      const res = await apiRequest(`/admin/blog/comments/${id}`, { method: 'DELETE' }, getToken())
+      if (res.ok) setComments(prev => prev.filter(c => c.id !== id))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-accent"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
@@ -119,7 +232,9 @@ export default function BlogCMS() {
               exit={{ opacity: 0, y: -10 }}
               className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
             >
-              {blogPosts.map((post, i) => (
+              {posts.length === 0 ? (
+                <div className="md:col-span-2 xl:col-span-3 text-center py-20 text-text-muted font-bold uppercase tracking-widest">No articles found. Create your first one!</div>
+              ) : posts.map((post, i) => (
                 <motion.div
                   key={post.id}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -128,12 +243,18 @@ export default function BlogCMS() {
                   className="glass-card rounded-[32px] border-white/5 overflow-hidden group bg-white/[0.01]"
                 >
                   <div className="relative aspect-video overflow-hidden">
-                     <Image 
-                      src={post.image} 
-                      alt={post.title} 
-                      fill 
-                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                     />
+                     {post.image ? (
+                       <Image 
+                        src={post.image} 
+                        alt={post.title} 
+                        fill 
+                        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                       />
+                     ) : (
+                       <div className="w-full h-full bg-white/5 flex items-center justify-center text-text-muted">
+                         <Article size={48} weight="duotone" />
+                       </div>
+                     )}
                      <div className="absolute top-6 left-6">
                         <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                           post.status === 'Published' ? 'bg-success text-[#ffffff]' : 'bg-warning text-void'
@@ -145,11 +266,11 @@ export default function BlogCMS() {
                   
                   <div className="p-8 space-y-6">
                     <div className="flex items-center gap-3 text-text-muted text-[10px] font-black uppercase tracking-widest">
-                      <span className="text-accent">{post.category}</span>
+                      <span className="text-accent">{post.category?.name}</span>
                       <span className="w-1 h-1 bg-white/20 rounded-full" />
                       <div className="flex items-center gap-1.5">
                         <Calendar size={14} />
-                        {post.date}
+                        {new Date(post.created_at).toLocaleDateString()}
                       </div>
                     </div>
                     
@@ -164,11 +285,17 @@ export default function BlogCMS() {
                             <PencilSimple size={18} />
                           </button>
                         </Link>
-                        <button className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white hover:bg-white hover:text-void transition-all" title="View">
-                          <Eye size={18} />
-                        </button>
+                        <Link href={`/blog/${post.slug}`} target="_blank">
+                          <button className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white hover:bg-white hover:text-void transition-all" title="View">
+                            <Eye size={18} />
+                          </button>
+                        </Link>
                       </div>
-                      <button className="w-10 h-10 rounded-xl bg-error/5 flex items-center justify-center text-error hover:bg-error hover:text-white transition-all" title="Delete">
+                      <button 
+                        onClick={() => deletePost(post.id)}
+                        className="w-10 h-10 rounded-xl bg-error/5 flex items-center justify-center text-error hover:bg-error hover:text-white transition-all" 
+                        title="Delete"
+                      >
                         <Trash size={18} />
                       </button>
                     </div>
@@ -197,27 +324,37 @@ export default function BlogCMS() {
               {/* Add New Category Form */}
               <div className="glass-card rounded-[40px] border-white/5 p-10 bg-white/[0.01] h-fit">
                  <h3 className="text-2xl font-black text-white tracking-tighter mb-8">Add Category</h3>
-                 <form className="space-y-6">
+                 <div className="space-y-6">
                     <div>
                       <label className="text-[10px] font-black uppercase tracking-widest text-text-muted block mb-3">Name</label>
                       <input 
                         type="text" 
+                        value={newCatName}
+                        onChange={(e) => {
+                          setNewCatName(e.target.value)
+                          setNewCatSlug(e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''))
+                        }}
                         placeholder="e.g. Artificial Intelligence" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-void border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
                     <div>
                       <label className="text-[10px] font-black uppercase tracking-widest text-text-muted block mb-3">Slug</label>
                       <input 
                         type="text" 
+                        value={newCatSlug}
+                        onChange={(e) => setNewCatSlug(e.target.value)}
                         placeholder="e.g. artificial-intelligence" 
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-void border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
-                    <button className="w-full py-4 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all mt-4">
+                    <button 
+                      onClick={addCategory}
+                      className="w-full py-4 bg-accent text-white rounded-xl font-bold hover:bg-accent-dim transition-all mt-4"
+                    >
                       Add Category
                     </button>
-                 </form>
+                 </div>
               </div>
 
               {/* Categories Table */}
@@ -232,7 +369,9 @@ export default function BlogCMS() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
-                    {categories.map((cat) => (
+                    {categories.length === 0 ? (
+                      <tr><td colSpan={4} className="px-10 py-20 text-center text-text-muted font-bold uppercase tracking-widest">No categories found.</td></tr>
+                    ) : categories.map((cat) => (
                       <tr key={cat.id} className="hover:bg-white/[0.03] transition-colors group">
                         <td className="px-10 py-6">
                           <div className="flex items-center gap-4">
@@ -244,14 +383,14 @@ export default function BlogCMS() {
                         </td>
                         <td className="px-10 py-6 text-sm text-text-muted">{cat.slug}</td>
                         <td className="px-10 py-6">
-                           <span className="px-3 py-1 rounded-md bg-white/5 text-white text-xs font-bold">{cat.count}</span>
+                           <span className="px-3 py-1 rounded-md bg-white/5 text-white text-xs font-bold">{cat.posts_count ?? 0}</span>
                         </td>
                         <td className="px-10 py-6 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <button className="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center text-text-muted hover:text-white transition-all">
-                              <PencilSimple size={18} />
-                            </button>
-                            <button className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all">
+                            <button 
+                              onClick={() => deleteCategory(cat.id)}
+                              className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all"
+                            >
                               <Trash size={18} />
                             </button>
                           </div>
@@ -283,7 +422,9 @@ export default function BlogCMS() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
-                    {comments.map((comment) => (
+                    {comments.length === 0 ? (
+                      <tr><td colSpan={4} className="px-10 py-20 text-center text-text-muted font-bold uppercase tracking-widest">No comments yet.</td></tr>
+                    ) : comments.map((comment) => (
                       <tr key={comment.id} className="hover:bg-white/[0.03] transition-colors group">
                         <td className="px-10 py-8">
                           <div className="flex items-start gap-4">
@@ -293,7 +434,7 @@ export default function BlogCMS() {
                             <div>
                               <p className="font-bold text-white">{comment.author}</p>
                               <p className="text-xs text-text-muted">{comment.email}</p>
-                              <p className="text-[10px] text-text-muted uppercase tracking-widest mt-2">{comment.date}</p>
+                              <p className="text-[10px] text-text-muted uppercase tracking-widest mt-2">{new Date(comment.created_at).toLocaleDateString()}</p>
                             </div>
                           </div>
                         </td>
@@ -309,19 +450,33 @@ export default function BlogCMS() {
                            <p className="text-sm text-text-secondary leading-relaxed">{comment.text}</p>
                         </td>
                         <td className="px-10 py-8">
-                          <span className="text-sm text-white opacity-60 line-clamp-2">{comment.postTitle}</span>
+                          <span className="text-sm text-white opacity-60 line-clamp-2">{comment.post?.title}</span>
                         </td>
                         <td className="px-10 py-8 text-right">
                           <div className="flex items-center justify-end gap-2">
                             {comment.status !== 'Approved' && (
-                              <button className="w-10 h-10 rounded-xl hover:bg-success/10 flex items-center justify-center text-text-muted hover:text-success transition-all" title="Approve">
+                              <button 
+                                onClick={() => updateCommentStatus(comment.id, 'Approved')}
+                                className="w-10 h-10 rounded-xl hover:bg-success/10 flex items-center justify-center text-text-muted hover:text-success transition-all" 
+                                title="Approve"
+                              >
                                 <CheckCircle size={20} />
                               </button>
                             )}
-                            <button className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all" title="Mark as Spam">
-                              <XCircle size={20} />
-                            </button>
-                            <button className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all" title="Delete">
+                            {comment.status !== 'Spam' && (
+                              <button 
+                                onClick={() => updateCommentStatus(comment.id, 'Spam')}
+                                className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all" 
+                                title="Mark as Spam"
+                              >
+                                <XCircle size={20} />
+                              </button>
+                            )}
+                            <button 
+                              onClick={() => deleteComment(comment.id)}
+                              className="w-10 h-10 rounded-xl hover:bg-error/10 flex items-center justify-center text-text-muted hover:text-error transition-all" 
+                              title="Delete"
+                            >
                               <Trash size={20} />
                             </button>
                           </div>

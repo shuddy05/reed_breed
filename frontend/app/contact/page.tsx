@@ -10,9 +10,66 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Calendar } from "phosphor-react"
 import { AppointmentModal } from "@/components/ui/appointment-modal"
+import { apiRequest } from "@/lib/api"
 
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  
+  // Form State
+  const [name, setName] = React.useState("")
+  const [company, setCompany] = React.useState("")
+  const [email, setEmail] = React.useState("")
+  const [phone, setPhone] = React.useState("")
+  const [website, setWebsite] = React.useState("")
+  const [message, setMessage] = React.useState("")
+  
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [success, setSuccess] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!name || !email) {
+      setError("Name and Email are required.")
+      return
+    }
+
+    setIsSubmitting(true)
+    setError(null)
+    setSuccess(false)
+
+    try {
+      const res = await apiRequest('/contact', {
+        method: 'POST',
+        body: JSON.stringify({
+          contact: name,
+          company: company,
+          email: email,
+          phone: phone,
+          website: website,
+          details: message
+        })
+      })
+
+      if (res.ok) {
+        setSuccess(true)
+        setName("")
+        setCompany("")
+        setEmail("")
+        setPhone("")
+        setWebsite("")
+        setMessage("")
+      } else {
+        const data = await res.json()
+        setError(data.message || "Something went wrong. Please try again.")
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.")
+      console.error(err)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <>
@@ -27,7 +84,7 @@ export default function ContactPage() {
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] bg-repeat" />
         </div>
 
-        {/* Hero Section - Matching contact1.png */}
+        {/* Hero Section */}
         <div className="container mx-auto px-6 relative z-10 min-h-screen py-32 md:py-48 flex flex-col items-center text-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -69,7 +126,7 @@ export default function ContactPage() {
           <ScrollIndicator />
         </div>
 
-        {/* Contact Form Section - Matching contact2.png */}
+        {/* Contact Form Section */}
         <section className="relative z-10 py-24 md:py-48">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
@@ -77,45 +134,62 @@ export default function ContactPage() {
               <div className="flex flex-col items-start">
                 <h2 className="text-4xl md:text-5xl font-black text-white mb-12 tracking-tighter">Write us</h2>
                 
-                <form className="w-full space-y-6">
+                <div className="w-full space-y-6">
                   <div className="grid grid-cols-1 gap-6">
                     <input 
                       type="text" 
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       placeholder="Name*" 
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="text" 
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
                       placeholder="Company Name" 
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="Email*" 
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="tel" 
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                       placeholder="Phone Number" 
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="url" 
-                      placeholder="Website URL*" 
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
+                      placeholder="Website URL" 
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <textarea 
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
                       placeholder="Project Details*" 
                       rows={5}
                       className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium resize-none"
                     ></textarea>
                   </div>
                   
+                  {error && <p className="text-error text-sm font-bold">{error}</p>}
+                  {success && <p className="text-success text-sm font-bold">Your proposal has been submitted! We&apos;ll be in touch soon.</p>}
+
                   <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
                     <Button 
-                      className="w-full sm:w-auto px-12 py-6 h-auto rounded-full font-bold text-lg transition-all duration-300"
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                      className="w-full sm:w-auto px-12 py-6 h-auto rounded-full font-bold text-lg transition-all duration-300 disabled:opacity-50"
                     >
-                      Send Proposal
+                      {isSubmitting ? "Sending..." : "Send Proposal"}
                     </Button>
                     <span className="text-text-muted font-bold text-sm uppercase tracking-widest">OR</span>
                     <button 
@@ -127,7 +201,7 @@ export default function ContactPage() {
                       Book a Call
                     </button>
                   </div>
-                </form>
+                </div>
               </div>
 
               {/* Image Side */}
