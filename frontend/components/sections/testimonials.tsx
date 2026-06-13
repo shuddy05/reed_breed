@@ -6,24 +6,27 @@ import Image from "next/image"
 
 const testimonials = [
   {
-    quote: "Since switching to Reed Breed, I feel so much more confident about our brand’s overall presentation.",
-    name: "John Doe",
-    company: "Rise",
-    avatar: "/avatar1.jpg"
+    quote:
+      "Reed Breed didn't just build us a website — they built us a system. Our booking inquiries tripled within the first month of launch.",
+    name: "Adaeze Okonkwo",
+    company: "Queening Bridals",
+    avatar: "/avatar1.jpg",
   },
   {
-    quote: "The support is awesome - if you have any questions you can call the support and have the answer within 5 minutes.",
-    name: "Loha Simson",
-    company: "Snowflake",
-    avatar: "/avatar2.jpg"
+    quote:
+      "The pitch deck they created for our school was the most professional thing we've ever presented to investors. We closed funding within two weeks.",
+    name: "Emeka Nwosu",
+    company: "Loral International Schools",
+    avatar: "/avatar2.jpg",
   },
   {
-    quote: "Not only they are extremely knowledgable in their field, but they also has an excellent design aesthetic...",
-    name: "Parid Oter",
-    company: "Aoob",
-    avatar: "/avatar3.jpg"
-  }
-]
+    quote:
+      "Working with Reed Breed feels like having a full in-house creative team. They understand the African market and they deliver at a world-class level.",
+    name: "Tolu Adeyemi",
+    company: "Rise Ventures",
+    avatar: "/avatar3.jpg",
+  },
+];
 
 import { StrokedText } from "@/components/ui/stroked-text"
 

@@ -42,7 +42,7 @@ class ChatController extends Controller
         ]);
 
         try {
-            $response = Http::withHeaders([
+            $response = Http::withoutVerifying()->withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->post('https://api.mistral.ai/v1/chat/completions', [
@@ -90,7 +90,7 @@ class ChatController extends Controller
         ];
 
         try {
-            $response = Http::withHeaders([
+            $response = Http::withoutVerifying()->withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->post('https://api.mistral.ai/v1/chat/completions', [

@@ -7,17 +7,17 @@ import { Button } from "@/components/ui/button"
 const services = [
   {
     title: "Strategy",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    desc: "We map your market, decode your competition, and design a growth blueprint that turns business goals into a clear digital roadmap.",
   },
   {
     title: "Development",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    desc: "From high-converting websites to custom web apps, we build fast, scalable, and beautifully engineered digital products.",
   },
   {
     title: "Design",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    desc: "Brand identities, UI systems, and pitch decks that don't just look good — they communicate value and command attention.",
   },
-]
+];
 
 import { StrokedText } from "@/components/ui/stroked-text"
 

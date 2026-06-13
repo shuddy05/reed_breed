@@ -81,7 +81,7 @@ export const Footer = () => {
 
       {/* Bottom Section - Brand & Info */}
       <div className="bg-void text-text-secondary pt-16 md:pt-24 pb-0 px-6 md:px-12 lg:px-24">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 mb-16">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-20 lg:gap-32 mb-16">
           {/* Left Side */}
           <div className="flex flex-col items-start">
             <Link href="/" className="mb-6">

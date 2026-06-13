@@ -54,11 +54,11 @@ export const Navbar = () => {
     <>
       <nav
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-500",
+          " fixed top-0 z-50 w-full transition-all duration-500",
           isScrolled ? "py-4" : "py-8"
         )}
       >
-        <div className="max-w-[1920px] mx-auto flex items-center justify-between px-6 md:px-12">
+        <div className="max-w-[1920px] mx-auto  flex items-center justify-between px-6 md:px-12">
           <div className="flex-1">
             <Link href="/" className="flex items-center w-fit">
               <Image
