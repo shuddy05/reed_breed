@@ -41,26 +41,26 @@ export const Footer = () => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
-        className="relative h-[40vh] md:h-[50vh] flex items-center justify-center bg-accent overflow-hidden cursor-none"
+        className="relative h-[40vh] md:h-[50vh] flex items-center justify-center bg-accent overflow-hidden cursor-pointer md:cursor-none"
       >
         <Link
           href="/contact"
-          className="relative z-10 w-full h-full flex items-center justify-center cursor-none"
+          className="relative z-10 w-full h-full flex items-center justify-center cursor-pointer md:cursor-none"
         >
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="font-black text-white leading-[0.8] tracking-tighter"
-            style={{ fontSize: 'clamp(3rem, 8vw, 7rem)' }}
+            style={{ fontSize: 'clamp(3.5rem, 10vw, 9rem)' }}
           >
             Let&apos;s Talk
           </motion.div>
         </Link>
 
-        {/* Custom Cursor Badge */}
+        {/* Custom Cursor Badge - Hidden on mobile */}
         <motion.div
-          className="pointer-events-none absolute top-0 left-0 z-50 flex items-center justify-center"
+          className="hidden md:flex pointer-events-none absolute top-0 left-0 z-50 items-center justify-center"
           style={{
             x: springX,
             y: springY,
@@ -80,8 +80,8 @@ export const Footer = () => {
       </div>
 
       {/* Bottom Section - Brand & Info */}
-      <div className="bg-void text-text-secondary pt-16 md:pt-24 pb-0 px-6 md:px-12 lg:px-24">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 mb-16">
+      <div className="bg-void text-text-secondary pt-20 md:pt-24 pb-0 px-6 md:px-12 lg:px-24">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-20 lg:gap-32 mb-16 md:mb-20">
           {/* Left Side */}
           <div className="flex flex-col items-start">
             <Link href="/" className="mb-6">
@@ -93,7 +93,7 @@ export const Footer = () => {
                 className="object-contain"
               />
             </Link>
-            <p className="text-base md:text-lg font-medium text-text-secondary max-w-xs mb-8 leading-[1.1] tracking-tighter">
+            <p className="text-lg md:text-xl font-medium text-text-secondary max-w-xs mb-8 leading-[1.1] tracking-tighter">
               Reed Breed is an AI-powered growth systems agency helping SMEs automate sales, marketing & engagement.
             </p>
 
@@ -116,11 +116,23 @@ export const Footer = () => {
             </div>
           </div>
 
+          {/* Center Side - Links */}
+          <div className="flex flex-col items-start md:mx-auto">
+             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-8 md:mb-10">Exploration</p>
+             <div className="flex flex-col gap-5">
+                <Link href="/about" className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tighter">About</Link>
+                <Link href="/services" className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Services</Link>
+                <Link href="/industries" className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Industries</Link>
+                <Link href="/work" className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Our Work</Link>
+                <Link href="/blog" className="text-xl md:text-2xl font-bold text-white hover:text-accent transition-colors tracking-tighter">Latest News</Link>
+             </div>
+          </div>
+
           {/* Right Side */}
-          <div className="flex flex-col items-start md:ml-auto text-left w-max">
+          <div className="flex flex-col items-start md:ml-auto text-left w-full md:w-max">
             <p
-              className="text-base md:text-lg font-medium text-white tracking-tighter leading-[1.1] max-w-[200px]"
-              style={{ marginBottom: '50px' }}
+              className="text-lg md:text-xl font-medium text-white tracking-tighter leading-[1.1] max-w-[280px]"
+              style={{ marginBottom: '40px' }}
             >
               22 Road, E Close, Opposite FHA, Festac, Amuwo-Odofin, Lagos Nigeria.
             </p>
@@ -128,13 +140,13 @@ export const Footer = () => {
             <div className="flex flex-col gap-6 items-start">
               <Link
                 href="mailto:hello@reedbreed.cc"
-                className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
+                className="w-fit text-left text-lg md:text-xl font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
               >
                 hello@reedbreed.cc
               </Link>
               <Link
                 href="tel:+2348067028859"
-                className="w-fit text-left text-base md:text-lg font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
+                className="w-fit text-left text-lg md:text-xl font-medium text-white hover:text-accent transition-colors underline decoration-white/20 underline-offset-8 tracking-tighter leading-[1.1]"
               >
                 +234 806 702 8859
               </Link>
@@ -142,8 +154,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="py-6 border-t border-white/5 flex justify-center items-center">
-          <p className="text-text-muted font-medium tracking-tighter">
+        <div className="py-8 border-t border-white/5 flex justify-center items-center">
+          <p className="text-text-muted font-medium tracking-tighter text-sm md:text-base">
             © 2026 Reed Breed Ai. All Rights Reserved.
           </p>
         </div>

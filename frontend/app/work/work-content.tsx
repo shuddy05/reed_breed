@@ -1,7 +1,6 @@
 "use client"
 
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { motion } from "framer-motion"
 
 export function WorkContent() {
@@ -38,8 +37,6 @@ export function WorkContent() {
       >
         A collection of our finest digital experiences and brand transformations.
       </motion.p>
-
-      <ScrollIndicator />
     </div>
   )
 }

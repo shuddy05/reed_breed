@@ -21,9 +21,9 @@ export const OurWork = ({ works = [], isHomePage = false }: { works?: WorkItem[]
   };
 
   return (
-    <section className="relative py-24 md:py-32 lg:py-48 overflow-hidden">
+    <section className="relative py-20 md:py-32 lg:py-48 overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 mb-20 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 mb-16 md:mb-20 max-w-6xl mx-auto">
           {works?.map((item, index) => (
             <Link 
               key={item.id} 
@@ -39,7 +39,7 @@ export const OurWork = ({ works = [], isHomePage = false }: { works?: WorkItem[]
                 onMouseEnter={() => setHoveredId(item.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 onMouseMove={(e) => handleMouseMove(e, item.id)}
-                className="relative aspect-[3/4] rounded-[32px] overflow-hidden group bg-surface shadow-2xl cursor-none"
+                className="relative aspect-[3/4] rounded-[24px] md:rounded-[32px] overflow-hidden group bg-surface shadow-2xl cursor-none md:cursor-none"
               >
                 <Image
                   src={item.thumbnail}
@@ -49,16 +49,16 @@ export const OurWork = ({ works = [], isHomePage = false }: { works?: WorkItem[]
                 />
                 
                 {/* Overlay Content */}
-                <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent opacity-70 md:opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 
-                <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2">{item.type}</span>
-                  <h3 className="text-2xl md:text-3xl font-black text-white tracking-tighter leading-tight">{item.title}</h3>
+                  <h3 className="text-xl md:text-3xl font-black text-white tracking-tighter leading-tight">{item.title}</h3>
                 </div>
 
-                {/* Custom Cursor Badge */}
+                {/* Custom Cursor Badge - Hidden on mobile */}
                 <motion.div 
-                  className="pointer-events-none absolute z-50 flex items-center justify-center"
+                  className="hidden md:flex pointer-events-none absolute z-50 items-center justify-center"
                   animate={{
                     x: mousePos.x - 40,
                     y: mousePos.y - 40,

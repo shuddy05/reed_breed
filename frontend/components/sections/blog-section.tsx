@@ -65,15 +65,15 @@ export const BlogSection = ({
       <div className="container mx-auto px-6">
         {/* Header - Only on Homepage or if specifically titled */}
         {!isFullPage && (
-          <div className="flex flex-col items-center mb-16 md:mb-24">
+          <div className="flex flex-col items-center mb-12 md:mb-24">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="flex justify-center items-center gap-4 md:gap-6 mb-12"
+              className="flex justify-center items-center gap-3 md:gap-6 mb-8 md:mb-12"
             >
               <span 
-                className="text-[12vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter"
+                className="text-[15vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter"
                 style={{ WebkitTextStroke: '0.5px #ffffff' }}
               >
                 {title === "Blog" ? "From" : title.split(' ')[0]}
@@ -82,7 +82,7 @@ export const BlogSection = ({
                 <StrokedText 
                   text={title === "Blog" ? "Blog" : title.split(' ').slice(1).join(' ')} 
                   viewBox="0 0 550 120"
-                  height="clamp(5rem, 10vw, 8rem)"
+                  height="clamp(3.5rem, 10vw, 8rem)"
                   strokeWidth={2}
                   letterSpacing="-0.05em"
                 />
@@ -92,10 +92,10 @@ export const BlogSection = ({
         )}
 
         {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 max-w-7xl mx-auto mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 lg:gap-16 max-w-7xl mx-auto mb-16 md:mb-20">
           {loading ? (
             [...Array(3)].map((_, i) => (
-              <div key={i} className="flex flex-col gap-8 animate-pulse">
+              <div key={i} className="flex flex-col gap-6 md:gap-8 animate-pulse">
                 <div className="aspect-[4/3] bg-white/5 rounded-sm" />
                 <div className="space-y-4">
                   <div className="h-4 bg-white/5 w-1/4 rounded" />
@@ -116,9 +116,9 @@ export const BlogSection = ({
               onMouseEnter={() => setHoveredId(post.id)}
               onMouseLeave={() => setHoveredId(null)}
               onMouseMove={(e) => handleMouseMove(e, post.id)}
-              className="flex flex-col group cursor-none"
+              className="flex flex-col group cursor-none md:cursor-none"
             >
-              <div className="relative aspect-[4/3] mb-8 overflow-hidden rounded-sm bg-surface shadow-xl">
+              <div className="relative aspect-[4/3] mb-6 md:mb-8 overflow-hidden rounded-sm bg-surface shadow-xl">
                 {post.image ? (
                   <Image 
                     src={post.image}
@@ -130,9 +130,9 @@ export const BlogSection = ({
                   <div className="w-full h-full bg-white/5 flex items-center justify-center text-text-muted">No Image</div>
                 )}
                 
-                {/* Custom Cursor Badge */}
+                {/* Custom Cursor Badge - Hidden on mobile */}
                 <motion.div
-                  className="pointer-events-none absolute z-50 flex items-center justify-center"
+                  className="hidden md:flex pointer-events-none absolute z-50 items-center justify-center"
                   animate={{
                     x: mousePos.x - 40,
                     y: mousePos.y - 40,
@@ -155,20 +155,20 @@ export const BlogSection = ({
                 </motion.div>
               </div>
               
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-white font-black text-xs uppercase tracking-widest flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-3 md:mb-4">
+                <span className="text-white font-black text-[10px] md:text-xs uppercase tracking-widest flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white rounded-full" />
                   {post.category?.name}
                 </span>
               </div>
 
-              <div className="text-[8vw] md:text-[4vw] lg:text-[2.8vw] xl:text-[2.2vw] font-extrabold text-white mb-8 leading-[1.1] tracking-tighter group-hover:text-accent transition-colors">
+              <div className="text-[9vw] md:text-[4vw] lg:text-[2.8vw] xl:text-[2.2vw] font-extrabold text-white mb-6 md:mb-8 leading-[1.1] tracking-tighter group-hover:text-accent transition-colors">
                 {post.title}
               </div>
               
               <Link href={`/blog/${post.slug}`}>
                 <Button 
-                  className="px-8 py-4 h-auto rounded-full font-bold text-base transition-all duration-300"
+                  className="w-full md:w-auto px-8 py-4 h-auto rounded-full font-bold text-base transition-all duration-300"
                 >
                   Read More
                 </Button>

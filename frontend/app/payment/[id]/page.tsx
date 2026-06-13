@@ -42,7 +42,6 @@ export default function PaymentPage() {
     setIsProcessing(true)
     // Simulate Paystack Inline logic
     // In a real app, you'd load the script and call PaystackPop.setup(...)
-    console.log("Initializing Paystack for invoice:", id)
     
     // Simulate successful payment callback
     setTimeout(async () => {

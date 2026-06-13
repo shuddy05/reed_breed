@@ -12,19 +12,19 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ChatController;
 
 // Public Routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/contact', [LeadController::class, 'store']);
-Route::post('/appointments/book', [AppointmentController::class, 'book']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::post('/contact', [LeadController::class, 'store'])->middleware('throttle:10,1');
+Route::post('/appointments/book', [AppointmentController::class, 'book'])->middleware('throttle:10,1');
 
 // Chatbot Routes
-Route::post('/chat', [ChatController::class, 'chat']);
-Route::post('/chat/handoff', [ChatController::class, 'handoff']);
+Route::post('/chat', [ChatController::class, 'chat'])->middleware('throttle:15,1');
+Route::post('/chat/handoff', [ChatController::class, 'handoff'])->middleware('throttle:5,1');
 
 // Public Blog Routes
 Route::get('/blog/categories', [CategoryController::class, 'index']);
 Route::get('/blog/posts', [BlogPostController::class, 'index']);
 Route::get('/blog/posts/{slug}', [BlogPostController::class, 'show']);
-Route::post('/blog/comments', [CommentController::class, 'store']);
+Route::post('/blog/comments', [CommentController::class, 'store'])->middleware('throttle:5,1');
 
 // Admin Protected Routes
 Route::middleware('auth:sanctum')->group(function () {

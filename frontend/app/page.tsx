@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
-import { ScrollIndicator } from "@/components/ui/scroll-indicator";
 import { MarqueeStrip } from "@/components/sections/marquee-strip";
 import { WhoWeAre } from "@/components/sections/who-we-are";
 import { TrustedBy } from "@/components/sections/trusted-by";
@@ -21,7 +20,6 @@ export default async function Home() {
       <Navbar />
       <main>
         <Hero />
-        <ScrollIndicator />
         <MarqueeStrip />
         <WhoWeAre />
         <TrustedBy />

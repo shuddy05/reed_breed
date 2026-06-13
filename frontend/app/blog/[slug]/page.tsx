@@ -6,7 +6,6 @@ import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { BlogSection } from "@/components/sections/blog-section"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import Image from "next/image"
 import { apiRequest } from "@/lib/api"
 import { Button } from "@/components/ui/button"
@@ -134,8 +133,6 @@ export default function BlogPostPage() {
             <p className="text-white font-bold text-lg md:text-xl uppercase tracking-widest mb-16">
               {new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
-
-            <ScrollIndicator />
           </motion.div>
         </div>
 
