@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Calendar } from "phosphor-react"
@@ -85,19 +84,19 @@ export default function ContactPage() {
         </div>
 
         {/* Hero Section */}
-        <div className="container mx-auto px-6 relative z-10 min-h-screen py-32 md:py-48 flex flex-col items-center text-center justify-center">
+        <div className="container mx-auto px-6 relative z-10 min-h-screen py-24 md:py-48 flex flex-col items-center text-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center justify-center mb-12"
+            className="flex flex-col items-center justify-center mb-8 md:mb-12"
           >
             {/* The Dot */}
-            <div className="w-3 h-3 bg-white rounded-full mb-12" />
+            <div className="w-2 md:w-3 h-2 md:h-3 bg-white rounded-full mb-8 md:mb-12" />
 
-            <div className="flex justify-center items-center gap-4 md:gap-6 mb-8">
+            <div className="flex justify-center items-center gap-3 md:gap-6 mb-6 md:mb-8">
               <span
-                className="text-[12vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter"
+                className="text-[15vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter"
                 style={{ WebkitTextStroke: '0.5px #ffffff' }}
               >
                 Contact
@@ -106,7 +105,7 @@ export default function ContactPage() {
                 <StrokedText
                   text="Us"
                   viewBox="0 0 200 120"
-                  height="clamp(5rem, 10vw, 8rem)"
+                  height="clamp(3.5rem, 10vw, 8rem)"
                   strokeWidth={2}
                   letterSpacing="-0.05em"
                 />
@@ -118,80 +117,78 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-white text-xl md:text-2xl lg:text-3xl font-medium max-w-2xl leading-tight tracking-tight mb-20"
+            className="text-white text-lg md:text-2xl lg:text-3xl font-medium max-w-2xl leading-tight tracking-tight mb-16 md:mb-20"
           >
             We&apos;re looking for each other. Fill in your company details or give use a phone or video call.
           </motion.p>
-
-          <ScrollIndicator />
         </div>
 
         {/* Contact Form Section */}
-        <section className="relative z-10 py-24 md:py-48">
+        <section className="relative z-10 py-16 md:py-48">
           <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
               {/* Form Side */}
-              <div className="flex flex-col items-start">
-                <h2 className="text-4xl md:text-5xl font-black text-white mb-12 tracking-tighter">Write us</h2>
+              <div className="flex flex-col items-start order-2 lg:order-1">
+                <h2 className="text-3xl md:text-5xl font-black text-white mb-10 md:mb-12 tracking-tighter">Write us</h2>
                 
                 <div className="w-full space-y-6">
-                  <div className="grid grid-cols-1 gap-6">
+                  <div className="grid grid-cols-1 gap-4 md:gap-6">
                     <input 
                       type="text" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Name*" 
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="text" 
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
                       placeholder="Company Name" 
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="email" 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Email*" 
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="tel" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Phone Number" 
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <input 
                       type="url" 
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       placeholder="Website URL" 
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium"
                     />
                     <textarea 
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Project Details*" 
                       rows={5}
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium resize-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted font-medium resize-none"
                     ></textarea>
                   </div>
                   
                   {error && <p className="text-error text-sm font-bold">{error}</p>}
                   {success && <p className="text-success text-sm font-bold">Your proposal has been submitted! We&apos;ll be in touch soon.</p>}
 
-                  <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 mt-6 md:mt-8">
                     <Button 
                       onClick={handleSubmit}
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto px-12 py-6 h-auto rounded-full font-bold text-lg transition-all duration-300 disabled:opacity-50"
+                      className="w-full sm:w-auto px-10 md:px-12 py-5 md:py-6 h-auto rounded-full font-bold text-lg transition-all duration-300 disabled:opacity-50"
                     >
                       {isSubmitting ? "Sending..." : "Send Proposal"}
                     </Button>
-                    <span className="text-text-muted font-bold text-sm uppercase tracking-widest">OR</span>
+                    <span className="text-text-muted font-bold text-xs md:text-sm uppercase tracking-widest py-2">OR</span>
                     <button 
                       type="button"
                       onClick={() => setIsModalOpen(true)}
@@ -209,7 +206,7 @@ export default function ContactPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1 }}
-                className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl lg:mt-24"
+                className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl lg:mt-24 order-1 lg:order-2"
               >
                 <Image 
                   src="/office2.jpeg" 

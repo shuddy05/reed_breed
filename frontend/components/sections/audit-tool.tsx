@@ -411,8 +411,7 @@ export const AuditTool = () => {
   const onFinalSubmit = async (data: LeadFormData) => {
     setIsSubmitting(true)
     const fullData = { ...auditData, ...data, userId: user?.id }
-    console.log("Saving full audit data:", fullData)
-    
+
     try {
       const response = await fetch("http://localhost:8080/api/audit", {
         method: "POST",

@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { 
   Robot, 
   Code, 
@@ -92,8 +91,6 @@ export default function ServicesPage() {
           >
             Intelligence meets Creative Execution. We architect comprehensive growth systems that automate success.
           </motion.p>
-
-          <ScrollIndicator />
         </div>
 
         {/* Services Grid */}

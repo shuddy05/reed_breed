@@ -61,13 +61,13 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] bg-repeat" />
       </div>
 
-      <div className="w-full relative z-10 flex flex-col items-start overflow-visible py-32">
-        <div className="w-full flex justify-center mt-48 mb-8">
+      <div className="w-full relative z-10 flex flex-col items-start overflow-visible py-20 md:py-32">
+        <div className="w-full flex justify-center mt-32 md:mt-48 mb-6 md:mb-8">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-text-secondary font-sans font-medium text-lg md:text-xl lg:text-2xl tracking-tight"
+            className="text-text-secondary font-sans font-medium text-base md:text-xl lg:text-2xl tracking-tight"
           >
             Hello there, we&apos;re a
           </motion.div>
@@ -84,22 +84,22 @@ export const Hero = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="font-black text-[#ffffff] whitespace-nowrap flex items-center gap-[0.2em] w-max"
             style={{ 
-              fontSize: '10vw',
+              fontSize: 'clamp(3.5rem, 10vw, 12rem)',
               fontFamily: 'var(--font-dm-sans)',
               letterSpacing: '0.01em',
               x
             }}
           >
-            <span style={{ WebkitTextStroke: '0.5px #ffffff' }}>Creative</span>
+            <span className="md:[webkit-text-stroke:0.5px_#ffffff]">Creative</span>
             <StrokedText 
               text="Digital" 
               viewBox="0 0 350 120" 
-              height="11vw"
+              height="clamp(4rem, 11vw, 13rem)"
               strokeWidth={1.5}
               letterSpacing="0.01em"
               className="-mt-[1.5vw]"
             />
-            <span style={{ WebkitTextStroke: '0.5px #ffffff' }}>Agency</span>
+            <span className="md:[webkit-text-stroke:0.5px_#ffffff]">Agency</span>
           </motion.h1>
         </div>
       </div>

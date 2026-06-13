@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { 
   Buildings, 
   ShoppingCart, 
@@ -106,8 +105,6 @@ export default function IndustriesPage() {
           >
             We don&apos;t just build software. We build industry-specific growth engines that solve real business problems.
           </motion.p>
-
-          <ScrollIndicator />
         </div>
 
         {/* Industries Grid */}

@@ -54,8 +54,10 @@ export const Navbar = () => {
     <>
       <nav
         className={cn(
-          " fixed top-0 z-50 w-full transition-all duration-500",
-          isScrolled ? "py-4" : "py-8"
+          "fixed top-0 z-50 w-full transition-all duration-500",
+          isScrolled 
+            ? "py-4 bg-void/70 backdrop-blur-md border-b border-white/5" 
+            : "py-8 bg-transparent"
         )}
       >
         <div className="max-w-[1920px] mx-auto  flex items-center justify-between px-6 md:px-12">

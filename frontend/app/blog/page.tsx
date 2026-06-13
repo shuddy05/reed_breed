@@ -4,7 +4,6 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { BlogSection } from "@/components/sections/blog-section"
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { motion } from "framer-motion"
 
 export default function BlogPage() {
@@ -53,8 +52,6 @@ export default function BlogPage() {
           >
             Catch up on all our latest musings and thoughts below.
           </motion.p>
-
-          <ScrollIndicator />
         </div>
 
         <div className="relative z-10">

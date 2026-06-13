@@ -25,7 +25,7 @@ class ChatController extends Controller
             'messages' => 'required|array',
         ]);
 
-        $apiKey = env('MISTRAL_API_KEY');
+        $apiKey = config('services.mistral.api_key');
 
         if (!$apiKey || $apiKey === 'your_mistral_api_key_here') {
             return response()->json([
@@ -42,7 +42,7 @@ class ChatController extends Controller
         ]);
 
         try {
-            $response = Http::withoutVerifying()->withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->post('https://api.mistral.ai/v1/chat/completions', [
@@ -74,7 +74,7 @@ class ChatController extends Controller
             'userInfo.phone' => 'required|string',
         ]);
 
-        $apiKey = env('MISTRAL_API_KEY');
+        $apiKey = config('services.mistral.api_key');
 
         if (!$apiKey) {
             return response()->json(['error' => 'Mistral API key not configured on server.'], 500);
@@ -90,7 +90,7 @@ class ChatController extends Controller
         ];
 
         try {
-            $response = Http::withoutVerifying()->withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->post('https://api.mistral.ai/v1/chat/completions', [

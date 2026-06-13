@@ -10,7 +10,6 @@ import { TeamSection } from "@/components/sections/team-section"
 import { WhatWeDo } from "@/components/sections/what-we-do"
 import { Testimonials } from "@/components/sections/testimonials"
 import { StrokedText } from "@/components/ui/stroked-text"
-import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 
 export default function AboutPage() {
   return (
@@ -58,8 +57,6 @@ export default function AboutPage() {
           >
             We are a team of great designers, problem solvers, and passionate collaborators.
           </motion.p>
-
-          <ScrollIndicator />
         </div>
 
         <WhoWeAre />
